@@ -1,0 +1,137 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model addresses {
+  address_id  Int      @id @default(autoincrement())
+  user_id     Int?
+  street      String   @db.VarChar(255)
+  city        String   @db.VarChar(100)
+  state       String?  @db.VarChar(100)
+  postal_code String   @db.VarChar(20)
+  country     String   @db.VarChar(100)
+  users       users?   @relation(fields: [user_id], references: [user_id], onDelete: Restrict, onUpdate: Restrict, map: "addresses_ibfk_1")
+  orders      orders[]
+
+  @@index([user_id], map: "user_id")
+}
+
+model cart_items {
+  cart_item_id Int       @id @default(autoincrement())
+  user_id      Int?
+  product_id   Int?
+  quantity     Int?      @default(1)
+  users        users?    @relation(fields: [user_id], references: [user_id], onDelete: Restrict, onUpdate: Restrict, map: "cart_items_ibfk_1")
+  products     products? @relation(fields: [product_id], references: [product_id], onDelete: Restrict, onUpdate: Restrict, map: "cart_items_ibfk_2")
+
+  @@index([product_id], map: "product_id")
+  @@index([user_id], map: "user_id")
+}
+
+model categories {
+  category_id   Int        @id @default(autoincrement())
+  category_name String     @db.VarChar(100)
+  products      products[]
+}
+
+model licenses {
+  license_id    Int          @id @default(autoincrement())
+  order_item_id Int?
+  license_key   String       @unique(map: "license_key") @db.VarChar(255)
+  issued_at     DateTime     @default(now()) @db.Timestamp(0)
+  order_items   order_items? @relation(fields: [order_item_id], references: [order_item_id], onDelete: Restrict, onUpdate: Restrict, map: "licenses_ibfk_1")
+
+  @@index([order_item_id], map: "order_item_id")
+}
+
+model order_items {
+  order_item_id Int        @id @default(autoincrement())
+  order_id      Int?
+  product_id    Int?
+  quantity      Int
+  price         Decimal    @db.Decimal(10, 2)
+  licenses      licenses[]
+  orders        orders?    @relation(fields: [order_id], references: [order_id], onDelete: Restrict, onUpdate: Restrict, map: "order_items_ibfk_1")
+  products      products?  @relation(fields: [product_id], references: [product_id], onDelete: Restrict, onUpdate: Restrict, map: "order_items_ibfk_2")
+
+  @@index([order_id], map: "order_id")
+  @@index([product_id], map: "product_id")
+}
+
+model orders {
+  order_id     Int           @id @default(autoincrement())
+  user_id      Int?
+  address_id   Int?
+  total_amount Decimal       @db.Decimal(10, 2)
+  status       String        @default("pending") @db.VarChar(50)
+  order_date   DateTime      @default(now()) @db.Timestamp(0)
+  order_items  order_items[]
+  users        users?        @relation(fields: [user_id], references: [user_id], onDelete: Restrict, onUpdate: Restrict, map: "orders_ibfk_1")
+  addresses    addresses?    @relation(fields: [address_id], references: [address_id], onDelete: Restrict, onUpdate: Restrict, map: "orders_ibfk_2")
+  payments     payments[]
+
+  @@index([address_id], map: "address_id")
+  @@index([user_id], map: "user_id")
+}
+
+model payments {
+  payment_id     Int      @id @default(autoincrement())
+  order_id       Int?
+  payment_method String   @db.VarChar(50)
+  payment_status String   @default("pending") @db.VarChar(50)
+  payment_date   DateTime @default(now()) @db.Timestamp(0)
+  amount         Decimal  @db.Decimal(10, 2)
+  orders         orders?  @relation(fields: [order_id], references: [order_id], onDelete: Restrict, onUpdate: Restrict, map: "payments_ibfk_1")
+
+  @@index([order_id], map: "order_id")
+}
+
+model products {
+  product_id   Int           @id @default(autoincrement())
+  category_id  Int?
+  product_name String        @db.VarChar(255)
+  description  String?       @db.Text
+  price        Decimal       @db.Decimal(10, 2)
+  stock        Int?          @default(0)
+  image_url    String?       @db.VarChar(255)
+  cart_items   cart_items[]
+  order_items  order_items[]
+  categories   categories?   @relation(fields: [category_id], references: [category_id], onDelete: Restrict, onUpdate: Restrict, map: "products_ibfk_1")
+
+  @@index([category_id], map: "category_id")
+}
+
+model roles {
+  role_id     Int           @id @default(autoincrement())
+  role_name   String        @db.VarChar(100)
+  users_roles users_roles[]
+}
+
+model users {
+  user_id      Int           @id @default(autoincrement())
+  email        String        @unique(map: "email") @db.VarChar(100)
+  password     String        @db.VarChar(255)
+  first_name   String?       @db.VarChar(50)
+  last_name    String?       @db.VarChar(50)
+  phone_number String?       @db.VarChar(20)
+  created_at   DateTime      @default(now()) @db.Timestamp(0)
+  addresses    addresses[]
+  cart_items   cart_items[]
+  orders       orders[]
+  users_roles  users_roles[]
+}
+
+model users_roles {
+  user_id Int
+  role_id Int
+  users   users @relation(fields: [user_id], references: [user_id], onUpdate: Restrict, map: "users_roles_ibfk_1")
+  roles   roles @relation(fields: [role_id], references: [role_id], onUpdate: Restrict, map: "users_roles_ibfk_2")
+
+  @@id([user_id, role_id])
+  @@index([role_id], map: "role_id")
+}
