@@ -1,7 +1,7 @@
 import express, { Router } from "express"
 import morgan from "morgan"
 import cors from "cors"
-import { getFrontUrl } from "./envs"
+import { envs } from './envs';
 import cookieParser from 'cookie-parser'
 
 interface Options {
@@ -22,7 +22,7 @@ export class Server {
 
   async start(): Promise<void>  {
     const corsOptions: cors.CorsOptions = {
-      origin: [getFrontUrl()],
+      origin: [envs.FRONTEND_URL],
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
       credentials: true, // Allow sending cookies
       allowedHeaders: ['Content-Type', 'Authorization'],

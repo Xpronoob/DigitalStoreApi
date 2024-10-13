@@ -19,3 +19,13 @@
 
     return false
   }
+
+  export const envs = {
+    PORT: getPort(),
+    FRONTEND_URL: getFrontUrl(),
+    DEBUG_MODE: getDebugMode(),
+    JWT_ACCESS_TOKEN: process.env.JWT_ACCESS_TOKEN || '',
+    JWT_REFRESH_TOKEN: process.env.JWT_REFRESH_TOKEN || '',
+    COOKIE_EXPIRES_ACCESS_TOKEN: process.env.COOKIE_EXPIRES_ACCESS_TOKEN || '1m',
+    COOKIE_EXPIRES_REFRESH_TOKEN: process.env.COOKIE_EXPIRES_REFRESH_TOKEN || '120d',
+  }
