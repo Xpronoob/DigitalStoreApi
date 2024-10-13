@@ -3,8 +3,8 @@ import { AuthDatasource } from "../datasources/auth.datasource"
 export class AuthRepository {
   constructor(private readonly authDatasource: AuthDatasource) {}
   
-  async register() {
-    return await this.authDatasource.register()
+  async register(validatedData: any) {
+    return await this.authDatasource.register(validatedData)
   }
 
   async login() {

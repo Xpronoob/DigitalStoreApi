@@ -1,5 +1,5 @@
 import { Server } from "./configs/server"
-import { getDebugMode, getPort } from "./configs/envs"
+import { envs } from "./configs/envs"
 import { AppRoutes } from "./routes/app.routes"
 
 (() =>{
@@ -8,12 +8,12 @@ import { AppRoutes } from "./routes/app.routes"
 
 async function main () {
     console.log("Starting API...")
-    if(getDebugMode()){
+    if(envs.DEBUG_MODE){
         console.log("DEBUG MODE ON")
     }
 
     new Server({
-        port: getPort(),
+        port: envs.PORT,
         routes: AppRoutes.routes
     }).start()
 }
