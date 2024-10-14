@@ -3,7 +3,7 @@ import { CustomError } from "../errors/custom.error"
 
 export class ZodAdapter {
 
-  static validateRegister = (user: { email: string, password: string, first_name?: string, last_name?: string }) => {
+  static validateAuthUser = (user: { email: string, password: string, first_name?: string, last_name?: string }) => {
 
     const User = z.object({
       email: z.string({
