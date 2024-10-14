@@ -7,8 +7,8 @@ export class AuthRepository {
     return await this.authDatasource.register(validatedData)
   }
 
-  async login() {
-    return await this.authDatasource.login()
+  async login(validatedData: any) {
+    return await this.authDatasource.login(validatedData)
   }
 
   async logout() {

@@ -12,7 +12,7 @@ export class AuthRoutes {
 
     const controller = new AuthController(repository)
     
-    router.get('/login', controller.login)
+    router.post('/login', controller.login)
     router.post('/register', controller.register)
     router.post('/logout', controller.logout)
 
