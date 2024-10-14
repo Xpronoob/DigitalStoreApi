@@ -14,7 +14,7 @@ export class AuthRoutes {
     
     router.post('/login', controller.login)
     router.post('/register', controller.register)
-    router.post('/logout', controller.logout)
+    router.get('/logout', controller.logout)
 
     return router
   }

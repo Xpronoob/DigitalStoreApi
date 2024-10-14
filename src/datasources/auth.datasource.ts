@@ -109,8 +109,25 @@ constructor(
     return userWithTokens
   }
 
-  async logout() {
-    console.log("using logout datasource")
+  async logout(req: Request) {
+
+  const refreshToken = req.cookies.refreshToken
+  if (!refreshToken) {
+    throw CustomError.unauthorized("No has iniciado sesión")
   }
 
+  const session = await prisma.sessions.findFirst({
+    where: { refresh_token: refreshToken }
+  })
+
+  if (!session) {
+    throw CustomError.unauthorized("No se encontró la sesión o ya fue cerrada")
+  }
+
+  await prisma.sessions.delete({
+    where: { refresh_token: refreshToken }
+  })
+
+  return true
+  }
 }

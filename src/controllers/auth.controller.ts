@@ -25,11 +25,13 @@ export class AuthController{
       res.cookie('accessToken', user.accessToken, {
         httpOnly: true,
         secure: true,
+        sameSite: "strict",
       })
 
       res.cookie('refreshToken', user.refreshToken, {
         httpOnly: true,
         secure: true,
+        sameSite: "strict",
         maxAge: convertToMillisencods(envs.COOKIE_EXPIRES_REFRESH_TOKEN),
       })
 
@@ -60,11 +62,13 @@ export class AuthController{
       res.cookie('accessToken', user.accessToken, {
         httpOnly: true,
         secure: true,
+        sameSite: "strict",
       })
 
       res.cookie('refreshToken', user.refreshToken, {
         httpOnly: true,
         secure: true,
+        sameSite: "strict",
         maxAge: convertToMillisencods(envs.COOKIE_EXPIRES_REFRESH_TOKEN),
       })
 
@@ -81,7 +85,30 @@ export class AuthController{
     }
   }
 
-  logout = (req: Request, res: Response) => {
-    this.authRepository.logout()
+  logout = async (req: Request, res: Response) => {
+    try{
+      await this.authRepository.logout(req)
+
+      res.clearCookie("accessToken", {
+        httpOnly: true,
+        secure: true, 
+        sameSite: "strict",
+      });
+
+      res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: true, 
+        sameSite: "strict",
+      });
+
+      return res.status(200).json({ message: "Has cerrado sesión exitosamente" })
+
+    }catch(error){
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json({ message: error.message })
+      }
+      res.status(500).json(error)
+      console.log(error)
+    }
   }
 }

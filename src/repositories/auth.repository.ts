@@ -1,3 +1,4 @@
+import { Request } from "express"
 import { AuthDatasource } from "../datasources/auth.datasource"
 
 export class AuthRepository {
@@ -11,7 +12,7 @@ export class AuthRepository {
     return await this.authDatasource.login(validatedData)
   }
 
-  async logout() {
-    return await this.authDatasource.logout()
+  async logout(req: Request) {
+    return await this.authDatasource.logout(req)
   }
 }
