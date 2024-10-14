@@ -1,5 +1,5 @@
-import { Server } from "./configs/server"
-import { envs } from "./configs/envs"
+import { envs } from "./configs/envs.config"
+import { Server } from "./configs/server.config"
 import { AppRoutes } from "./routes/app.routes"
 
 (() =>{

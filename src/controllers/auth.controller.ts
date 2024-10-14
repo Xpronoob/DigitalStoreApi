@@ -3,8 +3,8 @@ import { AuthRepository } from "../repositories/auth.repository"
 import { ZodAdapter } from "../adapters/zod.adapter"
 import { CustomError } from "../errors/custom.error"
 import { BcryptAdapter } from "../adapters/bcrypt.adapter"
-import { convertToMillisencods } from "../utils/converters"
-import { envs } from "../configs/envs"
+import { convertToMillisencods } from "../utils/converters.util"
+import { envs } from "../configs/envs.config"
 
 export class AuthController{
   //DI

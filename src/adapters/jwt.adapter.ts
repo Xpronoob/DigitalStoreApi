@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
-import { envs } from '../configs/envs';
-import { convertToSeconds } from '../utils/converters';
+import { envs } from '../configs/envs.config';
+import { convertToSeconds } from '../utils/converters.util';
 
 export class JwtAdapter {
   

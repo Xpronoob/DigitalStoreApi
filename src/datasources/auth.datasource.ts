@@ -2,8 +2,8 @@ import { Request, Response } from "express"
 import { PrismaClient } from "@prisma/client"
 import { JwtAdapter } from "../adapters/jwt.adapter"
 import { CustomError } from "../errors/custom.error"
-import { convertToMillisencods } from "../utils/converters"
-import { envs } from "../configs/envs"
+import { convertToMillisencods } from "../utils/converters.util"
+import { envs } from "../configs/envs.config"
 import { BcryptAdapter } from "../adapters/bcrypt.adapter"
 
 const prisma = new PrismaClient()

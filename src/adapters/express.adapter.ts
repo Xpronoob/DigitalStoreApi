@@ -1,15 +1,15 @@
 import express, { Router } from "express"
 import morgan from "morgan"
 import cors from "cors"
-import { envs } from './envs';
 import cookieParser from 'cookie-parser'
+import { envs } from "../configs/envs.config"
 
 interface Options {
   port: number
   routes: Router
 }
 
-export class Server {
+export class ExpressAdapter {
   public readonly app = express()
   private readonly port: number
   private readonly routes: Router
