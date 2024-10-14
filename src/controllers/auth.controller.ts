@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { AuthRepository } from "../repositories/auth.repository"
-import { ZodAdapter } from "../adapters/zod.adapter"
+import { ZodAuthAdapter } from "../adapters/zod.auth.adapter"
 import { CustomError } from "../errors/custom.error"
 import { BcryptAdapter } from "../adapters/bcrypt.adapter"
 import { convertToMillisencods } from "../utils/converters.util"
@@ -14,7 +14,7 @@ export class AuthController{
 
   login = async (req: Request, res: Response) => {
     try {
-      const validatedData = ZodAdapter.validateAuthUser(req.body)
+      const validatedData = ZodAuthAdapter.validateAuthUser(req.body)
       const user = await this.authRepository.login(validatedData)
       if (!user) throw CustomError.internalServer("Error al registrar el usuario")
       
@@ -50,7 +50,7 @@ export class AuthController{
   
   register = async (req: Request, res: Response) => {
     try {
-      const validatedData = ZodAdapter.validateAuthUser(req.body)
+      const validatedData = ZodAuthAdapter.validateAuthUser(req.body)
       validatedData.password = BcryptAdapter.hash(validatedData.password)
       const user = await this.authRepository.register(validatedData)
       if (!user) throw CustomError.internalServer("Error al registrar el usuario")

@@ -1,7 +1,7 @@
 import { z } from "zod"
 import { CustomError } from "../errors/custom.error"
 
-export class ZodAdapter {
+export class ZodAuthAdapter {
 
   static validateAuthUser = (user: { email: string, password: string, first_name?: string, last_name?: string }) => {
 
