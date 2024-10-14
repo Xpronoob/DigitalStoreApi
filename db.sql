@@ -11,7 +11,7 @@ CREATE TABLE users (
 CREATE TABLE sessions (
     session_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
-    refresh_token VARCHAR(255) NOT NULL,
+    refresh_token VARCHAR(255) UNIQUE NOT NULL,
     expires_at TIMESTAMP NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
