@@ -111,4 +111,17 @@ export class AuthController{
       console.log(error)
     }
   }
+
+  profile = async (req: Request, res: Response) => {
+    try {
+      const user = req.body.user
+      return res.status(200).json(user)
+    } catch (error) {
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json({ message: error.message })
+      }
+      res.status(500).json(error)
+      console.log(error)
+    }
+  }
 }

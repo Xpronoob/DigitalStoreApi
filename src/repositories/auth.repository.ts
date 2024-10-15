@@ -15,4 +15,8 @@ export class AuthRepository {
   async logout(req: Request) {
     return await this.authDatasource.logout(req)
   }
+
+  async profile(req: Request) {
+    return await this.authDatasource.profile(req)
+  }
 }

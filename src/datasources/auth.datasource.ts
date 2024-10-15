@@ -38,6 +38,7 @@ constructor(
     })
 
     const payload = {
+      user_id: user.user_id,
       email: user.email,
       first_name: user.first_name,
     }
@@ -80,6 +81,7 @@ constructor(
     if(!passwordMatch) throw CustomError.unauthorized("Contraseña incorrecta")
     
     const payload = {
+      user_id: user.user_id,
       email: user.email,
       first_name: user.first_name,
     }
@@ -93,7 +95,8 @@ constructor(
       data: {
         user_id: user.user_id,
         refresh_token: refreshToken,
-        expires_at: new Date(new Date().getTime() + convertToMillisencods(envs.COOKIE_EXPIRES_REFRESH_TOKEN))
+        expires_at: new Date(new Date().getTime()),
+        // expires_at: new Date(new Date().getTime() + convertToMillisencods(envs.COOKIE_EXPIRES_REFRESH_TOKEN))
       }
     })
 
@@ -129,5 +132,9 @@ constructor(
   })
 
   return true
+  }
+
+  async profile(req: Request){
+    
   }
 }
