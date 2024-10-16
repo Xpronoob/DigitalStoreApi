@@ -4,12 +4,13 @@
   "description": "Digital Store",
   "main": "./src/app.ts",
   "scripts": {
-    "start": "node --env-file=.env ./build/app.js",
+    "start": "node --env-file=.env ./build/src/app.js",
     "build": "rimraf ./build && npx tsc -b",
     "dev": "tsx watch --env-file=.env ./src/app.ts",
-    "prismapull": "npx prisma db pull && npx prisma generate",
-    "prismapush":"npx prisma db push && npx prisma generate",
-    "test": ""
+    "prisma:pull": "npx prisma db pull && npx prisma generate",
+    "prisma:push":"npx prisma db push && npx prisma generate",
+    "test": "jest",
+    "test:watch": "jest --watchAll"
   },
   "repository": {
     "type": "git",
@@ -26,16 +27,20 @@
   },
   "homepage": "https://github.com/Xpronoob/DigitalStoreApi#readme",
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
     "@types/bcrypt": "^5.0.2",
+    "@types/cookie-parser": "^1.4.7",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.17",
+    "@types/jest": "^29.5.13",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/morgan": "^1.9.9",
     "@types/node": "^22.7.5",
-    "@types/cookie-parser": "^1.4.7",
+    "jest": "^29.7.0",
     "morgan": "^1.10.0",
     "prisma": "^5.20.0",
     "rimraf": "^6.0.1",
+    "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.1",
     "typescript": "^5.6.3"
