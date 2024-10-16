@@ -7,7 +7,8 @@
     "start": "node --env-file=.env ./build/app.js",
     "build": "rimraf ./build && npx tsc -b",
     "dev": "tsx watch --env-file=.env ./src/app.ts",
-    "prisma": "npx prisma db pull && npx prisma generate",
+    "prismapull": "npx prisma db pull && npx prisma generate",
+    "prismapush":"npx prisma db push && npx prisma generate",
     "test": ""
   },
   "repository": {
