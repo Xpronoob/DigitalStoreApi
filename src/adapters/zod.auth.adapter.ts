@@ -18,7 +18,13 @@ export class ZodAuthAdapter {
     })
 
     try {
-      return User.parse(user)
+      const { email, password, first_name, last_name, phone_number } = User.parse(user)
+      const validatedData = {
+        email,
+        password
+      }
+
+      return validatedData
 
     } catch (error) {
       if (error instanceof z.ZodError) { 
