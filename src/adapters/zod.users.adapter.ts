@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { CustomError } from "../errors/custom.error"
-import { UserEntity } from '../entities/user.entity';
+import { UserEntity, UserEntityOptional } from '../entities/user.entity';
 
 export class ZodUsersAdapter {
 
@@ -32,7 +32,7 @@ export class ZodUsersAdapter {
     }
   }
 
-  static validateUserUpdate = (user: UserEntity) => {
+  static validateUserUpdate = (user: UserEntityOptional) => {
 
     const User = z.object({
       email: z.string().email("Debe ser un email válido").optional(),
