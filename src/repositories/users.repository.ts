@@ -27,4 +27,28 @@ export class UsersRepository {
   async addRole(userId: number, roleId: number) {
     return await this.usersDatasource.addRole(userId, roleId)
   }
+
+  async removeRole(userId: number, roleId: number) {
+    return await this.usersDatasource.removeRole(userId, roleId)
+  }
+
+  async getRoles(userId: number) {
+    return await this.usersDatasource.getRoles(userId)
+  }
+
+  async activate(userId: number) {
+    return await this.usersDatasource.activate(userId)
+  }
+
+  async desactivate(userId: number) {
+    return await this.usersDatasource.desactivate(userId)
+  }
+
+  async getCartItems(userId: number) {
+    return await this.usersDatasource.getCartItems(userId)
+  }
+
+  async getOrders(userId: number) {
+    return await this.usersDatasource.getOrders(userId)
+  }
 }

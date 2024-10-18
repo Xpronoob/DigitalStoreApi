@@ -105,7 +105,7 @@ export class UsersController {
     }
   }
 
-  userAddRole = async(req: Request, res: Response) => {
+  addRole = async(req: Request, res: Response) => {
     const userId = parseInt(req.params.userId)
     const roleId = parseInt(req.params.roleId)
     if(!userId || !roleId) throw CustomError.badRequest("Faltan parámetros")
@@ -115,5 +115,94 @@ export class UsersController {
       message: "Rol agregado exitosamente",
       user_role: userWithRole
     })
+  }
+
+  removeRole = async(req: Request, res: Response) => {
+    const userId = parseInt(req.params.userId)
+    const roleId = parseInt(req.params.roleId)
+    if(!userId || !roleId) throw CustomError.badRequest("No encontrado")
+    
+    const userWithRole = await this.usersRepository.removeRole(userId, roleId)
+    res.status(200).json({
+      message: "Rol eliminado exitosamente",
+      user_role: userWithRole
+    })
+  }
+
+  getRoles = async (req: Request, res: Response) => {
+    try {
+      const user = await this.usersRepository.getRoles(parseInt(req.params.userId))
+      res.status(200).json(user)
+    } catch (error) {
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json({ message: error.message })
+      }
+      res.status(500).json(error)
+      console.error(error)
+    }
+  }
+
+  activate = async (req: Request, res: Response) => {
+    try {
+      const updatedUser = await this.usersRepository.activate(parseInt(req.params.userId))
+
+      if (!updatedUser) throw CustomError.internalServer("Error al activar el usuario")
+
+      res.status(200).json({
+        message: "Usuario activado exitosamente",
+        updatedUser,
+      })
+    } catch (error) {
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json({ message: error.message })
+      }
+      res.status(500).json(error)
+      console.log(error)
+    }
+  }
+
+  desactivate = async (req: Request, res: Response) => {
+    try {
+      const updatedUser = await this.usersRepository.desactivate(parseInt(req.params.userId))
+
+      if (!updatedUser) throw CustomError.internalServer("Error al desactivar el usuario")
+
+      res.status(200).json({
+        message: "Usuario desactivado exitosamente",
+        updatedUser,
+      })
+    } catch (error) {
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json({ message: error.message })
+      }
+      res.status(500).json(error)
+      console.log(error)
+    }
+  }
+
+  getCartItems = async (req: Request, res: Response) => {
+    try {
+      const user = await this.usersRepository.getCartItems(parseInt(req.params.userId))
+      res.status(200).json(user)
+    } catch (error) {
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json({ message: error.message })
+      }
+      res.status(500).json(error)
+      console.error(error)
+    }
+  }
+
+  getOrders = async (req: Request, res: Response) => {
+    try {
+      const user = await this.usersRepository.getOrders(parseInt(req.params.userId))
+      res.status(200).json(user)
+    } catch (error) {
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json({ message: error.message })
+      }
+      res.status(500).json(error)
+      console.error(error)
+    }
   }
 }

@@ -18,7 +18,15 @@ export class UsersRoutes {
     router.get('/users/:id', controller.getById)
     router.get('/users', controller.getAll)
 
-    router.post('/users/:userId/roles/:roleId', controller.userAddRole)
+    router.post('/users/:userId/roles/:roleId', controller.addRole)
+    router.delete('/users/:userId/roles/:roleId', controller.removeRole)
+    router.get('/users/:userId/roles', controller.getRoles)
+
+    router.patch('/users/:userId/activate', controller.activate)
+    router.patch('/users/:userId/desactivate', controller.desactivate)
+
+    router.get('/users/:userId/cartItems', controller.getCartItems)
+    router.get('/users/:userId/orders', controller.getOrders)
     return router
   }
 }

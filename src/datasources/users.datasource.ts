@@ -83,16 +83,127 @@ export class UsersDatasource {
 
   async addRole(userId: number, roleId: number) {
     try {
-      const user = await prisma.users_roles.create({
+      const userRole = await prisma.users_roles.create({
         data: {
           user_id: userId,
           role_id: roleId,
         }
       })
 
-      return user
+      console.log(typeof(userRole))
+
+      return userRole
     } catch (error) {
       throw CustomError.internalServer("Error al agregar el rol al usuario")
+    }
+  }
+
+  async removeRole(userId: number, roleId: number) {
+    try {
+      const userRole = await prisma.users_roles.delete({
+        where: {
+          user_id_role_id: 
+          {
+            user_id: userId,
+            role_id: roleId,
+          }
+        }
+      })
+
+      return userRole
+    } catch (error) {
+      throw CustomError.internalServer("Error al agregar el rol al usuario")
+    }
+  }
+
+  async getRoles(userId: number) {
+    try {
+      const userWithRoles = await prisma.users.findUnique({
+        where: {
+          user_id: userId,
+        },
+        include: {
+          users_roles: {
+            include: {
+              roles: true,
+            },
+          },
+        },
+      });
+
+      return userWithRoles;
+    } catch (error) {
+      throw CustomError.internalServer("Error al obtener el usuario");
+    }
+  }
+
+  async activate(userId: number) {
+    try {
+      const updatedUser = await prisma.users.update({
+        where: { user_id: userId },
+        data: {
+          active: true,
+        }
+      })
+      return updatedUser
+    } catch (error) {
+      throw CustomError.internalServer("Error al activar el usuario")
+    }
+  }
+
+  async desactivate(userId: number) {
+    try {
+      const updatedUser = await prisma.users.update({
+        where: { user_id: userId },
+        data: {
+          active: false,
+        }
+      })
+      return updatedUser
+    } catch (error) {
+      throw CustomError.internalServer("Error al desactivar el usuario")
+    }
+  }
+
+  async getCartItems(userId: number) {
+    try {
+      const userWithCartItems = await prisma.users.findUnique({
+        where: {
+          user_id: userId,
+        },
+        include: {
+          cart_items: true,
+        },
+      })
+
+      if (!userWithCartItems) {
+        throw CustomError.notFound("Carrito de compras no encontrado")
+      }
+
+      return userWithCartItems.cart_items 
+    } catch (error) {
+      throw CustomError.internalServer("Error al obtener el Carrito de compras")
+    }
+  }
+
+   async getOrders(userId: number) {
+    try {
+      const userWithOrders = await prisma.users.findUnique({
+        where: {
+          user_id: userId,
+        },
+        include: {
+          orders: true,
+        },
+      })
+
+      if (!userWithOrders) {
+        throw CustomError.notFound("Órdenes de compras no encontradas")
+      }
+
+      return userWithOrders.orders
+    } catch (error) {
+      throw CustomError.internalServer("Error al obtener las Órdenes de compras")
     }
   }
 }
