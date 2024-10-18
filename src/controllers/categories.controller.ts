@@ -27,6 +27,7 @@ import { CustomError } from "../errors/custom.error"
     }
   };
 
+  
 
   update = async (req: Request, res: Response) => {
     try {
