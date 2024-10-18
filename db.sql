@@ -2,9 +2,11 @@ CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    first_name VARCHAR(50),
-    last_name VARCHAR(50),
+    active BOOLEAN NOT NULL DEFAULT TRUE,
+    first_name VARCHAR(70),
+    last_name VARCHAR(70),
     phone_number VARCHAR(20),
+    img VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
