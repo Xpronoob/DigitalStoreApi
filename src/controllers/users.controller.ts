@@ -104,4 +104,16 @@ export class UsersController {
       console.error(error)
     }
   }
+
+  userAddRole = async(req: Request, res: Response) => {
+    const userId = parseInt(req.params.userId)
+    const roleId = parseInt(req.params.roleId)
+    if(!userId || !roleId) throw CustomError.badRequest("Faltan parámetros")
+    
+    const userWithRole = await this.usersRepository.addRole(userId, roleId)
+    res.status(200).json({
+      message: "Rol agregado exitosamente",
+      user_role: userWithRole
+    })
+  }
 }

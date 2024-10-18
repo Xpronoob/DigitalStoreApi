@@ -80,4 +80,19 @@ export class UsersDatasource {
       throw CustomError.internalServer("Error al obtener el usuario")
     }
   }
+
+  async addRole(userId: number, roleId: number) {
+    try {
+      const user = await prisma.users_roles.create({
+        data: {
+          user_id: userId,
+          role_id: roleId,
+        }
+      })
+
+      return user
+    } catch (error) {
+      throw CustomError.internalServer("Error al agregar el rol al usuario")
+    }
+  }
 }

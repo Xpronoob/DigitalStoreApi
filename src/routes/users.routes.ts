@@ -18,6 +18,7 @@ export class UsersRoutes {
     router.get('/users/:id', controller.getById)
     router.get('/users', controller.getAll)
 
+    router.post('/users/:userId/roles/:roleId', controller.userAddRole)
     return router
   }
 }

@@ -23,4 +23,8 @@ export class UsersRepository {
   async getById(userId: number) {
     return await this.usersDatasource.getById(userId)
   }
+
+  async addRole(userId: number, roleId: number) {
+    return await this.usersDatasource.addRole(userId, roleId)
+  }
 }
