@@ -1,6 +1,7 @@
 import { Request, Response, Router } from "express";
 import { AuthRoutes } from "./auth.routes";
 import { CategoriesRoutes } from "./categories.routes";
+import { ProductsRoutes } from "./products.routes";
 
 export class AppRoutes {
   static get routes(): Router {
@@ -13,10 +14,11 @@ export class AppRoutes {
     
     router.get('/health', healthCheck)
     router.use('/api', AuthRoutes.routes)
-    // router.use('/api', UserRoutes.routes)
+    //todo: // router.use('/api', UserRoutes.routes)
   
-    // CATEGORIES ROUTES
     router.use('/api', CategoriesRoutes.routes)
+
+    router.use('/api', ProductsRoutes.routes)
     
     return router
   }
