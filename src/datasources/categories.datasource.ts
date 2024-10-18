@@ -1,16 +1,17 @@
 import { PrismaClient } from "@prisma/client";
 import { CustomError } from "../errors/custom.error";
+import { CategoryEntity } from "../entities/category.entity";
 
 const prisma = new PrismaClient();
 
 export class CategoriesDatasource {
 
-  async create(categoryData: { name: string }) {
+  async create(categoryData: CategoryEntity) {
     try {
       const category = await prisma.categories.create({
         data: 
           {
-            category_name: categoryData.name
+            category_name: categoryData.category_name
           }
       });
       return category;
@@ -19,13 +20,13 @@ export class CategoriesDatasource {
     }
   }
 
-  async update(categoryId: number, categoryData: { name: string }) {
+  async update(categoryId: number, categoryData: CategoryEntity) {
     try {
       console.log(categoryId)
       console.log(categoryData)
       const updatedCategory = await prisma.categories.update({
         where: { category_id: categoryId },
-        data: {category_name: categoryData.name}
+        data: {category_name: categoryData.category_name}
       });
       return updatedCategory;
     } catch (error) {
