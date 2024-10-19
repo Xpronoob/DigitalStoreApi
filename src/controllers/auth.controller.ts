@@ -15,6 +15,7 @@ export class AuthController{
   login = async (req: Request, res: Response) => {
     try {
       const validatedData = ZodAuthAdapter.validateAuthUser(req.body)
+      validatedData.email = validatedData.email.toLowerCase()
       const user = await this.authRepository.login(validatedData)
       if (!user) throw CustomError.internalServer("Error al registrar el usuario")
       
@@ -51,6 +52,7 @@ export class AuthController{
   register = async (req: Request, res: Response) => {
     try {
       const validatedData = ZodAuthAdapter.validateAuthUser(req.body)
+      validatedData.email = validatedData.email.toLowerCase()
       validatedData.password = BcryptAdapter.hash(validatedData.password)
       const user = await this.authRepository.register(validatedData)
       if (!user) throw CustomError.internalServer("Error al registrar el usuario")

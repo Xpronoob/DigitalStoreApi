@@ -12,6 +12,7 @@ export class UsersController {
     try {
       const validatedData = ZodUsersAdapter.validateUser(req.body)
       validatedData.password = BcryptAdapter.hash(validatedData.password)
+      validatedData.email = validatedData.email.toLowerCase()
       const user = await this.usersRepository.create(validatedData)
 
       if (!user) throw CustomError.internalServer("Error al crear el usuario")
@@ -35,6 +36,9 @@ export class UsersController {
       const validatedData = ZodUsersAdapter.validateUserUpdate(req.body)
       if(validatedData.password){
         validatedData.password = BcryptAdapter.hash(validatedData.password)
+      }
+      if(validatedData.email){
+      validatedData.email = validatedData.email.toLowerCase()
       }
       const updatedUser = await this.usersRepository.update(parseInt(req.params.id), validatedData)
 
