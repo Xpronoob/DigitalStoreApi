@@ -12,11 +12,11 @@ export class ProductsRoutes {
 
     const controller = new ProductsController(repository);
     
-    router.post('/products', controller.create);       
-    router.patch('/products/:id', controller.patch);     
-    router.delete('/products/:id', controller.delete);  
-    router.get('/products/:id', controller.getById);    
-    router.get('/products', controller.getAll);         
+    router.post('/', controller.create);       
+    router.patch('/:id', controller.patch);     
+    router.delete('/:id', controller.delete);  
+    router.get('/:id', controller.getById);    
+    router.get('/', controller.getAll);         
 
     return router;
   }
