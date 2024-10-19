@@ -71,4 +71,18 @@ export class CategoriesDatasource {
       throw CustomError.internalServer("Error al obtener la categoría");
     }
   }
+
+  async toggleStatus(categoryId: number, active: boolean) {
+    try {
+      const updatedCategory = await prisma.categories.update({
+        where: { category_id: categoryId },
+        data: {
+          active: active,
+        }
+      });
+      return updatedCategory;
+    } catch (error) {
+      throw CustomError.internalServer(`Error al ${active ? 'activar' : 'desactivar'} la categoría`);
+    }
+  }
 }
