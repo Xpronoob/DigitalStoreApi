@@ -110,27 +110,43 @@ export class UsersController {
   }
 
   addRole = async(req: Request, res: Response) => {
-    const userId = parseInt(req.params.userId)
-    const roleId = parseInt(req.params.roleId)
-    if(!userId || !roleId) throw CustomError.badRequest("Faltan parámetros")
-    
-    const userWithRole = await this.usersRepository.addRole(userId, roleId)
-    res.status(200).json({
-      message: "Rol agregado exitosamente",
-      user_role: userWithRole
-    })
+    try {
+      const userId = parseInt(req.params.userId)
+      const roleId = parseInt(req.params.roleId)
+      if(!userId || !roleId) throw CustomError.badRequest("Faltan parámetros")
+      
+      const userWithRole = await this.usersRepository.addRole(userId, roleId)
+      res.status(200).json({
+        message: "Rol agregado exitosamente",
+        user_role: userWithRole
+      })
+    } catch (error) {
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json({ message: error.message })
+      }
+      res.status(500).json(error)
+      console.log(error)
+    }
   }
 
   removeRole = async(req: Request, res: Response) => {
     const userId = parseInt(req.params.userId)
     const roleId = parseInt(req.params.roleId)
-    if(!userId || !roleId) throw CustomError.badRequest("No encontrado")
-    
-    const userWithRole = await this.usersRepository.removeRole(userId, roleId)
-    res.status(200).json({
-      message: "Rol eliminado exitosamente",
-      user_role: userWithRole
-    })
+    try {
+      if(!userId || !roleId) throw CustomError.badRequest("No encontrado")
+      
+      const userWithRole = await this.usersRepository.removeRole(userId, roleId)
+      res.status(200).json({
+        message: "Rol eliminado exitosamente",
+        user_role: userWithRole
+      })
+    } catch (error) {
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json({ message: error.message })
+      }
+      res.status(500).json(error)
+      console.log(error)
+    }
   }
 
   getRoles = async (req: Request, res: Response) => {
