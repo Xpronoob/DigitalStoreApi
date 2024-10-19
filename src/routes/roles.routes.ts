@@ -13,11 +13,11 @@ export class RolesRoutes {
 
     const controller = new RolesController(repository)
     
-    router.post('/roles', controller.create)
-    router.patch('/roles/:id', controller.update)
-    router.delete('/roles/:id', controller.delete)
-    router.get('/roles/:id', controller.getById)
-    router.get('/roles', controller.getAll)
+    router.post('/', controller.create)
+    router.patch('/:id', controller.update)
+    router.delete('/:id', controller.delete)
+    router.get('/:id', controller.getById)
+    router.get('/', controller.getAll)
 
     return router
   }

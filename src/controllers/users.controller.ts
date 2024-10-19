@@ -12,6 +12,7 @@ export class UsersController {
     try {
       const validatedData = ZodUsersAdapter.validateUser(req.body)
       validatedData.password = BcryptAdapter.hash(validatedData.password)
+      validatedData.email = validatedData.email.toLowerCase()
       const user = await this.usersRepository.create(validatedData)
 
       if (!user) throw CustomError.internalServer("Error al crear el usuario")
@@ -35,6 +36,9 @@ export class UsersController {
       const validatedData = ZodUsersAdapter.validateUserUpdate(req.body)
       if(validatedData.password){
         validatedData.password = BcryptAdapter.hash(validatedData.password)
+      }
+      if(validatedData.email){
+      validatedData.email = validatedData.email.toLowerCase()
       }
       const updatedUser = await this.usersRepository.update(parseInt(req.params.id), validatedData)
 
@@ -106,27 +110,43 @@ export class UsersController {
   }
 
   addRole = async(req: Request, res: Response) => {
-    const userId = parseInt(req.params.userId)
-    const roleId = parseInt(req.params.roleId)
-    if(!userId || !roleId) throw CustomError.badRequest("Faltan parámetros")
-    
-    const userWithRole = await this.usersRepository.addRole(userId, roleId)
-    res.status(200).json({
-      message: "Rol agregado exitosamente",
-      user_role: userWithRole
-    })
+    try {
+      const userId = parseInt(req.params.userId)
+      const roleId = parseInt(req.params.roleId)
+      if(!userId || !roleId) throw CustomError.badRequest("Faltan parámetros")
+      
+      const userWithRole = await this.usersRepository.addRole(userId, roleId)
+      res.status(200).json({
+        message: "Rol agregado exitosamente",
+        user_role: userWithRole
+      })
+    } catch (error) {
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json({ message: error.message })
+      }
+      res.status(500).json(error)
+      console.log(error)
+    }
   }
 
   removeRole = async(req: Request, res: Response) => {
     const userId = parseInt(req.params.userId)
     const roleId = parseInt(req.params.roleId)
-    if(!userId || !roleId) throw CustomError.badRequest("No encontrado")
-    
-    const userWithRole = await this.usersRepository.removeRole(userId, roleId)
-    res.status(200).json({
-      message: "Rol eliminado exitosamente",
-      user_role: userWithRole
-    })
+    try {
+      if(!userId || !roleId) throw CustomError.badRequest("No encontrado")
+      
+      const userWithRole = await this.usersRepository.removeRole(userId, roleId)
+      res.status(200).json({
+        message: "Rol eliminado exitosamente",
+        user_role: userWithRole
+      })
+    } catch (error) {
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json({ message: error.message })
+      }
+      res.status(500).json(error)
+      console.log(error)
+    }
   }
 
   getRoles = async (req: Request, res: Response) => {

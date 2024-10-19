@@ -12,21 +12,21 @@ export class UsersRoutes {
 
     const controller = new UsersController(repository)
     
-    router.post('/users', controller.create)
-    router.patch('/users/:id', controller.update)
-    router.delete('/users/:id', controller.delete)
-    router.get('/users/:id', controller.getById)
-    router.get('/users', controller.getAll)
+    router.post('/', controller.create)
+    router.patch('/:id', controller.update)
+    router.delete('/:id', controller.delete)
+    router.get('/:id', controller.getById)
+    router.get('/', controller.getAll)
 
-    router.post('/users/:userId/roles/:roleId', controller.addRole)
-    router.delete('/users/:userId/roles/:roleId', controller.removeRole)
-    router.get('/users/:userId/roles', controller.getRoles)
+    router.post('/:userId/roles/:roleId', controller.addRole)
+    router.delete('/:userId/roles/:roleId', controller.removeRole)
+    router.get('/:userId/roles', controller.getRoles)
 
-    router.patch('/users/:userId/activate', controller.activate)
-    router.patch('/users/:userId/desactivate', controller.desactivate)
+    router.patch('/:userId/activate', controller.activate)
+    router.patch('/:userId/desactivate', controller.desactivate)
 
-    router.get('/users/:userId/cartItems', controller.getCartItems)
-    router.get('/users/:userId/orders', controller.getOrders)
+    router.get('/:userId/cartItems', controller.getCartItems)
+    router.get('/:userId/orders', controller.getOrders)
     return router
   }
 }
