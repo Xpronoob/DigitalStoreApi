@@ -134,33 +134,19 @@ export class UsersDatasource {
     }
   }
 
-  async activate(userId: number) {
+  async toggleStatus(userId: number, active: boolean) {
     try {
       const updatedUser = await prisma.users.update({
         where: { user_id: userId },
         data: {
-          active: true,
+          active: active,
         }
-      })
-      return updatedUser
+      });
+      return updatedUser;
     } catch (error) {
-      throw CustomError.internalServer("Error al activar el usuario")
+      throw CustomError.internalServer(`Error al ${active ? 'activar' : 'desactivar'} el usuario`);
     }
-  }
-
-  async desactivate(userId: number) {
-    try {
-      const updatedUser = await prisma.users.update({
-        where: { user_id: userId },
-        data: {
-          active: false,
-        }
-      })
-      return updatedUser
-    } catch (error) {
-      throw CustomError.internalServer("Error al desactivar el usuario")
-    }
-  }
+}
 
   async getCartItems(userId: number) {
     try {
