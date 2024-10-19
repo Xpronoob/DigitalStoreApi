@@ -101,4 +101,26 @@ import { CustomError } from "../errors/custom.error"
       console.error(error);
     }
   };
+
+  toggleStatus = async (req: Request, res: Response) => {
+    try {
+      const { categoryId } = req.params;
+      const { active } = req.body;  
+
+      const updatedCategory = await this.categoriesRepository.toggleStatus(parseInt(categoryId), active);
+
+      if (!updatedCategory) throw CustomError.internalServer("Error al actualizar el estado de la categoría");
+
+      res.status(200).json({
+        message: active ? "Categoría activada exitosamente" : "Categoría desactivada exitosamente",
+        updatedCategory,
+      });
+    } catch (error) {
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json({ message: error.message });
+      }
+      res.status(500).json(error);
+      console.log(error);
+    }
+  };
 }
