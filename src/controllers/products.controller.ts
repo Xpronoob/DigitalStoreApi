@@ -106,7 +106,6 @@ export class ProductsController {
 
   toggleStatus = async (req: Request, res: Response) => {
     try {
-      console.log("Hola")
       const { productId } = req.params;
       const { active } = req.body;  
 
