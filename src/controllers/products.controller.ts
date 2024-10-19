@@ -103,4 +103,28 @@ export class ProductsController {
       console.error(error);
     }
   };
+
+  toggleStatus = async (req: Request, res: Response) => {
+    try {
+      console.log("Hola")
+      const { productId } = req.params;
+      const { active } = req.body;  
+
+      const updatedProduct = await this.productsRepository.toggleStatus(parseInt(productId), active);
+
+      if (!updatedProduct) throw CustomError.internalServer("Error al actualizar el estado del producto");
+
+      res.status(200).json({
+        message: active ? "Producto activado exitosamente" : "Producto desactivado exitosamente",
+        updatedProduct,
+      });
+    } catch (error) {
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json({ message: error.message });
+      }
+      res.status(500).json(error);
+      console.log(error);
+    }
+  };
+
 }
