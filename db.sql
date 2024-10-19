@@ -62,7 +62,7 @@ CREATE TABLE product_options (
 CREATE TABLE products (
     product_id INT AUTO_INCREMENT PRIMARY KEY,
     category_id INT,
-    product_option_id INT,
+    product_option_id INT NULL,
     product_name VARCHAR(255) NOT NULL,
     description TEXT,
     price DECIMAL(10, 2) NOT NULL,
