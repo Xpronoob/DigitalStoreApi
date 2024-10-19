@@ -80,4 +80,18 @@ export class ProductsDatasource {
       throw CustomError.internalServer("Error al obtener el producto");
     }
   }
+
+  async toggleStatus(productId: number, active: boolean) {
+    try {
+      const updatedProduct = await prisma.products.update({
+        where: { product_id: productId },
+        data: {
+          active: active,
+        }
+      });
+      return updatedProduct;
+    } catch (error) {
+      throw CustomError.internalServer(`Error al ${active ? 'activar' : 'desactivar'} el producto`);
+    }
+  }
 }
