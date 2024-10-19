@@ -36,13 +36,9 @@ export class UsersRepository {
     return await this.usersDatasource.getRoles(userId)
   }
 
-  async activate(userId: number) {
-    return await this.usersDatasource.activate(userId)
-  }
-
-  async desactivate(userId: number) {
-    return await this.usersDatasource.desactivate(userId)
-  }
+  async toggleStatus(userId: number, active: boolean) {
+    return await this.usersDatasource.toggleStatus(userId, active);
+}
 
   async getCartItems(userId: number) {
     return await this.usersDatasource.getCartItems(userId)
