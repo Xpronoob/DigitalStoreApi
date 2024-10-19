@@ -5,6 +5,7 @@ import { CustomError } from "../errors/custom.error"
 import { convertToMillisencods } from "../utils/converters.util"
 import { envs } from "../configs/envs.config"
 import { BcryptAdapter } from "../adapters/bcrypt.adapter"
+import { UserAgentEntity } from "../entities/userAgent.entity"
 
 const prisma = new PrismaClient()
 
@@ -16,7 +17,7 @@ constructor(
     private readonly signRefreshToken: SignToken = JwtAdapter.generateRefreshToken,
   ) {}
 
-  async register(validatedData: {email: string, password: string, first_name?: string, last_name?: string, phone_number?: string}) {
+  async register(validatedData: {email: string, password: string, first_name?: string, last_name?: string, phone_number?: string}, userAgentInfo: UserAgentEntity) {
     const { email, password, first_name, last_name, phone_number } = validatedData
 
     const isRegistered = await prisma.users.findFirst({
@@ -52,7 +53,12 @@ constructor(
       data: {
         user_id: user.user_id,
         refresh_token: refreshToken,
-        expires_at: new Date(new Date().getTime() + convertToMillisencods(envs.COOKIE_EXPIRES_REFRESH_TOKEN))
+        expires_at: new Date(new Date().getTime() + convertToMillisencods(envs.COOKIE_EXPIRES_REFRESH_TOKEN)),
+        device_type: userAgentInfo.deviceType,
+        ip_address: userAgentInfo.ipAddress,
+        osName: userAgentInfo.osName,
+        osVersion: userAgentInfo.osVersion,
+        browser: userAgentInfo.browser,
       }
     })
 
@@ -68,7 +74,7 @@ constructor(
     return userWithTokens
    }
 
-  async login(validatedData: {email: string, password: string}) {
+  async login(validatedData: {email: string, password: string}, userAgentInfo: UserAgentEntity) {
     const { email, password } = validatedData
 
     const user = await prisma.users.findFirst({
@@ -92,11 +98,15 @@ constructor(
     if (!accessToken || !refreshToken) throw CustomError.internalServer('Error generating token')
 
     const userSession = await prisma.sessions.create({
-      data: {
+       data: {
         user_id: user.user_id,
         refresh_token: refreshToken,
-        expires_at: new Date(new Date().getTime()),
-        // expires_at: new Date(new Date().getTime() + convertToMillisencods(envs.COOKIE_EXPIRES_REFRESH_TOKEN))
+        expires_at: new Date(new Date().getTime() + convertToMillisencods(envs.COOKIE_EXPIRES_REFRESH_TOKEN)),
+        device_type: userAgentInfo.deviceType,
+        ip_address: userAgentInfo.ipAddress,
+        osName: userAgentInfo.osName,
+        osVersion: userAgentInfo.osVersion,
+        browser: userAgentInfo.browser,
       }
     })
 

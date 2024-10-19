@@ -5,6 +5,9 @@ import { CustomError } from "../errors/custom.error"
 import { BcryptAdapter } from "../adapters/bcrypt.adapter"
 import { convertToMillisencods } from "../utils/converters.util"
 import { envs } from "../configs/envs.config"
+import { UAParser } from 'ua-parser-js'
+import { UAParserAdapter } from "../adapters/uaparser.adapter"
+import { UserAgentEntity } from "../entities/userAgent.entity"
 
 export class AuthController{
   //DI
@@ -14,9 +17,28 @@ export class AuthController{
 
   login = async (req: Request, res: Response) => {
     try {
+     const userAgent = req.headers['user-agent']
+
+      let userAgentInfo: UserAgentEntity = {}
+
+      if(userAgent){
+        const userAgentResult = UAParserAdapter.parserResults(userAgent)
+        const deviceType = /mobile/i.test(userAgent) ? 'mobile' : 'desktop';
+        const ipAddress = req.ip;
+
+        userAgentInfo = {
+          deviceType,
+          ipAddress,
+          osName: userAgentResult.os.name,
+          osVersion: userAgentResult.os.version,
+          browser: userAgentResult.browser.name,
+        };
+      }
+      
       const validatedData = ZodAuthAdapter.validateAuthUser(req.body)
       validatedData.email = validatedData.email.toLowerCase()
-      const user = await this.authRepository.login(validatedData)
+
+      const user = await this.authRepository.login(validatedData, userAgentInfo)
       if (!user) throw CustomError.internalServer("Error al registrar el usuario")
       
       // Save Access Token & Refresh Token in cookie
@@ -51,10 +73,28 @@ export class AuthController{
   
   register = async (req: Request, res: Response) => {
     try {
+      const userAgent = req.headers['user-agent']
+
+      let userAgentInfo: UserAgentEntity = {}
+
+      if(userAgent){
+        const userAgentResult = UAParserAdapter.parserResults(userAgent)
+        const deviceType = /mobile/i.test(userAgent) ? 'mobile' : 'desktop';
+        const ipAddress = req.ip;
+
+        userAgentInfo = {
+          deviceType,
+          ipAddress,
+          osName: userAgentResult.os.name,
+          osVersion: userAgentResult.os.version,
+          browser: userAgentResult.browser.name,
+        };
+      }
+
       const validatedData = ZodAuthAdapter.validateAuthUser(req.body)
       validatedData.email = validatedData.email.toLowerCase()
       validatedData.password = BcryptAdapter.hash(validatedData.password)
-      const user = await this.authRepository.register(validatedData)
+      const user = await this.authRepository.register(validatedData, userAgentInfo)
       if (!user) throw CustomError.internalServer("Error al registrar el usuario")
       
       // Save Access Token & Refresh Token in cookie
