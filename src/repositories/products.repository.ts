@@ -24,4 +24,9 @@ export class ProductsRepository {
   async getById(productId: number) {
     return await this.productsDatasource.getById(productId);
   }
+
+  async toggleStatus(productId: number, active: boolean) {
+    console.log("Hola")
+    return await this.productsDatasource.toggleStatus(productId, active);
+  }
 }
