@@ -15,6 +15,11 @@ CREATE TABLE sessions (
     user_id INT,
     refresh_token VARCHAR(255) UNIQUE NOT NULL,
     expires_at TIMESTAMP NOT NULL,
+    device_type VARCHAR(100),
+    ip_address VARCHAR(100),
+    osName VARCHAR(100),
+    osVersion VARCHAR(100),
+    browser VARCHAR(100),
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
