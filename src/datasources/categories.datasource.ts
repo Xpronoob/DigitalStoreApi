@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { CustomError } from "../errors/custom.error";
-import { CategoryEntity } from "../entities/category.entity";
+import { CategoryEntity, CategoryEntityOptional } from "../entities/category.entity";
 
 const prisma = new PrismaClient();
 
@@ -11,7 +11,9 @@ export class CategoriesDatasource {
       const category = await prisma.categories.create({
         data: 
           {
-            category_name: categoryData.category_name
+            category_name: categoryData.category_name,
+            active: categoryData.active,
+            img: categoryData.img,
           }
       });
       return category;
@@ -20,13 +22,15 @@ export class CategoriesDatasource {
     }
   }
 
-  async update(categoryId: number, categoryData: CategoryEntity) {
+  async update(categoryId: number, categoryData: CategoryEntityOptional) {
     try {
-      console.log(categoryId)
-      console.log(categoryData)
       const updatedCategory = await prisma.categories.update({
         where: { category_id: categoryId },
-        data: {category_name: categoryData.category_name}
+        data: {
+          category_name: categoryData.category_name,
+          active: categoryData.active,
+          img: categoryData.img,
+        }
       });
       return updatedCategory;
     } catch (error) {

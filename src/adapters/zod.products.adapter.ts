@@ -10,6 +10,10 @@ export class ZodProductsAdapter {
       product_name: z.string({
         required_error: "El nombre del producto es requerido",
       }).min(3, "El nombre del producto debe tener al menos 3 caracteres").max(255, "El nombre del producto no puede exceder 255 caracteres"),
+       
+      active: z.boolean({
+        required_error: "El estado del producto es requerido",
+      }),
       
       category_id: z.number({
         required_error: "El ID de la categoría es requerido",
@@ -23,7 +27,7 @@ export class ZodProductsAdapter {
 
       stock: z.number().int("El stock debe ser un número entero").nonnegative("El stock no puede ser negativo").optional(),
 
-      image_url: z.string().url("Debe ser una URL válida").optional(),
+      img: z.string().url("Debe ser una URL válida").optional(),
     });
 
     try {
@@ -42,6 +46,8 @@ export class ZodProductsAdapter {
     const Product = z.object({
       product_name: z.string().min(3, "El nombre del producto debe tener al menos 3 caracteres").max(255, "El nombre del producto no puede exceder 255 caracteres").optional(),
       
+      active: z.boolean().optional(),
+      
       category_id: z.number().int("El ID de la categoría debe ser un número entero").optional(),
       
       description: z.string().optional(),
@@ -50,7 +56,7 @@ export class ZodProductsAdapter {
 
       stock: z.number().int("El stock debe ser un número entero").nonnegative("El stock no puede ser negativo").optional(),
 
-      image_url: z.string().url("Debe ser una URL válida").optional(),
+      img: z.string().url("Debe ser una URL válida").optional(),
     });
 
     try {

@@ -12,10 +12,12 @@ export class ProductsDatasource {
         data: {
           category_id: productData.category_id,
           product_name: productData.product_name,
+          active: productData.active,
+          product_option_id: productData.product_option_id,
           description: productData.description,
           price: productData.price,
           stock: productData.stock,
-          image_url: productData.image_url,
+          img: productData.img,
         },
       });
       return product;
@@ -31,10 +33,12 @@ export class ProductsDatasource {
         data: {
           category_id: productData.category_id,
           product_name: productData.product_name,
+          active: productData.active,
+          product_option_id: productData.product_option_id,
           description: productData.description,
           price: productData.price,
           stock: productData.stock,
-          image_url: productData.image_url,
+          img: productData.img,
         },
       });
       return patchProduct;

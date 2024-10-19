@@ -8,7 +8,6 @@ export class UsersDatasource {
 
   async create(userData: UserEntity) {
     try {
-      console.log(userData)
       const user = await prisma.users.create({
         data: 
           {
@@ -89,8 +88,6 @@ export class UsersDatasource {
           role_id: roleId,
         }
       })
-
-      console.log(typeof(userRole))
 
       return userRole
     } catch (error) {

@@ -1,6 +1,6 @@
 import { number } from "zod";
 import { CategoriesDatasource } from "../datasources/categories.datasource";
-import { CategoryEntity } from '../entities/category.entity';
+import { CategoryEntity, CategoryEntityOptional } from '../entities/category.entity';
 
 export class CategoriesRepository {
   constructor(private readonly categoriesDatasource: CategoriesDatasource) {}
@@ -9,7 +9,7 @@ export class CategoriesRepository {
     return await this.categoriesDatasource.create(categoryData);
   }
 
-  async update(categoryId: number, categoryData: CategoryEntity) {
+  async update(categoryId: number, categoryData: CategoryEntityOptional) {
     return await this.categoriesDatasource.update(categoryId, categoryData);
   }
 

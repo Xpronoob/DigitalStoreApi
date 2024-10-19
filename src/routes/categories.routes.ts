@@ -14,23 +14,10 @@ export class CategoriesRoutes {
     const controller = new CategoriesController(repository)
     
     router.post('/', controller.create)
-    router.put('/:id', controller.update)
+    router.patch('/:id', controller.update)
     router.delete('/:id', controller.delete)
     router.get('/:id', controller.getById)
     router.get('/', controller.getAll)
-    
-
-    //RES
-    /* 
-      
-      C         /categories x
-      R_A       /categories x
-      R_BY_ID   /categories/:id
-      U         /categories/:id x
-      D         /categories/:id x
-
-      GET ALL IDS()
-    */
 
     return router
   }
