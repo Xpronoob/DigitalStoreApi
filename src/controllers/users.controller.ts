@@ -162,43 +162,25 @@ export class UsersController {
     }
   }
 
-  activate = async (req: Request, res: Response) => {
+  toggleStatus = async (req: Request, res: Response) => {
     try {
-      const updatedUser = await this.usersRepository.activate(parseInt(req.params.userId))
+      const { active } = req.body;
+      const updatedUser = await this.usersRepository.toggleStatus(parseInt(req.params.userId), active);
 
-      if (!updatedUser) throw CustomError.internalServer("Error al activar el usuario")
+      if (!updatedUser) throw CustomError.internalServer("Error al cambiar el estado del usuario");
 
       res.status(200).json({
-        message: "Usuario activado exitosamente",
+        message: active ? "Usuario activado exitosamente" : "Usuario desactivado exitosamente",
         updatedUser,
-      })
+      });
     } catch (error) {
       if (error instanceof CustomError) {
-        return res.status(error.statusCode).json({ message: error.message })
+        return res.status(error.statusCode).json({ message: error.message });
       }
-      res.status(500).json(error)
-      console.log(error)
+      res.status(500).json(error);
+      console.log(error);
     }
-  }
-
-  desactivate = async (req: Request, res: Response) => {
-    try {
-      const updatedUser = await this.usersRepository.desactivate(parseInt(req.params.userId))
-
-      if (!updatedUser) throw CustomError.internalServer("Error al desactivar el usuario")
-
-      res.status(200).json({
-        message: "Usuario desactivado exitosamente",
-        updatedUser,
-      })
-    } catch (error) {
-      if (error instanceof CustomError) {
-        return res.status(error.statusCode).json({ message: error.message })
-      }
-      res.status(500).json(error)
-      console.log(error)
-    }
-  }
+};
 
   getCartItems = async (req: Request, res: Response) => {
     try {
