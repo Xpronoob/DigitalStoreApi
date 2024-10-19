@@ -16,7 +16,9 @@ export class ProductsRoutes {
     router.patch('/:id', controller.patch);     
     router.delete('/:id', controller.delete);  
     router.get('/:id', controller.getById);    
-    router.get('/', controller.getAll);         
+    router.get('/', controller.getAll); 
+    
+    router.patch('/:productId/toggle-status', controller.toggleStatus);
 
     return router;
   }
