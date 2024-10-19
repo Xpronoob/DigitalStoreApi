@@ -22,8 +22,7 @@ export class UsersRoutes {
     router.delete('/:userId/roles/:roleId', controller.removeRole)
     router.get('/:userId/roles', controller.getRoles)
 
-    router.patch('/:userId/activate', controller.activate)
-    router.patch('/:userId/desactivate', controller.desactivate)
+    router.patch('/:userId/toggle-status', controller.toggleStatus);
 
     router.get('/:userId/cartItems', controller.getCartItems)
     router.get('/:userId/orders', controller.getOrders)
