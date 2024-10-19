@@ -24,4 +24,8 @@ export class CategoriesRepository {
   async getById(categoryId: number) {
     return await this.categoriesDatasource.getById(categoryId);
   }
+
+  async toggleStatus(categoryId: number, active: boolean) {
+    return await this.categoriesDatasource.toggleStatus(categoryId, active);
+  }
 }
