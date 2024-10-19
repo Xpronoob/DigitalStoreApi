@@ -9,34 +9,37 @@ datasource db {
 }
 
 model addresses {
-  address_id  Int      @id @default(autoincrement())
-  user_id     Int?
-  street      String   @db.VarChar(255)
-  city        String   @db.VarChar(100)
-  state       String?  @db.VarChar(100)
-  postal_code String   @db.VarChar(20)
-  country     String   @db.VarChar(100)
-  users       users?   @relation(fields: [user_id], references: [user_id], onDelete: Restrict, onUpdate: Restrict, map: "addresses_ibfk_1")
-  orders      orders[]
+  address_id      Int      @id @default(autoincrement())
+  default_address Boolean  @default(false)
+  user_id         Int?
+  street          String   @db.VarChar(255)
+  city            String   @db.VarChar(100)
+  state           String?  @db.VarChar(100)
+  postal_code     String   @db.VarChar(20)
+  country         String   @db.VarChar(100)
+  users           users?   @relation(fields: [user_id], references: [user_id], onDelete: Restrict, onUpdate: Restrict, map: "addresses_ibfk_1")
+  orders          orders[]
 
   @@index([user_id], map: "user_id")
 }
 
 model cart_items {
-  cart_item_id Int       @id @default(autoincrement())
-  user_id      Int?
-  product_id   Int?
-  quantity     Int?      @default(1)
-  users        users?    @relation(fields: [user_id], references: [user_id], onDelete: Restrict, onUpdate: Restrict, map: "cart_items_ibfk_1")
-  products     products? @relation(fields: [product_id], references: [product_id], onDelete: Restrict, onUpdate: Restrict, map: "cart_items_ibfk_2")
+  cart_item_id      Int              @id @default(autoincrement())
+  user_id           Int?
+  product_detail_id Int?
+  quantity          Int?             @default(1)
+  users             users?           @relation(fields: [user_id], references: [user_id], onDelete: Restrict, onUpdate: Restrict, map: "cart_items_ibfk_1")
+  product_details   product_details? @relation(fields: [product_detail_id], references: [product_detail_id], onDelete: Restrict, onUpdate: Restrict, map: "cart_items_ibfk_2")
 
-  @@index([product_id], map: "product_id")
+  @@index([product_detail_id], map: "product_detail_id")
   @@index([user_id], map: "user_id")
 }
 
 model categories {
   category_id   Int        @id @default(autoincrement())
   category_name String     @db.VarChar(100)
+  img           String?    @db.VarChar(255)
+  active        Boolean    @default(false)
   products      products[]
 }
 
@@ -45,23 +48,24 @@ model licenses {
   order_item_id Int?
   license_key   String       @unique(map: "license_key") @db.VarChar(255)
   issued_at     DateTime     @default(now()) @db.Timestamp(0)
+  active        Boolean      @default(false)
   order_items   order_items? @relation(fields: [order_item_id], references: [order_item_id], onDelete: Restrict, onUpdate: Restrict, map: "licenses_ibfk_1")
 
   @@index([order_item_id], map: "order_item_id")
 }
 
 model order_items {
-  order_item_id Int        @id @default(autoincrement())
-  order_id      Int?
-  product_id    Int?
-  quantity      Int
-  price         Decimal    @db.Decimal(10, 2)
-  licenses      licenses[]
-  orders        orders?    @relation(fields: [order_id], references: [order_id], onDelete: Restrict, onUpdate: Restrict, map: "order_items_ibfk_1")
-  products      products?  @relation(fields: [product_id], references: [product_id], onDelete: Restrict, onUpdate: Restrict, map: "order_items_ibfk_2")
+  order_item_id     Int              @id @default(autoincrement())
+  order_id          Int?
+  product_detail_id Int?
+  quantity          Int
+  price             Decimal          @db.Decimal(10, 2)
+  licenses          licenses[]
+  orders            orders?          @relation(fields: [order_id], references: [order_id], onDelete: Restrict, onUpdate: Restrict, map: "order_items_ibfk_1")
+  product_details   product_details? @relation(fields: [product_detail_id], references: [product_detail_id], onDelete: Restrict, onUpdate: Restrict, map: "order_items_ibfk_2")
 
   @@index([order_id], map: "order_id")
-  @@index([product_id], map: "product_id")
+  @@index([product_detail_id], map: "product_detail_id")
 }
 
 model orders {
@@ -92,25 +96,67 @@ model payments {
   @@index([order_id], map: "order_id")
 }
 
+model product_details {
+  product_detail_id Int           @id @default(autoincrement())
+  product_id        Int?
+  detail_name       String        @db.VarChar(255)
+  description       String?       @db.VarChar(255)
+  price             Decimal       @db.Decimal(10, 2)
+  quantity          Int?          @default(1)
+  color             String?       @db.VarChar(100)
+  size              String?       @db.VarChar(50)
+  storage           String?       @db.VarChar(50)
+  devices           String?       @db.VarChar(50)
+  active            Boolean       @default(false)
+  cart_items        cart_items[]
+  order_items       order_items[]
+  products          products?     @relation(fields: [product_id], references: [product_id], onDelete: Restrict, onUpdate: Restrict, map: "product_details_ibfk_1")
+
+  @@index([product_id], map: "product_id")
+}
+
+model product_options {
+  product_option_id Int        @id @default(autoincrement())
+  active            Boolean    @default(false)
+  color             Boolean    @default(false)
+  size              Boolean    @default(false)
+  storage           Boolean    @default(false)
+  devices           Boolean    @default(false)
+  products          products[]
+}
+
 model products {
-  product_id   Int           @id @default(autoincrement())
-  category_id  Int?
-  product_name String        @db.VarChar(255)
-  description  String?       @db.Text
-  price        Decimal       @db.Decimal(10, 2)
-  stock        Int?          @default(0)
-  image_url    String?       @db.VarChar(255)
-  cart_items   cart_items[]
-  order_items  order_items[]
-  categories   categories?   @relation(fields: [category_id], references: [category_id], onDelete: Restrict, onUpdate: Restrict, map: "products_ibfk_1")
+  product_id        Int               @id @default(autoincrement())
+  category_id       Int?
+  product_option_id Int?
+  product_name      String            @db.VarChar(255)
+  description       String?           @db.Text
+  price             Decimal           @db.Decimal(10, 2)
+  stock             Int?              @default(0)
+  img               String?           @db.VarChar(255)
+  active            Boolean           @default(false)
+  product_details   product_details[]
+  categories        categories?       @relation(fields: [category_id], references: [category_id], onDelete: Restrict, onUpdate: Restrict, map: "products_ibfk_1")
+  product_options   product_options?  @relation(fields: [product_option_id], references: [product_option_id], onDelete: Restrict, onUpdate: Restrict, map: "products_ibfk_2")
 
   @@index([category_id], map: "category_id")
+  @@index([product_option_id], map: "product_option_id")
 }
 
 model roles {
   role_id     Int           @id @default(autoincrement())
-  role_name   String        @db.VarChar(100)
+  role_name   String        @unique(map: "role_name") @db.VarChar(100)
   users_roles users_roles[]
+}
+
+model sessions {
+  session_id    Int      @id @default(autoincrement())
+  user_id       Int?
+  refresh_token String   @unique(map: "refresh_token") @db.VarChar(255)
+  expires_at    DateTime @default(now()) @db.Timestamp(0)
+  users         users?   @relation(fields: [user_id], references: [user_id], onDelete: Restrict, onUpdate: Restrict, map: "sessions_ibfk_1")
+
+  @@index([user_id], map: "user_id")
 }
 
 model users {
@@ -138,14 +184,4 @@ model users_roles {
 
   @@id([user_id, role_id])
   @@index([role_id], map: "role_id")
-}
-
-model sessions {
-  session_id    Int      @id @default(autoincrement())
-  user_id       Int?
-  refresh_token String   @unique(map: "refresh_token") @db.VarChar(255)
-  expires_at    DateTime @default(now()) @db.Timestamp(0)
-  users         users?   @relation(fields: [user_id], references: [user_id], onDelete: Restrict, onUpdate: Restrict, map: "sessions_ibfk_1")
-
-  @@index([user_id], map: "user_id")
 }
