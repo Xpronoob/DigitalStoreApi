@@ -1,10 +1,10 @@
-import { Request, Response } from "express"
-import { CustomError } from "../errors/custom.error"
-import { ZodRolesAdapter } from "../adapters/zod.roles.adapter"
-import { RolesRepository } from "../repositories/roles.repository"
+import { Request, Response } from 'express'
+import { CustomError } from '../errors/custom.error'
+import { ZodRolesAdapter } from '../adapters/zod.roles.adapter'
+import { RolesRepository } from '../repositories/roles.repository'
 
-  //DI
-  export class RolesController {
+//DI
+export class RolesController {
   constructor(private readonly rolesRepository: RolesRepository) {}
 
   create = async (req: Request, res: Response) => {
@@ -12,10 +12,10 @@ import { RolesRepository } from "../repositories/roles.repository"
       const validatedData = ZodRolesAdapter.validateRole(req.body)
       const role = await this.rolesRepository.create(validatedData)
 
-      if (!role) throw CustomError.internalServer("Error al crear el rol")
+      if (!role) throw CustomError.internalServer('Error al crear el rol')
 
       res.status(201).json({
-        message: "Rol creado exitosamente",
+        message: 'Rol creado exitosamente',
         role,
       })
     } catch (error) {
@@ -27,17 +27,20 @@ import { RolesRepository } from "../repositories/roles.repository"
     }
   }
 
-
   update = async (req: Request, res: Response) => {
     try {
       const validatedData = ZodRolesAdapter.validateRole(req.body)
 
-      const updatedRole = await this.rolesRepository.update(parseInt(req.params.id), validatedData)
+      const updatedRole = await this.rolesRepository.update(
+        parseInt(req.params.id),
+        validatedData,
+      )
 
-      if (!updatedRole) throw CustomError.internalServer("Error al actualizar el rol")
+      if (!updatedRole)
+        throw CustomError.internalServer('Error al actualizar el rol')
 
       res.status(200).json({
-        message: "Rol actualizado exitosamente",
+        message: 'Rol actualizado exitosamente',
         updatedRole,
       })
     } catch (error) {
@@ -49,15 +52,17 @@ import { RolesRepository } from "../repositories/roles.repository"
     }
   }
 
-
   delete = async (req: Request, res: Response) => {
     try {
-      const deletedRole = await this.rolesRepository.delete(parseInt(req.params.id))
+      const deletedRole = await this.rolesRepository.delete(
+        parseInt(req.params.id),
+      )
 
-      if (!deletedRole) throw CustomError.internalServer("Error al eliminar el rol")
+      if (!deletedRole)
+        throw CustomError.internalServer('Error al eliminar el rol')
 
       res.status(200).json({
-        message: "Rol eliminado exitosamente",
+        message: 'Rol eliminado exitosamente',
         deletedRole,
       })
     } catch (error) {
@@ -73,10 +78,10 @@ import { RolesRepository } from "../repositories/roles.repository"
     try {
       const roles = await this.rolesRepository.getAll()
 
-      if (!roles) throw CustomError.internalServer("No se encontraron roles")
+      if (!roles) throw CustomError.internalServer('No se encontraron roles')
 
       res.status(200).json({
-        message: "Roles obtenidos exitosamente",
+        message: 'Roles obtenidos exitosamente',
         roles,
       })
     } catch (error) {

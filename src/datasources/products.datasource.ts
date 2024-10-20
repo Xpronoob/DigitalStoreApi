@@ -1,9 +1,9 @@
-import { PrismaClient } from "@prisma/client";
-import { CustomError } from "../errors/custom.error";
-import { ProductEntity } from "../entities/products.entity";
-import { ProductEntityOptional } from '../entities/products.entity';
+import { PrismaClient } from '@prisma/client'
+import { CustomError } from '../errors/custom.error'
+import { ProductEntity } from '../entities/products.entity'
+import { ProductEntityOptional } from '../entities/products.entity'
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
 export class ProductsDatasource {
   async create(productData: ProductEntity) {
@@ -19,10 +19,10 @@ export class ProductsDatasource {
           stock: productData.stock,
           img: productData.img,
         },
-      });
-      return product;
+      })
+      return product
     } catch (error) {
-      throw CustomError.internalServer("Error al crear el producto");
+      throw CustomError.internalServer('Error al crear el producto')
     }
   }
 
@@ -40,10 +40,10 @@ export class ProductsDatasource {
           stock: productData.stock,
           img: productData.img,
         },
-      });
-      return patchProduct;
+      })
+      return patchProduct
     } catch (error) {
-      throw CustomError.internalServer("Error al actualizar el producto");
+      throw CustomError.internalServer('Error al actualizar el producto')
     }
   }
 
@@ -51,19 +51,19 @@ export class ProductsDatasource {
     try {
       const deletedProduct = await prisma.products.delete({
         where: { product_id: productId },
-      });
-      return deletedProduct;
+      })
+      return deletedProduct
     } catch (error) {
-      throw CustomError.internalServer("Error al eliminar el producto");
+      throw CustomError.internalServer('Error al eliminar el producto')
     }
   }
 
   async getAll() {
     try {
-      const products = await prisma.products.findMany();
-      return products;
+      const products = await prisma.products.findMany()
+      return products
     } catch (error) {
-      throw CustomError.internalServer("Error al obtener los productos");
+      throw CustomError.internalServer('Error al obtener los productos')
     }
   }
 
@@ -71,13 +71,13 @@ export class ProductsDatasource {
     try {
       const product = await prisma.products.findUnique({
         where: { product_id: productId },
-      });
+      })
       if (!product) {
-        throw CustomError.notFound("Producto no encontrado");
+        throw CustomError.notFound('Producto no encontrado')
       }
-      return product;
+      return product
     } catch (error) {
-      throw CustomError.internalServer("Error al obtener el producto");
+      throw CustomError.internalServer('Error al obtener el producto')
     }
   }
 
@@ -87,11 +87,13 @@ export class ProductsDatasource {
         where: { product_id: productId },
         data: {
           active: active,
-        }
-      });
-      return updatedProduct;
+        },
+      })
+      return updatedProduct
     } catch (error) {
-      throw CustomError.internalServer(`Error al ${active ? 'activar' : 'desactivar'} el producto`);
+      throw CustomError.internalServer(
+        `Error al ${active ? 'activar' : 'desactivar'} el producto`,
+      )
     }
   }
 }

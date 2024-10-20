@@ -1,6 +1,6 @@
-import UAParser from "ua-parser-js";
+import UAParser from 'ua-parser-js'
 
-  /*
+/*
     {
       ua: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
       browser: { name: 'Chrome', version: '130.0.0.0', major: '130' },
@@ -11,12 +11,11 @@ import UAParser from "ua-parser-js";
     }
   */
 export class UAParserAdapter {
-
   static createUAParser = (userAgent: string) => {
     return new UAParser(userAgent)
   }
 
-  static parserResults(userAgent: string){
+  static parserResults(userAgent: string) {
     const agent = UAParserAdapter.createUAParser(userAgent)
     const result = agent.getResult()
     return result

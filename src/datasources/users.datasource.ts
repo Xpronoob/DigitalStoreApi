@@ -1,28 +1,26 @@
-import { PrismaClient } from "@prisma/client"
-import { CustomError } from "../errors/custom.error"
-import { UserEntity, UserEntityOptional } from "../entities/user.entity"
+import { PrismaClient } from '@prisma/client'
+import { CustomError } from '../errors/custom.error'
+import { UserEntity, UserEntityOptional } from '../entities/user.entity'
 
 const prisma = new PrismaClient()
 
 export class UsersDatasource {
-
   async create(userData: UserEntity) {
     try {
       const user = await prisma.users.create({
-        data: 
-          {
-            email: userData.email,
-            password: userData.password,
-            active: userData.active,
-            first_name: userData.first_name,
-            last_name: userData.last_name,
-            phone_number: userData.phone_number,
-            img: userData.img
-          }
+        data: {
+          email: userData.email,
+          password: userData.password,
+          active: userData.active,
+          first_name: userData.first_name,
+          last_name: userData.last_name,
+          phone_number: userData.phone_number,
+          img: userData.img,
+        },
       })
       return user
     } catch (error) {
-      throw CustomError.internalServer("Error al crear el usuario")
+      throw CustomError.internalServer('Error al crear el usuario')
     }
   }
 
@@ -37,12 +35,12 @@ export class UsersDatasource {
           first_name: userData.first_name,
           last_name: userData.last_name,
           phone_number: userData.phone_number,
-          img: userData.img
-        }
+          img: userData.img,
+        },
       })
       return updatedUser
     } catch (error) {
-      throw CustomError.internalServer("Error al actualizar el usuario")
+      throw CustomError.internalServer('Error al actualizar el usuario')
     }
   }
 
@@ -53,7 +51,7 @@ export class UsersDatasource {
       })
       return deletedUser
     } catch (error) {
-      throw CustomError.internalServer("Error al eliminar el usuario")
+      throw CustomError.internalServer('Error al eliminar el usuario')
     }
   }
 
@@ -62,7 +60,7 @@ export class UsersDatasource {
       const users = await prisma.users.findMany()
       return users
     } catch (error) {
-      throw CustomError.internalServer("Error al obtener los usuarios")
+      throw CustomError.internalServer('Error al obtener los usuarios')
     }
   }
 
@@ -72,11 +70,11 @@ export class UsersDatasource {
         where: { user_id: userId },
       })
       if (!user) {
-        throw CustomError.notFound("Usuario no encontrada")
+        throw CustomError.notFound('Usuario no encontrada')
       }
       return user
     } catch (error) {
-      throw CustomError.internalServer("Error al obtener el usuario")
+      throw CustomError.internalServer('Error al obtener el usuario')
     }
   }
 
@@ -86,12 +84,12 @@ export class UsersDatasource {
         data: {
           user_id: userId,
           role_id: roleId,
-        }
+        },
       })
 
       return userRole
     } catch (error) {
-      throw CustomError.internalServer("Error al agregar el rol al usuario")
+      throw CustomError.internalServer('Error al agregar el rol al usuario')
     }
   }
 
@@ -99,17 +97,16 @@ export class UsersDatasource {
     try {
       const userRole = await prisma.users_roles.delete({
         where: {
-          user_id_role_id: 
-          {
+          user_id_role_id: {
             user_id: userId,
             role_id: roleId,
-          }
-        }
+          },
+        },
       })
 
       return userRole
     } catch (error) {
-      throw CustomError.internalServer("Error al agregar el rol al usuario")
+      throw CustomError.internalServer('Error al agregar el rol al usuario')
     }
   }
 
@@ -126,11 +123,11 @@ export class UsersDatasource {
             },
           },
         },
-      });
+      })
 
-      return userWithRoles;
+      return userWithRoles
     } catch (error) {
-      throw CustomError.internalServer("Error al obtener el usuario");
+      throw CustomError.internalServer('Error al obtener el usuario')
     }
   }
 
@@ -140,13 +137,15 @@ export class UsersDatasource {
         where: { user_id: userId },
         data: {
           active: active,
-        }
-      });
-      return updatedUser;
+        },
+      })
+      return updatedUser
     } catch (error) {
-      throw CustomError.internalServer(`Error al ${active ? 'activar' : 'desactivar'} el usuario`);
+      throw CustomError.internalServer(
+        `Error al ${active ? 'activar' : 'desactivar'} el usuario`,
+      )
     }
-}
+  }
 
   async getCartItems(userId: number) {
     try {
@@ -160,16 +159,16 @@ export class UsersDatasource {
       })
 
       if (!userWithCartItems) {
-        throw CustomError.notFound("Carrito de compras no encontrado")
+        throw CustomError.notFound('Carrito de compras no encontrado')
       }
 
-      return userWithCartItems.cart_items 
+      return userWithCartItems.cart_items
     } catch (error) {
-      throw CustomError.internalServer("Error al obtener el Carrito de compras")
+      throw CustomError.internalServer('Error al obtener el Carrito de compras')
     }
   }
 
-   async getOrders(userId: number) {
+  async getOrders(userId: number) {
     try {
       const userWithOrders = await prisma.users.findUnique({
         where: {
@@ -181,12 +180,14 @@ export class UsersDatasource {
       })
 
       if (!userWithOrders) {
-        throw CustomError.notFound("Órdenes de compras no encontradas")
+        throw CustomError.notFound('Órdenes de compras no encontradas')
       }
 
       return userWithOrders.orders
     } catch (error) {
-      throw CustomError.internalServer("Error al obtener las Órdenes de compras")
+      throw CustomError.internalServer(
+        'Error al obtener las Órdenes de compras',
+      )
     }
   }
 }

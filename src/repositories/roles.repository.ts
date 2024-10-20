@@ -1,5 +1,5 @@
-import { RolesDatasource } from "../datasources/roles.datasource"
-import { RoleEntity } from "../entities/role.entity"
+import { RolesDatasource } from '../datasources/roles.datasource'
+import { RoleEntity } from '../entities/role.entity'
 
 export class RolesRepository {
   constructor(private readonly rolesDatasource: RolesDatasource) {}

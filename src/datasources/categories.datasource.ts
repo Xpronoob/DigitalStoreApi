@@ -1,24 +1,25 @@
-import { PrismaClient } from "@prisma/client";
-import { CustomError } from "../errors/custom.error";
-import { CategoryEntity, CategoryEntityOptional } from "../entities/category.entity";
+import { PrismaClient } from '@prisma/client'
+import { CustomError } from '../errors/custom.error'
+import {
+  CategoryEntity,
+  CategoryEntityOptional,
+} from '../entities/category.entity'
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
 export class CategoriesDatasource {
-
   async create(categoryData: CategoryEntity) {
     try {
       const category = await prisma.categories.create({
-        data: 
-          {
-            category_name: categoryData.category_name,
-            active: categoryData.active,
-            img: categoryData.img,
-          }
-      });
-      return category;
+        data: {
+          category_name: categoryData.category_name,
+          active: categoryData.active,
+          img: categoryData.img,
+        },
+      })
+      return category
     } catch (error) {
-      throw CustomError.internalServer("Error al crear la categoría");
+      throw CustomError.internalServer('Error al crear la categoría')
     }
   }
 
@@ -30,11 +31,11 @@ export class CategoriesDatasource {
           category_name: categoryData.category_name,
           active: categoryData.active,
           img: categoryData.img,
-        }
-      });
-      return updatedCategory;
+        },
+      })
+      return updatedCategory
     } catch (error) {
-      throw CustomError.internalServer("Error al actualizar la categoría");
+      throw CustomError.internalServer('Error al actualizar la categoría')
     }
   }
 
@@ -42,19 +43,19 @@ export class CategoriesDatasource {
     try {
       const deletedCategory = await prisma.categories.delete({
         where: { category_id: categoryId },
-      });
-      return deletedCategory;
+      })
+      return deletedCategory
     } catch (error) {
-      throw CustomError.internalServer("Error al eliminar la categoría");
+      throw CustomError.internalServer('Error al eliminar la categoría')
     }
   }
 
   async getAll() {
     try {
-      const categories = await prisma.categories.findMany();
-      return categories;
+      const categories = await prisma.categories.findMany()
+      return categories
     } catch (error) {
-      throw CustomError.internalServer("Error al obtener las categorías");
+      throw CustomError.internalServer('Error al obtener las categorías')
     }
   }
 
@@ -62,13 +63,13 @@ export class CategoriesDatasource {
     try {
       const category = await prisma.categories.findUnique({
         where: { category_id: categoryId },
-      });
+      })
       if (!category) {
-        throw CustomError.notFound("Categoría no encontrada");
+        throw CustomError.notFound('Categoría no encontrada')
       }
-      return category;
+      return category
     } catch (error) {
-      throw CustomError.internalServer("Error al obtener la categoría");
+      throw CustomError.internalServer('Error al obtener la categoría')
     }
   }
 
@@ -78,11 +79,13 @@ export class CategoriesDatasource {
         where: { category_id: categoryId },
         data: {
           active: active,
-        }
-      });
-      return updatedCategory;
+        },
+      })
+      return updatedCategory
     } catch (error) {
-      throw CustomError.internalServer(`Error al ${active ? 'activar' : 'desactivar'} la categoría`);
+      throw CustomError.internalServer(
+        `Error al ${active ? 'activar' : 'desactivar'} la categoría`,
+      )
     }
   }
 }
