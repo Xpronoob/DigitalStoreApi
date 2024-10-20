@@ -8,66 +8,20 @@ export class AddressesController {
 
   create = async (req: Request, res: Response) => {
     try {
-      const userId = req.body.user.user_id
+      const user = req.body.user
+      const validatedData = ZodAddressesAdapter.validateAddress({
+        ...req.body,
+        user_id: user.user_id,
+      })
 
-      const validatedData = ZodAddressesAdapter.validateAddress(req.body)
-
-      const newAddress = await this.addressesRepository.create(
-        userId,
-        validatedData,
-      )
-
-      if (!newAddress)
-        throw CustomError.internalServer('Error al crear la dirección de envío')
+      const address = await this.addressesRepository.create(validatedData)
+      if (!address)
+        throw CustomError.internalServer('Error al crear la dirección')
 
       res.status(201).json({
         message: 'Dirección creada exitosamente',
-        address: newAddress,
+        address,
       })
-    } catch (error) {
-      if (error instanceof CustomError) {
-        return res.status(error.statusCode).json({ message: error.message })
-      }
-      res.status(500).json(error)
-      console.log(error)
-    }
-  }
-
-  getAll = async (req: Request, res: Response) => {
-    try {
-      const userId = req.body.user.user_id
-
-      const addresses = await this.addressesRepository.getAllByUser(userId)
-
-      if (!addresses)
-        throw CustomError.notFound('No se encontraron direcciones de envío')
-
-      res.status(200).json({
-        message: 'Direcciones obtenidas exitosamente',
-        addresses,
-      })
-    } catch (error) {
-      if (error instanceof CustomError) {
-        return res.status(error.statusCode).json({ message: error.message })
-      }
-      res.status(500).json(error)
-      console.log(error)
-    }
-  }
-
-  getById = async (req: Request, res: Response) => {
-    try {
-      const userId = req.body.user.user_id
-      const { addressId } = req.params
-
-      const address = await this.addressesRepository.getById(
-        userId,
-        parseInt(addressId),
-      )
-
-      if (!address) throw CustomError.notFound('Dirección no encontrada')
-
-      res.status(200).json(address)
     } catch (error) {
       if (error instanceof CustomError) {
         return res.status(error.statusCode).json({ message: error.message })
@@ -79,21 +33,16 @@ export class AddressesController {
 
   update = async (req: Request, res: Response) => {
     try {
-      const userId = req.body.user.user_id
-      const { addressId } = req.params
-
+      const user = req.body.user
       const validatedData = ZodAddressesAdapter.validateAddressUpdate(req.body)
 
       const updatedAddress = await this.addressesRepository.update(
-        userId,
-        parseInt(addressId),
-        validatedData,
+        parseInt(req.params.id),
+        { ...validatedData, user_id: user.user_id },
       )
 
       if (!updatedAddress)
-        throw CustomError.internalServer(
-          'Error al actualizar la dirección de envío',
-        )
+        throw CustomError.internalServer('Error al actualizar la dirección')
 
       res.status(200).json({
         message: 'Dirección actualizada exitosamente',
@@ -110,18 +59,11 @@ export class AddressesController {
 
   delete = async (req: Request, res: Response) => {
     try {
-      const userId = req.body.user.user_id
-      const { addressId } = req.params
-
       const deletedAddress = await this.addressesRepository.delete(
-        userId,
-        parseInt(addressId),
+        parseInt(req.params.id),
       )
-
       if (!deletedAddress)
-        throw CustomError.internalServer(
-          'Error al eliminar la dirección de envío',
-        )
+        throw CustomError.internalServer('Error al eliminar la dirección')
 
       res.status(200).json({
         message: 'Dirección eliminada exitosamente',
@@ -136,24 +78,69 @@ export class AddressesController {
     }
   }
 
+  getAll = async (req: Request, res: Response) => {
+    try {
+      const user = req.body.user
+      const addresses = await this.addressesRepository.getAll(user.user_id)
+      if (!addresses)
+        throw CustomError.internalServer('No se encontraron direcciones')
+
+      res.status(200).json({
+        message: 'Direcciones obtenidas exitosamente',
+        addresses,
+      })
+    } catch (error) {
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json({ message: error.message })
+      }
+      res.status(500).json(error)
+      console.log(error)
+    }
+  }
+
+  getById = async (req: Request, res: Response) => {
+    try {
+      const address = await this.addressesRepository.getById(
+        parseInt(req.params.id),
+      )
+      if (!address)
+        throw CustomError.internalServer('No se encontró la dirección')
+
+      res.status(200).json(address)
+    } catch (error) {
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json({ message: error.message })
+      }
+      res.status(500).json(error)
+      console.error(error)
+    }
+  }
+
   setDefault = async (req: Request, res: Response) => {
     try {
-      const userId = req.body.user.user_id
-      const { addressId } = req.params
+      const user = req.body.user
+      const addressId = parseInt(req.params.id)
+      const defaultValue = req.body.defaultValue
 
-      const defaultAddress = await this.addressesRepository.setDefault(
-        userId,
-        parseInt(addressId),
+      const updatedAddress = await this.addressesRepository.setDefault(
+        user.user_id,
+        addressId,
+        defaultValue,
       )
 
-      if (!defaultAddress)
+      if (!updatedAddress) {
         throw CustomError.internalServer(
           'Error al establecer la dirección por defecto',
         )
+      }
+
+      const message = defaultValue
+        ? 'Dirección establecida como predeterminada exitosamente'
+        : 'Dirección ya no es predeterminada'
 
       res.status(200).json({
-        message: 'Dirección por defecto actualizada exitosamente',
-        defaultAddress,
+        message: message,
+        updatedAddress,
       })
     } catch (error) {
       if (error instanceof CustomError) {
