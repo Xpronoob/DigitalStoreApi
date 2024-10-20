@@ -5,6 +5,7 @@ import { UsersRoutes } from './users.routes'
 import { RolesRoutes } from './roles.routes'
 import { ProductsRoutes } from './products.routes'
 import { ProductDetailsRoutes } from './products-details.routes'
+import { AddressesRoutes } from './adresses.routes'
 import { AuthMiddleware } from '../middlewares/auth.middleware'
 import { RolesMiddleware } from '../middlewares/roles.middleware'
 
@@ -52,6 +53,8 @@ export class AppRoutes {
       RolesMiddleware.validateRoles(['admin']),
       ProductDetailsRoutes.routes,
     )
+
+    router.use('/api/addresses', AddressesRoutes.routes)
 
     return router
   }
