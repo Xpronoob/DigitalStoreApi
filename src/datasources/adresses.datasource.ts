@@ -8,17 +8,17 @@ import {
 const prisma = new PrismaClient()
 
 export class AddressesDatasource {
-  async create(userId: number, addressData: AddressesEntity) {
+  async create(addressData: AddressesEntity) {
     try {
       const address = await prisma.addresses.create({
         data: {
-          user_id: userId,
           street: addressData.street,
           city: addressData.city,
           state: addressData.state,
           postal_code: addressData.postal_code,
           country: addressData.country,
-          default_address: addressData.default_address,
+          user_id: addressData.user_id,
+          default_address: addressData.default_address ?? false,
         },
       })
       return address
@@ -57,16 +57,14 @@ export class AddressesDatasource {
     }
   }
 
-  async getAllByUser(userId: number) {
+  async getAll(userId: number) {
     try {
       const addresses = await prisma.addresses.findMany({
         where: { user_id: userId },
       })
       return addresses
     } catch (error) {
-      throw CustomError.internalServer(
-        'Error al obtener las direcciones del usuario',
-      )
+      throw CustomError.internalServer('Error al obtener las direcciones')
     }
   }
 
@@ -84,17 +82,22 @@ export class AddressesDatasource {
     }
   }
 
-  async setDefaultAddress(userId: number, addressId: number) {
+  async setDefault(userId: number, addressId: number, defaultValue: boolean) {
     try {
-      await prisma.addresses.updateMany({
-        where: { user_id: userId, default_address: true },
-        data: { default_address: false },
+      const address = await prisma.addresses.findUnique({
+        where: { address_id: addressId },
       })
 
+      if (!address || address.user_id !== userId) {
+        throw CustomError.unauthorized('No puedes modificar esta dirección')
+      }
+
       const updatedAddress = await prisma.addresses.update({
-        where: { address_id: addressId },
-        data: { default_address: true },
+        where: { address_id: address.address_id },
+        data: { default_address: defaultValue },
       })
+
+      // todo: update default value to false for all other addresses
 
       return updatedAddress
     } catch (error) {
