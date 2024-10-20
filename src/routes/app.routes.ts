@@ -54,7 +54,11 @@ export class AppRoutes {
       ProductDetailsRoutes.routes,
     )
 
-    router.use('/api/addresses', AddressesRoutes.routes)
+    router.use(
+      '/api/addresses',
+      AuthMiddleware.authorization,
+      AddressesRoutes.routes,
+    )
 
     return router
   }
