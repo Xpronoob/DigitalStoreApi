@@ -1,14 +1,14 @@
+import { AddressesDatasource } from '../datasources/adresses.datasource'
 import {
   AddressesEntity,
   AddressesEntityOptional,
 } from '../entities/adresses.entity'
-import { AddressesDatasource } from '../datasources/adresses.datasource'
 
 export class AddressesRepository {
   constructor(private readonly addressesDatasource: AddressesDatasource) {}
 
-  async create(userId: number, addressData: AddressesEntity) {
-    return await this.addressesDatasource.create(userId, addressData)
+  async create(addressData: AddressesEntity) {
+    return await this.addressesDatasource.create(addressData)
   }
 
   async update(addressId: number, addressData: AddressesEntityOptional) {
@@ -19,15 +19,19 @@ export class AddressesRepository {
     return await this.addressesDatasource.delete(addressId)
   }
 
-  async getAllByUser(userId: number) {
-    return await this.addressesDatasource.getAllByUser(userId)
+  async getAll(userId: number) {
+    return await this.addressesDatasource.getAll(userId)
   }
 
   async getById(addressId: number) {
     return await this.addressesDatasource.getById(addressId)
   }
 
-  async setDefaultAddress(userId: number, addressId: number) {
-    return await this.addressesDatasource.setDefaultAddress(userId, addressId)
+  async setDefault(userId: number, addressId: number, defaultValue: boolean) {
+    return await this.addressesDatasource.setDefault(
+      userId,
+      addressId,
+      defaultValue,
+    )
   }
 }
