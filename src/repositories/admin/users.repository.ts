@@ -1,5 +1,5 @@
-import { UsersDatasource } from '../datasources/users.datasource'
-import { UserEntity, UserEntityOptional } from '../entities/user.entity'
+import { UsersDatasource } from '../../datasources/admin/users.datasource'
+import { UserEntity, UserEntityOptional } from '../../entities/user.entity'
 
 export class UsersRepository {
   constructor(private readonly usersDatasource: UsersDatasource) {}

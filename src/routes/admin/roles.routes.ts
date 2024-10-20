@@ -1,10 +1,9 @@
 import { Router } from 'express'
-import { RolesRepository } from '../repositories/roles.repository'
-import { RolesDatasource } from '../datasources/roles.datasource'
-import { RolesController } from '../controllers/roles.controller'
-import { AuthMiddleware } from '../middlewares/auth.middleware'
+import { RolesRepository } from '../../repositories/admin/roles.repository'
+import { RolesDatasource } from '../../datasources/admin/roles.datasource'
+import { RolesController } from '../../controllers/admin/roles.controller'
 
-export class RolesRoutes {
+export class RolesAdminRoutes {
   static get routes(): Router {
     const router = Router()
 

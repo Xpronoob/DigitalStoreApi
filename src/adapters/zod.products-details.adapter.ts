@@ -1,9 +1,6 @@
 import { z } from 'zod'
 import { CustomError } from '../errors/custom.error'
-import {
-  ProductDetailEntity,
-  ProductDetailEntityOptional,
-} from '../entities/products-details'
+import { ProductDetailEntity, ProductDetailEntityOptional } from '../entities/products-details'
 
 export class ZodProductDetailsAdapter {
   static validateProductDetail = (productDetail: ProductDetailEntity) => {
@@ -17,19 +14,13 @@ export class ZodProductDetailsAdapter {
         })
         .min(1, 'El nombre del detalle debe tener al menos 1 carácter')
         .max(255, 'El nombre del detalle no puede tener más de 255 caracteres'),
-      description: z
-        .string()
-        .max(255, 'La descripción no puede tener más de 255 caracteres')
-        .optional(),
+      description: z.string().max(255, 'La descripción no puede tener más de 255 caracteres').optional(),
       price: z
         .number({
           required_error: 'El precio es requerido',
         })
         .min(0, 'El precio debe ser un valor positivo'),
-      quantity: z
-        .number()
-        .min(0, 'La cantidad debe ser un valor positivo')
-        .optional(),
+      quantity: z.number().min(0, 'La cantidad debe ser un valor positivo').optional(),
       color: z.string().max(100).optional(),
       size: z.string().max(50).optional(),
       storage: z.string().max(50).optional(),
@@ -47,9 +38,7 @@ export class ZodProductDetailsAdapter {
     }
   }
 
-  static validateProductDetailUpdate = (
-    productDetail: ProductDetailEntityOptional,
-  ) => {
+  static validateProductDetailUpdate = (productDetail: ProductDetailEntityOptional) => {
     const ProductDetail = z.object({
       detail_name: z
         .string()
@@ -57,14 +46,8 @@ export class ZodProductDetailsAdapter {
         .max(255, 'El nombre del detalle no puede tener más de 255 caracteres')
         .optional(),
       description: z.string().max(255).optional(),
-      price: z
-        .number()
-        .min(0, 'El precio debe ser un valor positivo')
-        .optional(),
-      quantity: z
-        .number()
-        .min(0, 'La cantidad debe ser un valor positivo')
-        .optional(),
+      price: z.number().min(0, 'El precio debe ser un valor positivo').optional(),
+      quantity: z.number().min(0, 'La cantidad debe ser un valor positivo').optional(),
       color: z.string().max(100).optional(),
       size: z.string().max(50).optional(),
       storage: z.string().max(50).optional(),

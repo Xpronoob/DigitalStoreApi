@@ -1,9 +1,6 @@
 import { z } from 'zod'
 import { CustomError } from '../errors/custom.error'
-import {
-  CategoryEntity,
-  CategoryEntityOptional,
-} from '../entities/category.entity'
+import { CategoryEntity, CategoryEntityOptional } from '../entities/category.entity'
 
 export class ZodCategoriesAdapter {
   static validateCategory = (category: CategoryEntity) => {
@@ -13,10 +10,7 @@ export class ZodCategoriesAdapter {
           required_error: 'El nombre de la categoría es requerido',
         })
         .min(1, 'El nombre de la categoría debe tener al menos 1 carácter')
-        .max(
-          255,
-          'El nombre de la categoría no puede tener más de 255 caracteres',
-        ),
+        .max(255, 'El nombre de la categoría no puede tener más de 255 caracteres'),
       active: z.boolean(),
       img: z.string().optional(),
     })
@@ -36,10 +30,7 @@ export class ZodCategoriesAdapter {
       category_name: z
         .string()
         .min(1, 'El nombre de la categoría debe tener al menos 1 carácter')
-        .max(
-          255,
-          'El nombre de la categoría no puede tener más de 255 caracteres',
-        )
+        .max(255, 'El nombre de la categoría no puede tener más de 255 caracteres')
         .optional(),
       active: z.boolean().optional(),
       img: z.string().optional(),

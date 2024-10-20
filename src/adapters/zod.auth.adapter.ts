@@ -2,12 +2,7 @@ import { z } from 'zod'
 import { CustomError } from '../errors/custom.error'
 
 export class ZodAuthAdapter {
-  static validateAuthUser = (user: {
-    email: string
-    password: string
-    first_name?: string
-    last_name?: string
-  }) => {
+  static validateAuthUser = (user: { email: string; password: string; first_name?: string; last_name?: string }) => {
     const User = z.object({
       email: z
         .string({
@@ -24,8 +19,7 @@ export class ZodAuthAdapter {
     })
 
     try {
-      const { email, password, first_name, last_name, phone_number } =
-        User.parse(user)
+      const { email, password, first_name, last_name, phone_number } = User.parse(user)
       const validatedData = {
         email,
         password,

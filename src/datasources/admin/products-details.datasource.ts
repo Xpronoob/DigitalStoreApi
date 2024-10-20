@@ -1,9 +1,6 @@
 import { PrismaClient } from '@prisma/client'
-import { CustomError } from '../errors/custom.error'
-import {
-  ProductDetailEntity,
-  ProductDetailEntityOptional,
-} from '../entities/products-details'
+import { CustomError } from '../../errors/custom.error'
+import { ProductDetailEntity, ProductDetailEntityOptional } from '../../entities/products-details'
 
 const prisma = new PrismaClient()
 
@@ -30,10 +27,7 @@ export class ProductDetailsDatasource {
     }
   }
 
-  async update(
-    productDetailId: number,
-    productDetailData: ProductDetailEntityOptional,
-  ) {
+  async update(productDetailId: number, productDetailData: ProductDetailEntityOptional) {
     try {
       const updatedProductDetail = await prisma.product_details.update({
         where: { product_detail_id: productDetailId },
@@ -51,9 +45,7 @@ export class ProductDetailsDatasource {
       })
       return updatedProductDetail
     } catch (error) {
-      throw CustomError.internalServer(
-        'Error al actualizar el detalle del producto',
-      )
+      throw CustomError.internalServer('Error al actualizar el detalle del producto')
     }
   }
 
@@ -64,9 +56,7 @@ export class ProductDetailsDatasource {
       })
       return deletedProductDetail
     } catch (error) {
-      throw CustomError.internalServer(
-        'Error al eliminar el detalle del producto',
-      )
+      throw CustomError.internalServer('Error al eliminar el detalle del producto')
     }
   }
 
@@ -75,9 +65,7 @@ export class ProductDetailsDatasource {
       const productDetails = await prisma.product_details.findMany()
       return productDetails
     } catch (error) {
-      throw CustomError.internalServer(
-        'Error al obtener los detalles de los productos',
-      )
+      throw CustomError.internalServer('Error al obtener los detalles de los productos')
     }
   }
 
@@ -91,9 +79,7 @@ export class ProductDetailsDatasource {
       }
       return productDetail
     } catch (error) {
-      throw CustomError.internalServer(
-        'Error al obtener el detalle del producto',
-      )
+      throw CustomError.internalServer('Error al obtener el detalle del producto')
     }
   }
 
@@ -107,9 +93,7 @@ export class ProductDetailsDatasource {
       })
       return updatedProductDetail
     } catch (error) {
-      throw CustomError.internalServer(
-        `Error al ${active ? 'activar' : 'desactivar'} el detalle del producto`,
-      )
+      throw CustomError.internalServer(`Error al ${active ? 'activar' : 'desactivar'} el detalle del producto`)
     }
   }
 }

@@ -1,9 +1,6 @@
 import { z } from 'zod'
 import { CustomError } from '../errors/custom.error'
-import {
-  ProductEntity,
-  ProductEntityOptional,
-} from '../entities/products.entity'
+import { ProductEntity, ProductEntityOptional } from '../entities/products.entity'
 
 export class ZodProductsAdapter {
   static validateProduct = (product: ProductEntity) => {
@@ -34,11 +31,7 @@ export class ZodProductsAdapter {
         .positive('El precio debe ser un número positivo')
         .max(9999999.99, 'El precio es demasiado alto'),
 
-      stock: z
-        .number()
-        .int('El stock debe ser un número entero')
-        .nonnegative('El stock no puede ser negativo')
-        .optional(),
+      stock: z.number().int('El stock debe ser un número entero').nonnegative('El stock no puede ser negativo').optional(),
 
       img: z.string().url('Debe ser una URL válida').optional(),
     })
@@ -63,24 +56,13 @@ export class ZodProductsAdapter {
 
       active: z.boolean().optional(),
 
-      category_id: z
-        .number()
-        .int('El ID de la categoría debe ser un número entero')
-        .optional(),
+      category_id: z.number().int('El ID de la categoría debe ser un número entero').optional(),
 
       description: z.string().optional(),
 
-      price: z
-        .number()
-        .positive('El precio debe ser un número positivo')
-        .max(9999999.99, 'El precio es demasiado alto')
-        .optional(),
+      price: z.number().positive('El precio debe ser un número positivo').max(9999999.99, 'El precio es demasiado alto').optional(),
 
-      stock: z
-        .number()
-        .int('El stock debe ser un número entero')
-        .nonnegative('El stock no puede ser negativo')
-        .optional(),
+      stock: z.number().int('El stock debe ser un número entero').nonnegative('El stock no puede ser negativo').optional(),
 
       img: z.string().url('Debe ser una URL válida').optional(),
     })

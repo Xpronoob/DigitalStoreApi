@@ -1,9 +1,9 @@
 import { Router } from 'express'
-import { ProductDetailsController } from '../controllers/products-details.controller'
-import { ProductDetailsDatasource } from '../datasources/products-details.datasource'
-import { ProductDetailsRepository } from '../repositories/products-details.repository'
+import { ProductDetailsController } from '../../controllers/admin/products-details.controller'
+import { ProductDetailsDatasource } from '../../datasources/admin/products-details.datasource'
+import { ProductDetailsRepository } from '../../repositories/admin/products-details.repository'
 
-export class ProductDetailsRoutes {
+export class OrdersClientRoutes {
   static get routes(): Router {
     const router = Router()
 

@@ -1,9 +1,9 @@
 import { Router } from 'express'
-import { UsersDatasource } from '../datasources/users.datasource'
-import { UsersRepository } from '../repositories/users.repository'
-import { UsersController } from '../controllers/users.controller'
+import { UsersDatasource } from '../../datasources/admin/users.datasource'
+import { UsersRepository } from '../../repositories/admin/users.repository'
+import { UsersController } from '../../controllers/admin/users.controller'
 
-export class UsersRoutes {
+export class UsersAdminRoutes {
   static get routes(): Router {
     const router = Router()
 

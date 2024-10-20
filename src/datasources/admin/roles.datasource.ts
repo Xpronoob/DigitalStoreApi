@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
-import { CustomError } from '../errors/custom.error'
-import { RoleEntity } from '../entities/role.entity'
+import { CustomError } from '../../errors/custom.error'
+import { RoleEntity } from '../../entities/role.entity'
 
 const prisma = new PrismaClient()
 

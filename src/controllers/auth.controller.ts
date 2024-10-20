@@ -37,8 +37,7 @@ export class AuthController {
       validatedData.email = validatedData.email.toLowerCase()
 
       const user = await this.authRepository.login(validatedData, userAgentInfo)
-      if (!user)
-        throw CustomError.internalServer('Error al registrar el usuario')
+      if (!user) throw CustomError.internalServer('Error al registrar el usuario')
 
       // Save Access Token & Refresh Token in cookie
       // httpOnly: true - not accesible from JavaScript
@@ -93,12 +92,8 @@ export class AuthController {
       const validatedData = ZodAuthAdapter.validateAuthUser(req.body)
       validatedData.email = validatedData.email.toLowerCase()
       validatedData.password = BcryptAdapter.hash(validatedData.password)
-      const user = await this.authRepository.register(
-        validatedData,
-        userAgentInfo,
-      )
-      if (!user)
-        throw CustomError.internalServer('Error al registrar el usuario')
+      const user = await this.authRepository.register(validatedData, userAgentInfo)
+      if (!user) throw CustomError.internalServer('Error al registrar el usuario')
 
       // Save Access Token & Refresh Token in cookie
       // httpOnly: true - not accesible from JavaScript
@@ -146,9 +141,7 @@ export class AuthController {
         sameSite: 'strict',
       })
 
-      return res
-        .status(200)
-        .json({ message: 'Has cerrado sesión exitosamente' })
+      return res.status(200).json({ message: 'Has cerrado sesión exitosamente' })
     } catch (error) {
       if (error instanceof CustomError) {
         return res.status(error.statusCode).json({ message: error.message })

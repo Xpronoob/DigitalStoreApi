@@ -1,0 +1,5 @@
+export * from './categories.routes'
+export * from './products-details.routes'
+export * from './products.routes'
+export * from './roles.routes'
+export * from './users.routes'

@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client'
-import { CustomError } from '../errors/custom.error'
-import { ProductEntity } from '../entities/products.entity'
-import { ProductEntityOptional } from '../entities/products.entity'
+import { CustomError } from '../../errors/custom.error'
+import { ProductEntity, ProductEntityOptional } from '../../entities/products.entity'
 
 const prisma = new PrismaClient()
 
@@ -91,9 +90,7 @@ export class ProductsDatasource {
       })
       return updatedProduct
     } catch (error) {
-      throw CustomError.internalServer(
-        `Error al ${active ? 'activar' : 'desactivar'} el producto`,
-      )
+      throw CustomError.internalServer(`Error al ${active ? 'activar' : 'desactivar'} el producto`)
     }
   }
 }

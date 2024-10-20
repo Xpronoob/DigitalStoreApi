@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
-import { UsersRepository } from '../repositories/users.repository'
-import { ZodUsersAdapter } from '../adapters/zod.users.adapter'
-import { CustomError } from '../errors/custom.error'
-import { BcryptAdapter } from '../adapters/bcrypt.adapter'
+import { UsersRepository } from '../../repositories/client/users.repository'
+import { ZodUsersAdapter } from '../../adapters/zod.users.adapter'
+import { CustomError } from '../../errors/custom.error'
+import { BcryptAdapter } from '../../adapters/bcrypt.adapter'
 
 //DI
 export class UsersController {
@@ -39,13 +39,9 @@ export class UsersController {
       if (validatedData.email) {
         validatedData.email = validatedData.email.toLowerCase()
       }
-      const updatedUser = await this.usersRepository.update(
-        parseInt(req.params.id),
-        validatedData,
-      )
+      const updatedUser = await this.usersRepository.update(parseInt(req.params.id), validatedData)
 
-      if (!updatedUser)
-        throw CustomError.internalServer('Error al actualizar el usuario')
+      if (!updatedUser) throw CustomError.internalServer('Error al actualizar el usuario')
 
       res.status(200).json({
         message: 'Usuario actualizado exitosamente',
@@ -62,12 +58,9 @@ export class UsersController {
 
   delete = async (req: Request, res: Response) => {
     try {
-      const deletedUser = await this.usersRepository.delete(
-        parseInt(req.params.id),
-      )
+      const deletedUser = await this.usersRepository.delete(parseInt(req.params.id))
 
-      if (!deletedUser)
-        throw CustomError.internalServer('Error al eliminar el usuario')
+      if (!deletedUser) throw CustomError.internalServer('Error al eliminar el usuario')
 
       res.status(200).json({
         message: 'Usuario eliminado exitosamente',
@@ -156,9 +149,7 @@ export class UsersController {
 
   getRoles = async (req: Request, res: Response) => {
     try {
-      const user = await this.usersRepository.getRoles(
-        parseInt(req.params.userId),
-      )
+      const user = await this.usersRepository.getRoles(parseInt(req.params.userId))
       res.status(200).json(user)
     } catch (error) {
       if (error instanceof CustomError) {
@@ -172,20 +163,12 @@ export class UsersController {
   toggleStatus = async (req: Request, res: Response) => {
     try {
       const { active } = req.body
-      const updatedUser = await this.usersRepository.toggleStatus(
-        parseInt(req.params.userId),
-        active,
-      )
+      const updatedUser = await this.usersRepository.toggleStatus(parseInt(req.params.userId), active)
 
-      if (!updatedUser)
-        throw CustomError.internalServer(
-          'Error al cambiar el estado del usuario',
-        )
+      if (!updatedUser) throw CustomError.internalServer('Error al cambiar el estado del usuario')
 
       res.status(200).json({
-        message: active
-          ? 'Usuario activado exitosamente'
-          : 'Usuario desactivado exitosamente',
+        message: active ? 'Usuario activado exitosamente' : 'Usuario desactivado exitosamente',
         updatedUser,
       })
     } catch (error) {
@@ -199,9 +182,7 @@ export class UsersController {
 
   getCartItems = async (req: Request, res: Response) => {
     try {
-      const user = await this.usersRepository.getCartItems(
-        parseInt(req.params.userId),
-      )
+      const user = await this.usersRepository.getCartItems(parseInt(req.params.userId))
       res.status(200).json(user)
     } catch (error) {
       if (error instanceof CustomError) {
@@ -214,9 +195,7 @@ export class UsersController {
 
   getOrders = async (req: Request, res: Response) => {
     try {
-      const user = await this.usersRepository.getOrders(
-        parseInt(req.params.userId),
-      )
+      const user = await this.usersRepository.getOrders(parseInt(req.params.userId))
       res.status(200).json(user)
     } catch (error) {
       if (error instanceof CustomError) {

@@ -1,6 +1,6 @@
-import { ProductsDatasource } from '../datasources/products.datasource'
-import { ProductEntity } from '../entities/products.entity'
-import { ProductEntityOptional } from '../entities/products.entity'
+import { ProductsDatasource } from '../../datasources/admin/products.datasource'
+import { ProductEntity } from '../../entities/products.entity'
+import { ProductEntityOptional } from '../../entities/products.entity'
 
 export class ProductsRepository {
   constructor(private readonly productsDatasource: ProductsDatasource) {}

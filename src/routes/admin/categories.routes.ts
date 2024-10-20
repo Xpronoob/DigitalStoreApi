@@ -1,9 +1,9 @@
 import { Router } from 'express'
-import { CategoriesController } from '../controllers/categories.controller'
-import { CategoriesDatasource } from '../datasources/categories.datasource'
-import { CategoriesRepository } from '../repositories/categories.repository'
+import { CategoriesDatasource } from '../../datasources/admin/categories.datasource'
+import { CategoriesRepository } from '../../repositories/admin'
+import { CategoriesController } from '../../controllers/admin'
 
-export class CategoriesRoutes {
+export class CategoriesAdminRoutes {
   static get routes(): Router {
     const router = Router()
 

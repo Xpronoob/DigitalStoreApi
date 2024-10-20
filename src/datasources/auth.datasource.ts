@@ -27,8 +27,7 @@ export class AuthDatasource {
     },
     userAgentInfo: UserAgentEntity,
   ) {
-    const { email, password, first_name, last_name, phone_number } =
-      validatedData
+    const { email, password, first_name, last_name, phone_number } = validatedData
 
     const isRegistered = await prisma.users.findFirst({
       where: { email: email },
@@ -57,17 +56,13 @@ export class AuthDatasource {
     const accessToken = await this.signAccessToken(payload)
     const refreshToken = await this.signRefreshToken(payload)
 
-    if (!accessToken || !refreshToken)
-      throw CustomError.internalServer('Error generating token')
+    if (!accessToken || !refreshToken) throw CustomError.internalServer('Error generating token')
 
     const userSession = await prisma.sessions.create({
       data: {
         user_id: user.user_id,
         refresh_token: refreshToken,
-        expires_at: new Date(
-          new Date().getTime() +
-            convertToMillisencods(envs.COOKIE_EXPIRES_REFRESH_TOKEN),
-        ),
+        expires_at: new Date(new Date().getTime() + convertToMillisencods(envs.COOKIE_EXPIRES_REFRESH_TOKEN)),
         device_type: userAgentInfo.deviceType,
         ip_address: userAgentInfo.ipAddress,
         osName: userAgentInfo.osName,
@@ -88,10 +83,7 @@ export class AuthDatasource {
     return userWithTokens
   }
 
-  async login(
-    validatedData: { email: string; password: string },
-    userAgentInfo: UserAgentEntity,
-  ) {
+  async login(validatedData: { email: string; password: string }, userAgentInfo: UserAgentEntity) {
     const { email, password } = validatedData
 
     const user = await prisma.users.findFirst({
@@ -114,17 +106,13 @@ export class AuthDatasource {
     const accessToken = await this.signAccessToken(payload)
     const refreshToken = await this.signRefreshToken(payload)
 
-    if (!accessToken || !refreshToken)
-      throw CustomError.internalServer('Error generating token')
+    if (!accessToken || !refreshToken) throw CustomError.internalServer('Error generating token')
 
     const userSession = await prisma.sessions.create({
       data: {
         user_id: user.user_id,
         refresh_token: refreshToken,
-        expires_at: new Date(
-          new Date().getTime() +
-            convertToMillisencods(envs.COOKIE_EXPIRES_REFRESH_TOKEN),
-        ),
+        expires_at: new Date(new Date().getTime() + convertToMillisencods(envs.COOKIE_EXPIRES_REFRESH_TOKEN)),
         device_type: userAgentInfo.deviceType,
         ip_address: userAgentInfo.ipAddress,
         osName: userAgentInfo.osName,
@@ -156,9 +144,7 @@ export class AuthDatasource {
     })
 
     if (!session) {
-      throw CustomError.unauthorized(
-        'No se encontró la sesión o ya fue cerrada',
-      )
+      throw CustomError.unauthorized('No se encontró la sesión o ya fue cerrada')
     }
 
     await prisma.sessions.delete({

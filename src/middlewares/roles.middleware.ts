@@ -18,9 +18,7 @@ export class RolesMiddleware {
           include: { roles: true },
         })
 
-        const userRoleNames = userRoles.map(
-          (userRole) => userRole.roles.role_name,
-        )
+        const userRoleNames = userRoles.map((userRole) => userRole.roles.role_name)
 
         const hasRole = roles.some((role) => userRoleNames.includes(role))
 

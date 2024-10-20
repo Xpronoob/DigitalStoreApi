@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
-import { CustomError } from '../errors/custom.error'
-import { UserEntity, UserEntityOptional } from '../entities/user.entity'
+import { CustomError } from '../../errors/custom.error'
+import { UserEntity, UserEntityOptional } from '../../entities/user.entity'
 
 const prisma = new PrismaClient()
 
@@ -141,9 +141,7 @@ export class UsersDatasource {
       })
       return updatedUser
     } catch (error) {
-      throw CustomError.internalServer(
-        `Error al ${active ? 'activar' : 'desactivar'} el usuario`,
-      )
+      throw CustomError.internalServer(`Error al ${active ? 'activar' : 'desactivar'} el usuario`)
     }
   }
 
@@ -185,9 +183,7 @@ export class UsersDatasource {
 
       return userWithOrders.orders
     } catch (error) {
-      throw CustomError.internalServer(
-        'Error al obtener las Órdenes de compras',
-      )
+      throw CustomError.internalServer('Error al obtener las Órdenes de compras')
     }
   }
 }

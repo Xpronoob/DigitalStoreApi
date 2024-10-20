@@ -1,9 +1,6 @@
 import { PrismaClient } from '@prisma/client'
-import { CustomError } from '../errors/custom.error'
-import {
-  CategoryEntity,
-  CategoryEntityOptional,
-} from '../entities/category.entity'
+import { CustomError } from '../../errors/custom.error'
+import { CategoryEntity, CategoryEntityOptional } from '../../entities/category.entity'
 
 const prisma = new PrismaClient()
 
@@ -83,9 +80,7 @@ export class CategoriesDatasource {
       })
       return updatedCategory
     } catch (error) {
-      throw CustomError.internalServer(
-        `Error al ${active ? 'activar' : 'desactivar'} la categoría`,
-      )
+      throw CustomError.internalServer(`Error al ${active ? 'activar' : 'desactivar'} la categoría`)
     }
   }
 }

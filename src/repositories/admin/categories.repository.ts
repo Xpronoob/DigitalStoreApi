@@ -1,9 +1,5 @@
-import { number } from 'zod'
-import { CategoriesDatasource } from '../datasources/categories.datasource'
-import {
-  CategoryEntity,
-  CategoryEntityOptional,
-} from '../entities/category.entity'
+import { CategoryEntity, CategoryEntityOptional } from '../../entities/category.entity'
+import { CategoriesDatasource } from '../../datasources/admin'
 
 export class CategoriesRepository {
   constructor(private readonly categoriesDatasource: CategoriesDatasource) {}

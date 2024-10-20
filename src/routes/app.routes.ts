@@ -1,12 +1,9 @@
 import { Request, Response, Router } from 'express'
 import { AuthRoutes } from './auth.routes'
-import { CategoriesRoutes } from './categories.routes'
-import { UsersRoutes } from './users.routes'
-import { RolesRoutes } from './roles.routes'
-import { ProductsRoutes } from './products.routes'
-import { ProductDetailsRoutes } from './products-details.routes'
 import { AuthMiddleware } from '../middlewares/auth.middleware'
 import { RolesMiddleware } from '../middlewares/roles.middleware'
+import { UsersAdminRoutes, RolesAdminRoutes, CategoriesAdminRoutes, ProductsAdminRoutes, ProductDetailsAdminRoutes } from './admin/'
+import { UsersClientRoutes, CartItemsClientRoutes, OrdersClientRoutes } from './client'
 
 export class AppRoutes {
   static get routes(): Router {
@@ -20,38 +17,33 @@ export class AppRoutes {
     router.get('/health', healthCheck)
     router.use('/api/auth', AuthRoutes.routes)
 
+    // * * ADMIN ROUTES
+    router.use('/api/admin/users', AuthMiddleware.authorization, RolesMiddleware.validateRoles(['admin']), UsersAdminRoutes.routes)
+    router.use('/api/admin/roles', AuthMiddleware.authorization, RolesMiddleware.validateRoles(['admin']), RolesAdminRoutes.routes)
+
+    router.use('/api/admin/categories', AuthMiddleware.authorization, RolesMiddleware.validateRoles(['admin']), CategoriesAdminRoutes.routes)
+    router.use('/api/admin/products', AuthMiddleware.authorization, RolesMiddleware.validateRoles(['admin']), ProductsAdminRoutes.routes)
+    router.use('/api/admin/productsdetails', AuthMiddleware.authorization, RolesMiddleware.validateRoles(['admin']), ProductDetailsAdminRoutes.routes)
+
+    // * * CLIENT ROUTES
+
+    // Profile, Update User Info, Update Password, Delete Account, change photo
+    // Sessions, Security, Configs, Check Roles
+    // Addresses, Payments
+    router.use('/api/client/user', AuthMiddleware.authorization, RolesMiddleware.validateRoles(['admin', 'client']), UsersClientRoutes.routes)
+
+    // Cart Items (Shopping Cart)
     router.use(
-      '/api/users',
+      '/api/client/cartItems',
       AuthMiddleware.authorization,
-      RolesMiddleware.validateRoles(['admin']),
-      UsersRoutes.routes,
-    )
-    router.use(
-      '/api/roles',
-      AuthMiddleware.authorization,
-      RolesMiddleware.validateRoles(['admin']),
-      RolesRoutes.routes,
+      RolesMiddleware.validateRoles(['admin', 'client']),
+      CartItemsClientRoutes.routes,
     )
 
-    router.use(
-      '/api/categories',
-      AuthMiddleware.authorization,
-      RolesMiddleware.validateRoles(['admin']),
-      CategoriesRoutes.routes,
-    )
-    router.use(
-      '/api/products',
-      AuthMiddleware.authorization,
-      RolesMiddleware.validateRoles(['admin']),
-      ProductsRoutes.routes,
-    )
+    // Orders, Order Items
+    router.use('/api/client/orders', AuthMiddleware.authorization, RolesMiddleware.validateRoles(['admin', 'client']), OrdersClientRoutes.routes)
 
-    router.use(
-      '/api/productsdetails',
-      AuthMiddleware.authorization,
-      RolesMiddleware.validateRoles(['admin']),
-      ProductDetailsRoutes.routes,
-    )
+    // * * GUEST ROUTES
 
     return router
   }
