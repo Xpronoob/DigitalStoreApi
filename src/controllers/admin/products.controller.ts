@@ -125,4 +125,67 @@ export class ProductsController {
       console.log(error)
     }
   }
+
+  createOptions = async (req: Request, res: Response) => {
+    try {
+      const validatedData = ZodProductsAdapter.validateProductOptions(req.body)
+      if (!validatedData) throw CustomError.badRequest('Error al validar los datos enviados')
+
+      const productOptions = await this.productsRepository.createOptions(validatedData)
+      if (!productOptions) throw CustomError.internalServer('Error al crear las opciones del producto')
+
+      res.status(201).json({
+        message: 'Opciones del producto creadas exitosamente',
+        productOptions,
+      })
+    } catch (error) {
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json({ message: error.message })
+      }
+      res.status(500).json(error)
+      console.log(error)
+    }
+  }
+
+  updateOptions = async (req: Request, res: Response) => {
+    try {
+      const validatedData = ZodProductsAdapter.validateProductOptions(req.body)
+      const updatedProductOptions = await this.productsRepository.updateOptions(parseInt(req.params.productOptionsId), validatedData)
+
+      if (!updatedProductOptions) throw CustomError.internalServer('Error al actualizar las opciones del producto')
+
+      res.status(200).json({
+        message: 'Opciones del producto actualizadas exitosamente',
+        updatedProductOptions,
+      })
+    } catch (error) {
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json({ message: error.message })
+      }
+      res.status(500).json(error)
+      console.log(error)
+    }
+  }
+
+  toggleStatusProductOptions = async (req: Request, res: Response) => {
+    try {
+      const { productOptionsId } = req.params
+      const { active } = req.body
+
+      const updatedProduct = await this.productsRepository.toggleStatusProductOptions(parseInt(productOptionsId), active)
+
+      if (!updatedProduct) throw CustomError.internalServer('Error al actualizar el estado del producto')
+
+      res.status(200).json({
+        message: active ? 'Producto activado exitosamente' : 'Producto desactivado exitosamente',
+        updatedProduct,
+      })
+    } catch (error) {
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json({ message: error.message })
+      }
+      res.status(500).json(error)
+      console.log(error)
+    }
+  }
 }

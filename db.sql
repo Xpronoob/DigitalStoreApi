@@ -56,18 +56,19 @@ CREATE TABLE categories (
 );
 
 CREATE TABLE product_options (
-    product_option_id INT AUTO_INCREMENT PRIMARY KEY,
-    active BOOLEAN NOT NULL DEFAULT FALSE,
-    color BOOLEAN NOT NULL DEFAULT FALSE,
-    size BOOLEAN NOT NULL DEFAULT FALSE,
-    storage BOOLEAN NOT NULL DEFAULT FALSE,
-    devices BOOLEAN NOT NULL DEFAULT FALSE
+    product_options_id INT AUTO_INCREMENT PRIMARY KEY,
+    product_options_name VARCHAR(150) NOT NULL,
+    active BOOLEAN DEFAULT FALSE NULL,
+    color BOOLEAN DEFAULT FALSE NULL,
+    size BOOLEAN DEFAULT FALSE NULL,
+    storage BOOLEAN DEFAULT FALSE NULL,
+    devices BOOLEAN DEFAULT FALSE NULL
 );
 
 CREATE TABLE products (
     product_id INT AUTO_INCREMENT PRIMARY KEY,
     category_id INT,
-    product_option_id INT NULL,
+    product_options_id INT NULL,
     product_name VARCHAR(255) NOT NULL,
     description TEXT,
     price DECIMAL(10, 2) NOT NULL,
@@ -75,7 +76,7 @@ CREATE TABLE products (
     img VARCHAR(255),
     active BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (category_id) REFERENCES categories(category_id),
-    FOREIGN KEY (product_option_id) REFERENCES product_options(product_option_id)
+    FOREIGN KEY (product_options_id) REFERENCES product_options(product_options_id)
 );
 
 CREATE TABLE product_details (

@@ -1,4 +1,5 @@
 import { ProductsDatasource } from '../../datasources/admin/products.datasource'
+import { ProductOptionsEntity } from '../../entities/product-options.entity'
 import { ProductEntity } from '../../entities/products.entity'
 import { ProductEntityOptional } from '../../entities/products.entity'
 
@@ -27,5 +28,17 @@ export class ProductsRepository {
 
   async toggleStatus(productId: number, active: boolean) {
     return await this.productsDatasource.toggleStatus(productId, active)
+  }
+
+  async createOptions(productOptionsData: ProductOptionsEntity) {
+    return await this.productsDatasource.createOptions(productOptionsData)
+  }
+
+  async updateOptions(productOptionsId: number, productOptionsData: ProductOptionsEntity) {
+    return await this.productsDatasource.updateOptions(productOptionsId, productOptionsData)
+  }
+
+  async toggleStatusProductOptions(productOptionsId: number, active: boolean) {
+    return await this.productsDatasource.toggleStatusProductOptions(productOptionsId, active)
   }
 }

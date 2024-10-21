@@ -116,31 +116,32 @@ model product_details {
 }
 
 model product_options {
-  product_option_id Int        @id @default(autoincrement())
-  active            Boolean    @default(false)
-  color             Boolean    @default(false)
-  size              Boolean    @default(false)
-  storage           Boolean    @default(false)
-  devices           Boolean    @default(false)
-  products          products[]
+  product_options_id   Int        @id @default(autoincrement())
+  product_options_name String     @db.VarChar(150)
+  active               Boolean?   @default(false)
+  color                Boolean?   @default(false)
+  size                 Boolean?   @default(false)
+  storage              Boolean?   @default(false)
+  devices              Boolean?   @default(false)
+  products             products[]
 }
 
 model products {
-  product_id        Int               @id @default(autoincrement())
-  category_id       Int?
-  product_option_id Int?
-  product_name      String            @db.VarChar(255)
-  description       String?           @db.Text
-  price             Decimal           @db.Decimal(10, 2)
-  stock             Int?              @default(0)
-  img               String?           @db.VarChar(255)
-  active            Boolean           @default(false)
-  product_details   product_details[]
-  categories        categories?       @relation(fields: [category_id], references: [category_id], onDelete: Restrict, onUpdate: Restrict, map: "products_ibfk_1")
-  product_options   product_options?  @relation(fields: [product_option_id], references: [product_option_id], onDelete: Restrict, onUpdate: Restrict, map: "products_ibfk_2")
+  product_id         Int               @id @default(autoincrement())
+  category_id        Int?
+  product_options_id Int?
+  product_name       String            @db.VarChar(255)
+  description        String?           @db.Text
+  price              Decimal           @db.Decimal(10, 2)
+  stock              Int?              @default(0)
+  img                String?           @db.VarChar(255)
+  active             Boolean           @default(false)
+  product_details    product_details[]
+  categories         categories?       @relation(fields: [category_id], references: [category_id], onDelete: Restrict, onUpdate: Restrict, map: "products_ibfk_1")
+  product_options    product_options?  @relation(fields: [product_options_id], references: [product_options_id], onDelete: Restrict, onUpdate: Restrict, map: "products_ibfk_2")
 
   @@index([category_id], map: "category_id")
-  @@index([product_option_id], map: "product_option_id")
+  @@index([product_options_id], map: "product_options_id")
 }
 
 model roles {
