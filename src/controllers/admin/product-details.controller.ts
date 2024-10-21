@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { ProductDetailsRepository } from '../../repositories/admin/products-details.repository'
+import { ProductDetailsRepository } from '../../repositories/admin/product-details.repository'
 import { ZodProductDetailsAdapter } from '../../adapters/zod.products-details.adapter'
 import { CustomError } from '../../errors/custom.error'
 

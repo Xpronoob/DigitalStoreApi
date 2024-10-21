@@ -7,7 +7,7 @@ import { convertToMillisencods } from '../utils/converters.util'
 import { envs } from '../configs/envs.config'
 import { UAParser } from 'ua-parser-js'
 import { UAParserAdapter } from '../adapters/uaparser.adapter'
-import { UserAgentEntity } from '../entities/userAgent.entity'
+import { UserAgentEntity } from '../entities/user-agent.entity'
 
 export class AuthController {
   //DI

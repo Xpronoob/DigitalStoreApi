@@ -5,7 +5,7 @@ import { CustomError } from '../errors/custom.error'
 import { convertToMillisencods } from '../utils/converters.util'
 import { envs } from '../configs/envs.config'
 import { BcryptAdapter } from '../adapters/bcrypt.adapter'
-import { UserAgentEntity } from '../entities/userAgent.entity'
+import { UserAgentEntity } from '../entities/user-agent.entity'
 
 const prisma = new PrismaClient()
 

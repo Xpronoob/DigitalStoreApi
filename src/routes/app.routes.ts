@@ -3,7 +3,7 @@ import { AuthRoutes } from './auth.routes'
 import { AuthMiddleware } from '../middlewares/auth.middleware'
 import { RolesMiddleware } from '../middlewares/roles.middleware'
 import { UsersAdminRoutes, RolesAdminRoutes, CategoriesAdminRoutes, ProductsAdminRoutes, ProductDetailsAdminRoutes } from './admin/'
-import { UsersClientRoutes, CartItemsClientRoutes, OrdersClientRoutes } from './client'
+import { UsersClientRoutes, CartItemsClientRoutes, ProductDetailsClientRoutes, AddressesClientRoutes } from './client'
 
 export class AppRoutes {
   static get routes(): Router {
@@ -23,14 +23,19 @@ export class AppRoutes {
 
     router.use('/api/admin/categories', AuthMiddleware.authorization, RolesMiddleware.validateRoles(['admin']), CategoriesAdminRoutes.routes)
     router.use('/api/admin/products', AuthMiddleware.authorization, RolesMiddleware.validateRoles(['admin']), ProductsAdminRoutes.routes)
-    router.use('/api/admin/productsdetails', AuthMiddleware.authorization, RolesMiddleware.validateRoles(['admin']), ProductDetailsAdminRoutes.routes)
+    router.use('/api/admin/productdetails', AuthMiddleware.authorization, RolesMiddleware.validateRoles(['admin']), ProductDetailsAdminRoutes.routes)
 
     // * * CLIENT ROUTES
-
     // Profile, Update User Info, Update Password, Delete Account, change photo
     // Sessions, Security, Configs, Check Roles
     // Addresses, Payments
     router.use('/api/client/user', AuthMiddleware.authorization, RolesMiddleware.validateRoles(['admin', 'client']), UsersClientRoutes.routes)
+    router.use(
+      '/api/client/addresses',
+      AuthMiddleware.authorization,
+      RolesMiddleware.validateRoles(['admin', 'client']),
+      AddressesClientRoutes.routes,
+    )
 
     // Cart Items (Shopping Cart)
     router.use(
@@ -41,7 +46,12 @@ export class AppRoutes {
     )
 
     // Orders, Order Items
-    router.use('/api/client/orders', AuthMiddleware.authorization, RolesMiddleware.validateRoles(['admin', 'client']), OrdersClientRoutes.routes)
+    router.use(
+      '/api/client/orders',
+      AuthMiddleware.authorization,
+      RolesMiddleware.validateRoles(['admin', 'client']),
+      ProductDetailsClientRoutes.routes,
+    )
 
     // * * GUEST ROUTES
 

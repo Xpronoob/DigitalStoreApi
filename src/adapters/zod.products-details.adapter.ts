@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { CustomError } from '../errors/custom.error'
-import { ProductDetailEntity, ProductDetailEntityOptional } from '../entities/products-details'
+import { ProductDetailEntity, ProductDetailEntityOptional } from '../entities/product-details'
 
 export class ZodProductDetailsAdapter {
   static validateProductDetail = (productDetail: ProductDetailEntity) => {

@@ -1,3 +1,4 @@
+export * from './adresses.routes'
 export * from './cartItems.routes'
-export * from './products-details.routes'
+export * from './product-details.routes'
 export * from './users.routes'

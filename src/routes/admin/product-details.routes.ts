@@ -1,7 +1,7 @@
 import { Router } from 'express'
-import { ProductDetailsController } from '../../controllers/admin/products-details.controller'
-import { ProductDetailsDatasource } from '../../datasources/admin/products-details.datasource'
-import { ProductDetailsRepository } from '../../repositories/admin/products-details.repository'
+import { ProductDetailsController } from '../../controllers/admin/product-details.controller'
+import { ProductDetailsDatasource } from '../../datasources/admin/product-details.datasource'
+import { ProductDetailsRepository } from '../../repositories/admin/product-details.repository'
 
 export class ProductDetailsAdminRoutes {
   static get routes(): Router {

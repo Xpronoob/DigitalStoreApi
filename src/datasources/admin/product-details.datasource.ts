@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { CustomError } from '../../errors/custom.error'
-import { ProductDetailEntity, ProductDetailEntityOptional } from '../../entities/products-details'
+import { ProductDetailEntity, ProductDetailEntityOptional } from '../../entities/product-details'
 
 const prisma = new PrismaClient()
 
