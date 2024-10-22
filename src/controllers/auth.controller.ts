@@ -163,4 +163,39 @@ export class AuthController {
       console.log(error)
     }
   }
+
+  changePassword = async (req: Request, res: Response) => {
+    try {
+      const { oldPassword, newPassword } = ZodAuthAdapter.validateChangePassword(req.body)
+
+      const user = await this.authRepository.getUserById(req.body.user.user_id)
+
+      if (!user) {
+        throw CustomError.notFound('Usuario no encontrado')
+      }
+
+      const isPasswordValid = await BcryptAdapter.compare(oldPassword, user.password)
+      if (!isPasswordValid) {
+        throw CustomError.badRequest('La contraseña actual es incorrecta')
+      }
+
+      const hashedNewPassword = await BcryptAdapter.hash(newPassword)
+
+      const updatedUser = await this.authRepository.changePassword(user.user_id, hashedNewPassword)
+
+      if (!updatedUser) {
+        throw CustomError.internalServer('Error al actualizar la contraseña')
+      }
+
+      res.status(200).json({
+        message: 'Contraseña actualizada exitosamente',
+      })
+    } catch (error) {
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json({ message: error.message })
+      }
+      res.status(500).json({ message: 'Error interno del servidor' })
+      console.error(error)
+    }
+  }
 }
