@@ -12,7 +12,7 @@ CREATE TABLE users (
 
 CREATE TABLE sessions (
     session_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
+    user_id INT NOT NULL,
     refresh_token VARCHAR(255) UNIQUE NOT NULL,
     expires_at TIMESTAMP NOT NULL,
     device_type VARCHAR(100),
@@ -29,8 +29,8 @@ CREATE TABLE roles (
 );
 
 CREATE TABLE users_roles (
-    user_id INT,
-    role_id INT,
+    user_id INT NOT NULL,
+    role_id INT NOT NULL,
     PRIMARY KEY (user_id, role_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (role_id) REFERENCES roles(role_id)
@@ -39,7 +39,7 @@ CREATE TABLE users_roles (
 CREATE TABLE addresses (
     address_id INT AUTO_INCREMENT PRIMARY KEY,
     default_address BOOLEAN NOT NULL DEFAULT FALSE,
-    user_id INT,
+    user_id INT NOT NULL,
     street VARCHAR(255) NOT NULL,
     city VARCHAR(100) NOT NULL,
     state VARCHAR(100),
@@ -67,7 +67,7 @@ CREATE TABLE product_options (
 
 CREATE TABLE products (
     product_id INT AUTO_INCREMENT PRIMARY KEY,
-    category_id INT,
+    category_id INT NOT NULL,
     product_options_id INT NULL,
     product_name VARCHAR(255) NOT NULL,
     description TEXT,
@@ -81,7 +81,7 @@ CREATE TABLE products (
 
 CREATE TABLE product_details (
     product_detail_id INT AUTO_INCREMENT PRIMARY KEY,
-    product_id INT,
+    product_id INT NOT NULL,
     detail_name VARCHAR(255) NOT NULL,
     description VARCHAR(255),
     price DECIMAL(10, 2) NOT NULL,
@@ -96,8 +96,8 @@ CREATE TABLE product_details (
 
 CREATE TABLE cart_items (
     cart_item_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    product_detail_id INT,
+    user_id INT NOT NULL,
+    product_detail_id INT NOT NULL,
     quantity INT DEFAULT 1,
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (product_detail_id) REFERENCES product_details(product_detail_id)
@@ -105,7 +105,7 @@ CREATE TABLE cart_items (
 
 CREATE TABLE orders (
     order_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
+    user_id INT NOT NULL,
     address_id INT,
     total_amount DECIMAL(10, 2) NOT NULL,
     status VARCHAR(50) NOT NULL DEFAULT 'pending',
@@ -116,8 +116,8 @@ CREATE TABLE orders (
 
 CREATE TABLE order_items (
     order_item_id INT AUTO_INCREMENT PRIMARY KEY,
-    order_id INT,
-    product_detail_id INT,
+    order_id INT NOT NULL,
+    product_detail_id INT NOT NULL,
     quantity INT NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (order_id) REFERENCES orders(order_id),
@@ -126,7 +126,7 @@ CREATE TABLE order_items (
 
 CREATE TABLE payments (
     payment_id INT AUTO_INCREMENT PRIMARY KEY,
-    order_id INT,
+    order_id INT NOT NULL,
     payment_method VARCHAR(50) NOT NULL,
     payment_status VARCHAR(50) NOT NULL DEFAULT 'pending',
     payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -136,7 +136,7 @@ CREATE TABLE payments (
 
 CREATE TABLE licenses (
     license_id INT AUTO_INCREMENT PRIMARY KEY,
-    order_item_id INT,
+    order_item_id INT NOT NULL,
     license_key VARCHAR(255) NOT NULL UNIQUE,
     issued_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     active BOOLEAN NOT NULL DEFAULT FALSE,
