@@ -33,4 +33,25 @@ export class ZodAuthAdapter {
       throw CustomError.internalServer()
     }
   }
+
+  static validateChangePassword = (passwordData: { oldPassword: string; newPassword: string }) => {
+    const PasswordSchema = z.object({
+      oldPassword: z.string({ required_error: 'La contraseña actual es requerida' }).min(8, 'La contraseña actual debe tener al menos 8 caracteres'),
+      newPassword: z
+        .string({ required_error: 'La nueva contraseña es requerida' })
+        .min(8, 'La nueva contraseña debe tener al menos 8 caracteres')
+        .max(100, 'La nueva contraseña es demasiado larga'),
+    })
+
+    try {
+      const { oldPassword, newPassword } = PasswordSchema.parse(passwordData)
+
+      return { oldPassword, newPassword }
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        throw CustomError.badRequest(error.errors[0].message)
+      }
+      throw CustomError.internalServer()
+    }
+  }
 }
