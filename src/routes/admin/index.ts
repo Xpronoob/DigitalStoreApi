@@ -1,3 +1,4 @@
+export * from './licenses.routes'
 export * from './categories.routes'
 export * from './product-details.routes'
 export * from './products.routes'
