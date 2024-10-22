@@ -20,4 +20,12 @@ export class AuthRepository {
   async profile(req: Request) {
     return await this.authDatasource.profile(req)
   }
+
+  async getUserById(userId: string) {
+    return await this.authDatasource.getUserById(userId)
+  }
+
+  async changePassword(userId: number, hashedPassword: string) {
+    return await this.authDatasource.changePassword(userId, hashedPassword)
+  }
 }
