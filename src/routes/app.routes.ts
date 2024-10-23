@@ -10,7 +10,7 @@ import {
   ProductDetailsAdminRoutes,
   LicensesAdminRoutes,
 } from './admin/'
-import { UsersClientRoutes, CartItemsClientRoutes, ProductDetailsClientRoutes, AddressesClientRoutes } from './client'
+import { UsersClientRoutes, CartItemsClientRoutes, OrdersClientRoutes, AddressesClientRoutes } from './client'
 
 export class AppRoutes {
   static get routes(): Router {
@@ -37,29 +37,14 @@ export class AppRoutes {
     // Profile, Update User Info, Update Password, Delete Account, change photo
     // Sessions, Security, Configs, Check Roles
     // Addresses, Payments
-    router.use('/api/client/user', AuthMiddleware.authorization, RolesMiddleware.validateRoles(['admin', 'client']), UsersClientRoutes.routes)
-    router.use(
-      '/api/client/addresses',
-      AuthMiddleware.authorization,
-      RolesMiddleware.validateRoles(['admin', 'client']),
-      AddressesClientRoutes.routes,
-    )
+    router.use('/api/client/user', AuthMiddleware.authorization, UsersClientRoutes.routes)
+    router.use('/api/client/addresses', AuthMiddleware.authorization, AddressesClientRoutes.routes)
 
     // Cart Items (Shopping Cart)
-    router.use(
-      '/api/client/cartItems',
-      AuthMiddleware.authorization,
-      RolesMiddleware.validateRoles(['admin', 'client']),
-      CartItemsClientRoutes.routes,
-    )
+    router.use('/api/client/cartitems', AuthMiddleware.authorization, CartItemsClientRoutes.routes)
 
     // Orders, Order Items
-    router.use(
-      '/api/client/orders',
-      AuthMiddleware.authorization,
-      RolesMiddleware.validateRoles(['admin', 'client']),
-      ProductDetailsClientRoutes.routes,
-    )
+    router.use('/api/client/orders', AuthMiddleware.authorization, OrdersClientRoutes.routes)
 
     // * * GUEST ROUTES
 
