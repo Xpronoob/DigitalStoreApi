@@ -155,4 +155,37 @@ export class AuthDatasource {
   }
 
   async profile(req: Request) {}
+
+  async getUserById(userId: string) {
+    try {
+      const user = await prisma.users.findUnique({
+        where: { user_id: parseInt(userId) },
+      })
+
+      if (!user) {
+        throw CustomError.notFound('Usuario no encontrado')
+      }
+
+      return user
+    } catch (error) {
+      throw CustomError.internalServer('Error al obtener el usuario')
+    }
+  }
+
+  async changePassword(userId: number, hashedPassword: string) {
+    try {
+      const updatedUser = await prisma.users.update({
+        where: { user_id: userId },
+        data: { password: hashedPassword },
+      })
+
+      if (!updatedUser) {
+        throw CustomError.notFound('Usuario no encontrado')
+      }
+
+      return updatedUser
+    } catch (error) {
+      throw CustomError.internalServer('Error al actualizar la contraseña')
+    }
+  }
 }

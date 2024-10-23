@@ -19,6 +19,8 @@ export class AuthRoutes {
 
     router.get('/profile', [AuthMiddleware.authorization], controller.profile)
 
+    router.patch('/change-password', [AuthMiddleware.authorization], controller.changePassword)
+
     return router
   }
 }
