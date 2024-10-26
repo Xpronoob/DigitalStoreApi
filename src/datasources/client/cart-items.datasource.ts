@@ -7,14 +7,30 @@ const prisma = new PrismaClient()
 export class CartItemsDatasource {
   async create(cartItemData: CartItemsEntity) {
     try {
-      const cartItem = await prisma.cart_items.create({
-        data: {
-          user_id: cartItemData.user_id,
-          product_detail_id: cartItemData.product_detail_id,
-          quantity: cartItemData.quantity,
-        },
+      const existCartItem = await prisma.cart_items.findFirst({
+        where: { user_id: cartItemData.user_id, product_detail_id: cartItemData.product_detail_id },
       })
-      return cartItem
+
+      if (existCartItem?.quantity != null) {
+        const updatedCartItem = await prisma.cart_items.update({
+          where: {
+            cart_item_id: existCartItem.cart_item_id,
+          },
+          data: {
+            quantity: cartItemData.quantity || existCartItem.quantity + 1,
+          },
+        })
+        return updatedCartItem
+      } else {
+        const cartItem = await prisma.cart_items.create({
+          data: {
+            user_id: cartItemData.user_id,
+            product_detail_id: cartItemData.product_detail_id,
+            quantity: cartItemData.quantity,
+          },
+        })
+        return cartItem
+      }
     } catch (error) {
       throw CustomError.internalServer('Error al insertan en el carrito')
     }
