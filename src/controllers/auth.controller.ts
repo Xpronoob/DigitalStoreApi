@@ -198,4 +198,61 @@ export class AuthController {
       console.error(error)
     }
   }
+
+  forgotPassword = async (req: Request, res: Response) => {
+    try {
+      const { email } = ZodAuthAdapter.validateForgotPassword(req.body)
+
+      const user = await this.authRepository.getUserByEmail(email)
+      if (!user) {
+        throw CustomError.notFound('Usuario no encontrado')
+      }
+
+      const resetToken = await this.authRepository.generatePasswordResetToken(user.user_id)
+
+      await this.authRepository.savePasswordResetToken(user.user_id, resetToken)
+
+      res.status(200).json({
+        message: 'Solicitud de recuperación de contraseña exitosa. Por favor revisa tu correo o SMS para el token de recuperación.',
+      })
+    } catch (error) {
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json({ message: error.message })
+      }
+      res.status(500).json({ message: 'Error interno del servidor' })
+      console.error(error)
+    }
+  }
+
+  resetPassword = async (req: Request, res: Response) => {
+    try {
+      const { token, newPassword } = ZodAuthAdapter.validateResetPassword(req.body)
+
+      // Verificar el token y obtener el `user_id`
+      const userId = await this.authRepository.verifyPasswordResetToken(token)
+      if (!userId) {
+        throw CustomError.badRequest('Token de recuperación inválido o expirado')
+      }
+
+      // Hashear la nueva contraseña
+      const hashedNewPassword = await BcryptAdapter.hash(newPassword)
+
+      // Actualizar la contraseña del usuario
+      const updatedUser = await this.authRepository.changePassword(userId, hashedNewPassword)
+
+      if (!updatedUser) {
+        throw CustomError.internalServer('Error al actualizar la contraseña')
+      }
+
+      res.status(200).json({
+        message: 'Contraseña restablecida exitosamente',
+      })
+    } catch (error) {
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json({ message: error.message })
+      }
+      res.status(500).json({ message: 'Error interno del servidor' })
+      console.error(error)
+    }
+  }
 }
