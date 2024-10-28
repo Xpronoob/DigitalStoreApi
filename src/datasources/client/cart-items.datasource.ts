@@ -44,7 +44,6 @@ export class CartItemsDatasource {
         //   },
         // })
 
-        console.log('Updated Cart Item:', updatedCartItem)
         return updatedCartItem
       } else {
         const newCartItem = await prisma.cart_items.create({
