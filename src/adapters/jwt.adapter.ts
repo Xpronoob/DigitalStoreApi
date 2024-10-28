@@ -45,4 +45,27 @@ export class JwtAdapter {
       })
     })
   }
+
+  static async generatePasswordResetToken(
+    userId: number,
+    duration: number = convertToSeconds(envs.RESET_PASSWORD_TOKEN_EXPIRES),
+  ): Promise<string | null> {
+    const payload = { userId }
+    return await new Promise((resolve) => {
+      jwt.sign(payload, envs.JWT_PASSWORD_RESET_TOKEN, { expiresIn: duration }, (err, token) => {
+        if (err != null) return resolve(null)
+        resolve(token!)
+      })
+    })
+  }
+
+  static async validatePasswordResetToken<T>(token: string): Promise<T | null> {
+    return await new Promise((resolve) => {
+      jwt.verify(token, envs.JWT_PASSWORD_RESET_TOKEN, (err, decoded) => {
+        if (err?.message === 'jwt expired') return resolve({ expired: true } as T)
+        if (err?.name === 'JsonWebTokenError') return resolve(null)
+        resolve(decoded as T)
+      })
+    })
+  }
 }
