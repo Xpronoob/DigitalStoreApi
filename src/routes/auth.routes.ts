@@ -17,6 +17,9 @@ export class AuthRoutes {
     router.post('/register', controller.register)
     router.get('/logout', controller.logout)
 
+    router.post('/forgot-password', controller.forgotPassword)
+    router.post('/reset-password', controller.resetPassword)
+
     router.get('/profile', [AuthMiddleware.authorization], controller.profile)
 
     router.patch('/change-password', [AuthMiddleware.authorization], controller.changePassword)
