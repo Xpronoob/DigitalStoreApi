@@ -188,4 +188,64 @@ export class AuthDatasource {
       throw CustomError.internalServer('Error al actualizar la contraseña')
     }
   }
+
+  async getUserByEmail(email: string) {
+    const user = await prisma.users.findUnique({
+      where: { email },
+    })
+
+    if (!user) {
+      throw CustomError.notFound('Usuario no encontrado')
+    }
+
+    return user
+  }
+
+  async generatePasswordResetToken(userId: number) {
+    const resetToken = await JwtAdapter.generatePasswordResetToken(userId)
+    if (!resetToken) {
+      throw CustomError.internalServer('Error generando el token de recuperación')
+    }
+    return resetToken
+  }
+
+  async savePasswordResetToken(userId: number, token: string) {
+    const expiresAt = new Date(new Date().getTime() + convertToMillisencods(envs.RESET_PASSWORD_TOKEN_EXPIRES))
+
+    // Guardar el token sin hashear
+    await prisma.password_resets.create({
+      data: {
+        user_id: userId,
+        token: token, // Guardar el JWT directamente
+        expires_at: expiresAt,
+      },
+    })
+
+    return true
+  }
+
+  async verifyPasswordResetToken(token: string) {
+    const decodedToken = await JwtAdapter.validatePasswordResetToken<{ userId: number; exp?: number }>(token)
+
+    if (!decodedToken || (decodedToken.exp && decodedToken.exp * 1000 < Date.now())) {
+      throw CustomError.unauthorized('Token de recuperación inválido o expirado')
+    }
+
+    const resetTokenEntry = await prisma.password_resets.findUnique({
+      where: {
+        token: token,
+      },
+    })
+
+    if (!resetTokenEntry || resetTokenEntry.expires_at <= new Date()) {
+      throw CustomError.unauthorized('Token de recuperación inválido o expirado')
+    }
+
+    await prisma.password_resets.delete({
+      where: { token: token },
+    })
+
+    // Retornar `user_id` si el token es válido
+    return resetTokenEntry.user_id
+  }
 }
