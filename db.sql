@@ -142,3 +142,13 @@ CREATE TABLE licenses (
     active BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (order_item_id) REFERENCES order_items(order_item_id)
 );
+
+CREATE TABLE password_resets (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    token VARCHAR(255) NOT NULL UNIQUE,
+    expires_at DATETIME NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    INDEX user_id_idx (user_id)
+);
+

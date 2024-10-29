@@ -54,4 +54,42 @@ export class ZodAuthAdapter {
       throw CustomError.internalServer()
     }
   }
+
+  static validateForgotPassword = (data: { email: string }) => {
+    const ForgotPasswordSchema = z.object({
+      email: z.string({ required_error: 'El email es requerido' }).email('Debe ser un email válido'),
+    })
+
+    try {
+      const { email } = ForgotPasswordSchema.parse(data)
+
+      return { email }
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        throw CustomError.badRequest(error.errors[0].message)
+      }
+      throw CustomError.internalServer()
+    }
+  }
+
+  static validateResetPassword = (data: { token: string; newPassword: string }) => {
+    const ResetPasswordSchema = z.object({
+      token: z.string({ required_error: 'El token es requerido' }),
+      newPassword: z
+        .string({ required_error: 'La nueva contraseña es requerida' })
+        .min(8, 'La nueva contraseña debe tener al menos 8 caracteres')
+        .max(100, 'La nueva contraseña es demasiado larga'),
+    })
+
+    try {
+      const { token, newPassword } = ResetPasswordSchema.parse(data)
+
+      return { token, newPassword }
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        throw CustomError.badRequest(error.errors[0].message)
+      }
+      throw CustomError.internalServer()
+    }
+  }
 }

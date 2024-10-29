@@ -10,4 +10,8 @@ export class BcryptAdapter {
   static compare(password: string, hashed: string): boolean {
     return compareSync(password, hashed)
   }
+
+  static compareToken(token: string, hashedToken: string): boolean {
+    return compareSync(token, hashedToken)
+  }
 }

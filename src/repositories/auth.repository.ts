@@ -28,4 +28,20 @@ export class AuthRepository {
   async changePassword(userId: number, hashedPassword: string) {
     return await this.authDatasource.changePassword(userId, hashedPassword)
   }
+
+  async getUserByEmail(email: string) {
+    return await this.authDatasource.getUserByEmail(email)
+  }
+
+  async generatePasswordResetToken(userId: number) {
+    return await this.authDatasource.generatePasswordResetToken(userId)
+  }
+
+  async savePasswordResetToken(userId: number, token: string) {
+    return await this.authDatasource.savePasswordResetToken(userId, token)
+  }
+
+  async verifyPasswordResetToken(token: string) {
+    return await this.authDatasource.verifyPasswordResetToken(token)
+  }
 }
