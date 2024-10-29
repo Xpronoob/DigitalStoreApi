@@ -11,7 +11,11 @@ export class ZodCartItemsAdapter {
       product_detail_id: z.number({
         required_error: 'El ID del detalle de producto es requerido',
       }),
-      quantity: z.number().optional(),
+      quantity: z
+        .number({
+          required_error: 'La cantidad es requerida',
+        })
+        .positive('La cantidad debe ser positiva'),
     })
 
     try {

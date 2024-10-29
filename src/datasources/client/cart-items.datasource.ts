@@ -7,16 +7,69 @@ const prisma = new PrismaClient()
 export class CartItemsDatasource {
   async create(cartItemData: CartItemsEntity) {
     try {
-      const cartItem = await prisma.cart_items.create({
-        data: {
+      const existingCartItem = await prisma.cart_items.findFirst({
+        where: {
           user_id: cartItemData.user_id,
           product_detail_id: cartItemData.product_detail_id,
-          quantity: cartItemData.quantity,
         },
       })
-      return cartItem
+
+      const productStock = await prisma.product_details.findUnique({
+        where: { product_detail_id: cartItemData.product_detail_id },
+        select: { quantity: true },
+      })
+
+      if (!productStock) {
+        throw CustomError.notFound('El producto no existe')
+      }
+
+      const totalQuantity = existingCartItem ? existingCartItem?.quantity! + cartItemData.quantity : cartItemData.quantity
+
+      if (totalQuantity > productStock.quantity!) {
+        throw CustomError.badRequest('El stock de este producto es insuficiente')
+      }
+
+      if (existingCartItem) {
+        const updatedCartItem = await prisma.cart_items.update({
+          where: { cart_item_id: existingCartItem.cart_item_id },
+          data: { quantity: totalQuantity },
+        })
+
+        // const productDetailQuantity = productStock.quantity! - totalQuantity
+
+        // await prisma.product_details.update({
+        //   where: { product_detail_id: updatedCartItem.product_detail_id },
+        //   data: {
+        //     quantity: productDetailQuantity,
+        //   },
+        // })
+
+        return updatedCartItem
+      } else {
+        const newCartItem = await prisma.cart_items.create({
+          data: {
+            user_id: cartItemData.user_id,
+            product_detail_id: cartItemData.product_detail_id,
+            quantity: cartItemData.quantity,
+          },
+        })
+
+        // const productDetailQuantity = productStock.quantity! - totalQuantity
+
+        // await prisma.product_details.update({
+        //   where: { product_detail_id: cartItemData.product_detail_id },
+        //   data: {
+        //     quantity: productDetailQuantity,
+        //   },
+        // })
+        return newCartItem
+      }
     } catch (error) {
-      throw CustomError.internalServer('Error al insertan en el carrito')
+      if (error instanceof CustomError) {
+        throw error
+      }
+      console.error('Error al agregar al carrito:', error)
+      throw CustomError.internalServer('Error al agregar el producto al carrito')
     }
   }
 
