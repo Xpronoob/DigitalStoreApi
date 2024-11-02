@@ -24,10 +24,11 @@ export class AuthDatasource {
       first_name?: string
       last_name?: string
       phone_number?: string
+      img?: string
     },
     userAgentInfo: UserAgentEntity,
   ) {
-    const { email, password, first_name, last_name, phone_number } = validatedData
+    const { email, password, first_name, last_name, phone_number, img } = validatedData
 
     const isRegistered = await prisma.users.findFirst({
       where: { email: email },
@@ -44,6 +45,7 @@ export class AuthDatasource {
         first_name,
         last_name,
         phone_number,
+        img,
       },
     })
 
@@ -88,11 +90,21 @@ export class AuthDatasource {
 
     const user = await prisma.users.findFirst({
       where: { email: email },
+      include: { users_roles: true },
     })
 
     if (!user) {
       throw CustomError.unauthorized('Usuario no encontrado')
     }
+
+    const roles = await prisma.users_roles.findMany({
+      where: { user_id: user.user_id },
+      include: { roles: true },
+    })
+
+    const userRoles = roles.map((role) => role.roles.role_name)
+
+    // console.log(userRoles)
 
     const passwordMatch = BcryptAdapter.compare(password, user.password)
     if (!passwordMatch) throw CustomError.unauthorized('Contraseña incorrecta')
@@ -101,6 +113,7 @@ export class AuthDatasource {
       user_id: user.user_id,
       email: user.email,
       first_name: user.first_name,
+      roles: userRoles,
     }
 
     const accessToken = await this.signAccessToken(payload)
@@ -126,6 +139,7 @@ export class AuthDatasource {
       first_name: user.first_name,
       last_name: user.last_name,
       phone_number: user.phone_number,
+      roles: userRoles,
       accessToken,
       refreshToken,
     }

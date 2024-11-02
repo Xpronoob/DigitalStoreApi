@@ -5,7 +5,6 @@ import { CustomError } from '../errors/custom.error'
 import { BcryptAdapter } from '../adapters/bcrypt.adapter'
 import { convertToMillisencods } from '../utils/converters.util'
 import { envs } from '../configs/envs.config'
-import { UAParser } from 'ua-parser-js'
 import { UAParserAdapter } from '../adapters/uaparser.adapter'
 import { UserAgentEntity } from '../entities/user-agent.entity'
 
@@ -47,6 +46,7 @@ export class AuthController {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
+        maxAge: convertToMillisencods(envs.COOKIE_EXPIRES_ACCESS_TOKEN),
       })
 
       res.cookie('refreshToken', user.refreshToken, {
@@ -103,6 +103,7 @@ export class AuthController {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
+        maxAge: convertToMillisencods(envs.COOKIE_EXPIRES_ACCESS_TOKEN),
       })
 
       res.cookie('refreshToken', user.refreshToken, {

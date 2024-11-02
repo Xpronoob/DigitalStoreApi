@@ -16,13 +16,18 @@ export class ZodAuthAdapter {
       first_name: z.string().optional(),
       last_name: z.string().optional(),
       phone_number: z.string().optional(),
+      img: z.string().optional(),
     })
 
     try {
-      const { email, password, first_name, last_name, phone_number } = User.parse(user)
+      const { email, password, first_name, last_name, phone_number, img } = User.parse(user)
       const validatedData = {
         email,
         password,
+        first_name,
+        last_name,
+        phone_number,
+        img,
       }
 
       return validatedData
