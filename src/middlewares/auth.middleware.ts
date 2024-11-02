@@ -40,10 +40,18 @@ export class AuthMiddleware {
         throw CustomError.unauthorized('Token no pertenece al usuario')
       }
 
+      const roles = await prisma.users_roles.findMany({
+        where: { user_id: session.user_id },
+        include: { roles: true },
+      })
+
+      const userRoles = roles.map((role) => role.roles.role_name)
+
       const payload = {
         user_id: session.users.user_id,
         email: session.users.email,
         first_name: session.users.first_name,
+        roles: userRoles,
       }
 
       if (payloadAccessToken.expired) {
