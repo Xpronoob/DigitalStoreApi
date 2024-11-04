@@ -64,7 +64,7 @@ export class AuthDatasource {
       data: {
         user_id: user.user_id,
         refresh_token: refreshToken,
-        expires_at: new Date(new Date().getTime() + convertToMillisencods(envs.COOKIE_EXPIRES_REFRESH_TOKEN)),
+        expires_at: new Date(new Date().getTime() + convertToMillisencods(envs.JWT_EXPIRES_REFRESH_TOKEN)),
         device_type: userAgentInfo.deviceType,
         ip_address: userAgentInfo.ipAddress,
         osName: userAgentInfo.osName,
@@ -125,7 +125,7 @@ export class AuthDatasource {
       data: {
         user_id: user.user_id,
         refresh_token: refreshToken,
-        expires_at: new Date(new Date().getTime() + convertToMillisencods(envs.COOKIE_EXPIRES_REFRESH_TOKEN)),
+        expires_at: new Date(new Date().getTime() + convertToMillisencods(envs.JWT_EXPIRES_REFRESH_TOKEN)),
         device_type: userAgentInfo.deviceType,
         ip_address: userAgentInfo.ipAddress,
         osName: userAgentInfo.osName,

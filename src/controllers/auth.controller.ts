@@ -46,14 +46,14 @@ export class AuthController {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
-        // maxAge: convertToMillisencods(envs.COOKIE_EXPIRES_ACCESS_TOKEN), // Don't remove accessToken because it's used in the refresh token
+        maxAge: convertToMillisencods(envs.JWT_EXPIRES_REFRESH_TOKEN), // Don't remove accessToken because it's used in the refresh token
       })
 
       res.cookie('refreshToken', user.refreshToken, {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
-        maxAge: convertToMillisencods(envs.COOKIE_EXPIRES_REFRESH_TOKEN),
+        maxAge: convertToMillisencods(envs.JWT_EXPIRES_REFRESH_TOKEN),
       })
 
       res.status(201).json(user)
@@ -100,14 +100,14 @@ export class AuthController {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
-        // maxAge: convertToMillisencods(envs.COOKIE_EXPIRES_ACCESS_TOKEN),
+        maxAge: convertToMillisencods(envs.JWT_EXPIRES_REFRESH_TOKEN),
       })
 
       res.cookie('refreshToken', user.refreshToken, {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
-        maxAge: convertToMillisencods(envs.COOKIE_EXPIRES_REFRESH_TOKEN),
+        maxAge: convertToMillisencods(envs.JWT_EXPIRES_REFRESH_TOKEN),
       })
 
       res.status(201).json(user)

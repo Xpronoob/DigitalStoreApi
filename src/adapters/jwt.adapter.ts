@@ -3,7 +3,7 @@ import { envs } from '../configs/envs.config'
 import { convertToSeconds } from '../utils/converters.util'
 
 export class JwtAdapter {
-  static async generateAccessToken(payload: Object, duration: number = convertToSeconds(envs.COOKIE_EXPIRES_ACCESS_TOKEN)): Promise<string | null> {
+  static async generateAccessToken(payload: Object, duration: number = convertToSeconds(envs.JWT_EXPIRES_ACCESS_TOKEN)): Promise<string | null> {
     return await new Promise((resolve) => {
       jwt.sign(payload, envs.JWT_ACCESS_TOKEN, { expiresIn: duration }, (err, token) => {
         if (err != null) return resolve(null)
@@ -13,7 +13,7 @@ export class JwtAdapter {
     })
   }
 
-  static async generateRefreshToken(payload: Object, duration: number = convertToSeconds(envs.COOKIE_EXPIRES_REFRESH_TOKEN)): Promise<string | null> {
+  static async generateRefreshToken(payload: Object, duration: number = convertToSeconds(envs.JWT_EXPIRES_REFRESH_TOKEN)): Promise<string | null> {
     return await new Promise((resolve) => {
       jwt.sign(payload, envs.JWT_REFRESH_TOKEN, { expiresIn: duration }, (err, token) => {
         if (err != null) return resolve(null)

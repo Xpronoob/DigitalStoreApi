@@ -3,6 +3,7 @@ import { CustomError } from '../errors/custom.error'
 import { JwtAdapter } from './../adapters/jwt.adapter'
 import { PrismaClient } from '@prisma/client'
 import { envs } from '../configs/envs.config'
+import { convertToMillisencods } from '../utils/converters.util'
 
 const prisma = new PrismaClient()
 
@@ -67,6 +68,7 @@ export class AuthMiddleware {
           httpOnly: true,
           secure: true,
           sameSite: 'strict',
+          maxAge: convertToMillisencods(envs.JWT_EXPIRES_REFRESH_TOKEN),
         })
 
         if (envs.DEBUG_MODE) {
