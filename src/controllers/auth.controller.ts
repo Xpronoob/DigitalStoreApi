@@ -102,7 +102,7 @@ export class AuthController {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
-        maxAge: convertToMillisencods(envs.COOKIE_EXPIRES_ACCESS_TOKEN),
+        // maxAge: convertToMillisencods(envs.COOKIE_EXPIRES_ACCESS_TOKEN),
       })
 
       res.cookie('refreshToken', user.refreshToken, {
