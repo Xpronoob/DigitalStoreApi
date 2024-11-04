@@ -1,7 +1,7 @@
 {
-  "name": "digitalstore",
+  "name": "ecommerce-api",
   "version": "1.0.0",
-  "description": "Digital Store",
+  "description": "Ecommerce API",
   "main": "./src/app.ts",
   "scripts": {
     "start": "node --env-file=.env ./build/src/app.js",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Xpronoob/DigitalStoreApi.git"
+    "url": "git+https://github.com/Xpronoob/Ecommerce-API.git"
   },
   "keywords": [
     "digital",
@@ -24,9 +24,9 @@
   "author": "Xpronoob",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Xpronoob/DigitalStoreApi/issues"
+    "url": "https://github.com/Xpronoob/Ecommerce-API/issues"
   },
-  "homepage": "https://github.com/Xpronoob/DigitalStoreApi#readme",
+  "homepage": "https://github.com/Xpronoob/Ecommerce-API#readme",
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@types/bcrypt": "^5.0.2",
