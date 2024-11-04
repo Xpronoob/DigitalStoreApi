@@ -56,9 +56,7 @@ export class AuthController {
         maxAge: convertToMillisencods(envs.COOKIE_EXPIRES_REFRESH_TOKEN),
       })
 
-      res.status(201).json({
-        user,
-      })
+      res.status(201).json(user)
     } catch (error) {
       if (error instanceof CustomError) {
         return res.status(error.statusCode).json({ message: error.message })
@@ -112,9 +110,7 @@ export class AuthController {
         maxAge: convertToMillisencods(envs.COOKIE_EXPIRES_REFRESH_TOKEN),
       })
 
-      res.status(201).json({
-        user,
-      })
+      res.status(201).json(user)
     } catch (error) {
       if (error instanceof CustomError) {
         return res.status(error.statusCode).json({ message: error.message })
