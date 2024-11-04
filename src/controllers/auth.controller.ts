@@ -46,7 +46,7 @@ export class AuthController {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
-        maxAge: convertToMillisencods(envs.COOKIE_EXPIRES_ACCESS_TOKEN),
+        // maxAge: convertToMillisencods(envs.COOKIE_EXPIRES_ACCESS_TOKEN), // Don't remove accessToken because it's used in the refresh token
       })
 
       res.cookie('refreshToken', user.refreshToken, {
@@ -57,7 +57,6 @@ export class AuthController {
       })
 
       res.status(201).json({
-        message: 'Has iniciado sesión exitosamente',
         user,
       })
     } catch (error) {
@@ -114,7 +113,6 @@ export class AuthController {
       })
 
       res.status(201).json({
-        message: 'Usuario registrado exitosamente',
         user,
       })
     } catch (error) {

@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import { CustomError } from '../errors/custom.error'
 import { JwtAdapter } from './../adapters/jwt.adapter'
 import { PrismaClient } from '@prisma/client'
+import { envs } from '../configs/envs.config'
 
 const prisma = new PrismaClient()
 
@@ -24,6 +25,10 @@ export class AuthMiddleware {
         expired: boolean
       }>(refreshToken)
       if (!payloadAccessToken || !payloadRefreshToken || payloadRefreshToken.expired) throw CustomError.unauthorized('No estás autorizado')
+
+      if (envs.DEBUG_MODE) {
+        console.log('Access Token:', payloadAccessToken)
+      }
 
       const session = await prisma.sessions.findUnique({
         where: {
@@ -63,6 +68,10 @@ export class AuthMiddleware {
           secure: true,
           sameSite: 'strict',
         })
+
+        if (envs.DEBUG_MODE) {
+          refreshedAccessToken && console.log('Access Token Refreshed Successfully')
+        }
 
         req.body.user = payload
       }
