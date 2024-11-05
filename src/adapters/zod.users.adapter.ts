@@ -34,7 +34,7 @@ export class ZodUsersAdapter {
   static validateUserUpdate = (user: UserEntityOptional) => {
     const User = z.object({
       email: z.string().email('Debe ser un email válido').optional(),
-      password: z.string().min(8, 'La contraseña debe tener al menos 8 caracteres').max(100, 'La contraseña es demasiado larga').optional(),
+      // password: z.string().min(8, 'La contraseña debe tener al menos 8 caracteres').max(100, 'La contraseña es demasiado larga').optional(),
       active: z.boolean().optional(),
       first_name: z.string().optional(),
       last_name: z.string().optional(),

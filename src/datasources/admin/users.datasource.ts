@@ -7,6 +7,14 @@ const prisma = new PrismaClient()
 export class UsersDatasource {
   async create(userData: UserEntity) {
     try {
+      const userExist = await prisma.users.findFirst({
+        where: { email: userData.email },
+      })
+
+      if (userExist) {
+        throw CustomError.badRequest('El usuario ya existe')
+      }
+
       const user = await prisma.users.create({
         data: {
           email: userData.email,
@@ -20,6 +28,9 @@ export class UsersDatasource {
       })
       return user
     } catch (error) {
+      if (error instanceof CustomError) {
+        throw CustomError.internalServer(error.message)
+      }
       throw CustomError.internalServer('Error al crear el usuario')
     }
   }
@@ -30,7 +41,7 @@ export class UsersDatasource {
         where: { user_id: userId },
         data: {
           email: userData.email,
-          password: userData.password,
+          // password: userData.password,
           active: userData.active,
           first_name: userData.first_name,
           last_name: userData.last_name,
