@@ -149,21 +149,24 @@ export class AuthDatasource {
 
   async logout(req: Request) {
     const refreshToken = req.cookies.refreshToken
-    if (!refreshToken) {
-      throw CustomError.unauthorized('No has iniciado sesión')
+    // if (!refreshToken) {
+    //   throw CustomError.unauthorized('No has iniciado sesión')
+    // }
+
+    if (refreshToken) {
+      const session = await prisma.sessions.findFirst({
+        where: { refresh_token: refreshToken },
+      })
+      if (session) {
+        await prisma.sessions.delete({
+          where: { refresh_token: refreshToken },
+        })
+      }
     }
 
-    const session = await prisma.sessions.findFirst({
-      where: { refresh_token: refreshToken },
-    })
-
-    if (!session) {
-      throw CustomError.unauthorized('No se encontró la sesión o ya fue cerrada')
-    }
-
-    await prisma.sessions.delete({
-      where: { refresh_token: refreshToken },
-    })
+    // if (!session) {
+    //   throw CustomError.unauthorized('No se encontró la sesión o ya fue cerrada')
+    // }
 
     return true
   }
