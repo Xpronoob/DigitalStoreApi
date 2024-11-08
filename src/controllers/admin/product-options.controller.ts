@@ -71,7 +71,6 @@ export class ProductOptionsController {
   }
 
   productOptionGetAll = async (req: Request, res: Response) => {
-    console.log('GetAll')
     try {
       const products = await this.productsRepository.productOptionGetAll()
 
@@ -91,7 +90,6 @@ export class ProductOptionsController {
   }
 
   productOptionGetById = async (req: Request, res: Response) => {
-    console.log('GetById')
     try {
       const product = await this.productsRepository.productOptionGetById(parseInt(req.params.productOptionsId))
 
