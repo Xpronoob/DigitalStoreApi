@@ -20,10 +20,6 @@ export class ProductsAdminRoutes {
 
     router.patch('/:productId/toggle-status', controller.toggleStatus)
 
-    router.post('/options', controller.createOptions)
-    router.patch('/:productOptionsId/options', controller.updateOptions)
-    router.patch('/:productOptionsId/options/toggle-status', controller.toggleStatusProductOptions)
-
     return router
   }
 }

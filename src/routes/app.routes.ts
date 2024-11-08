@@ -11,6 +11,7 @@ import {
   LicensesAdminRoutes,
 } from './admin/'
 import { UsersClientRoutes, CartItemsClientRoutes, OrdersClientRoutes, AddressesClientRoutes } from './client'
+import { ProductsOptionsAdminRoutes } from './admin/products-options.routes'
 
 export class AppRoutes {
   static get routes(): Router {
@@ -30,6 +31,7 @@ export class AppRoutes {
 
     router.use('/api/admin/categories', AuthMiddleware.authorization, RolesMiddleware.validateRoles(['admin']), CategoriesAdminRoutes.routes)
     router.use('/api/admin/products', AuthMiddleware.authorization, RolesMiddleware.validateRoles(['admin']), ProductsAdminRoutes.routes)
+    router.use('/api/admin/productoptions', AuthMiddleware.authorization, RolesMiddleware.validateRoles(['admin']), ProductsOptionsAdminRoutes.routes)
     router.use('/api/admin/productdetails', AuthMiddleware.authorization, RolesMiddleware.validateRoles(['admin']), ProductDetailsAdminRoutes.routes)
     router.use('/api/admin/licenses', LicensesAdminRoutes.routes)
 
