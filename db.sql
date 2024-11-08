@@ -13,7 +13,7 @@ CREATE TABLE users (
 CREATE TABLE sessions (
     session_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    refresh_token VARCHAR(255) UNIQUE NOT NULL,
+    refresh_token VARCHAR(500) UNIQUE NOT NULL,
     expires_at TIMESTAMP NOT NULL,
     device_type VARCHAR(100),
     ip_address VARCHAR(100),

@@ -84,6 +84,16 @@ model orders {
   @@index([user_id], map: "user_id")
 }
 
+model password_resets {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  token      String   @unique(map: "token") @db.VarChar(255)
+  expires_at DateTime @db.DateTime(0)
+  users      users    @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: Restrict, map: "password_resets_ibfk_1")
+
+  @@index([user_id], map: "user_id_idx")
+}
+
 model payments {
   payment_id     Int      @id @default(autoincrement())
   order_id       Int
@@ -153,7 +163,7 @@ model roles {
 model sessions {
   session_id    Int      @id @default(autoincrement())
   user_id       Int
-  refresh_token String   @unique(map: "refresh_token") @db.VarChar(255)
+  refresh_token String   @unique(map: "refresh_token") @db.VarChar(500)
   expires_at    DateTime @default(now()) @db.Timestamp(0)
   device_type   String?  @db.VarChar(100)
   ip_address    String?  @db.VarChar(100)
@@ -191,14 +201,4 @@ model users_roles {
 
   @@id([user_id, role_id])
   @@index([role_id], map: "role_id")
-}
-
-model password_resets {
-  id         Int      @id @default(autoincrement())
-  user_id    Int
-  token      String   @unique(map: "token") @db.VarChar(255)
-  expires_at DateTime @db.DateTime(0)
-  users      users    @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: Restrict, map: "password_resets_ibfk_1")
-
-  @@index([user_id], map: "user_id_idx")
 }
