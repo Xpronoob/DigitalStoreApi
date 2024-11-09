@@ -33,9 +33,9 @@ export class UsersController {
   update = async (req: Request, res: Response) => {
     try {
       const validatedData = ZodUsersAdapter.validateUserUpdate(req.body)
-      if (validatedData.password) {
-        validatedData.password = BcryptAdapter.hash(validatedData.password)
-      }
+      // if (validatedData.password) {
+      //   validatedData.password = BcryptAdapter.hash(validatedData.password)
+      // }
       if (validatedData.email) {
         validatedData.email = validatedData.email.toLowerCase()
       }
