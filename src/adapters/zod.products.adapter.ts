@@ -83,7 +83,7 @@ export class ZodProductsAdapter {
   static validateProductOptions = (product: ProductOptionsEntity) => {
     const ProductOptions = z.object({
       product_options_name: z
-        .string()
+        .string({ required_error: 'El nombre del producto es obligatorio' })
         // .min(3, 'El nombre del producto debe tener al menos 3 caracteres')
         .max(150, 'El nombre del producto no puede exceder 150 caracteres'),
       active: z.boolean().optional(),
