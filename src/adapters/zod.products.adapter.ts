@@ -84,7 +84,7 @@ export class ZodProductsAdapter {
     const ProductOptions = z.object({
       product_options_name: z
         .string()
-        .min(3, 'El nombre del producto debe tener al menos 3 caracteres')
+        // .min(3, 'El nombre del producto debe tener al menos 3 caracteres')
         .max(150, 'El nombre del producto no puede exceder 150 caracteres'),
       active: z.boolean().optional(),
       color: z.boolean().optional(),
