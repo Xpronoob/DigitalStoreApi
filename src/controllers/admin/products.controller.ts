@@ -90,11 +90,11 @@ export class ProductsController {
       const product = await this.productsRepository.getById(parseInt(req.params.id))
 
       if (!product) throw CustomError.notFound('Producto no encontrado')
-
-      res.status(200).json({
-        message: 'Producto obtenido exitosamente',
-        product,
-      })
+      // res.status(200).json({
+      //   message: 'Producto obtenido exitosamente',
+      //   product,
+      // })
+      res.status(200).json(product)
     } catch (error) {
       if (error instanceof CustomError) {
         return res.status(error.statusCode).json({ message: error.message })
