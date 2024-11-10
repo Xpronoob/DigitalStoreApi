@@ -4,23 +4,27 @@ import { ProductOptionsEntity } from '../../entities/product-options.entity'
 export class ProductOptionsRepository {
   constructor(private readonly productOptionsDatasource: ProductOptionsDatasource) {}
 
-  async createOptions(productOptionsData: ProductOptionsEntity) {
-    return await this.productOptionsDatasource.createOptions(productOptionsData)
+  async create(productOptionsData: ProductOptionsEntity) {
+    return await this.productOptionsDatasource.create(productOptionsData)
   }
 
-  async updateOptions(productOptionsId: number, productOptionsData: ProductOptionsEntity) {
-    return await this.productOptionsDatasource.updateOptions(productOptionsId, productOptionsData)
+  async update(productOptionsId: number, productOptionsData: ProductOptionsEntity) {
+    return await this.productOptionsDatasource.update(productOptionsId, productOptionsData)
   }
 
-  async toggleStatusProductOptions(productOptionsId: number, active: boolean) {
-    return await this.productOptionsDatasource.toggleStatusProductOptions(productOptionsId, active)
+  async toggleStatus(productOptionsId: number, active: boolean) {
+    return await this.productOptionsDatasource.toggleStatus(productOptionsId, active)
   }
 
-  async productOptionGetById(productOptionsId: number) {
-    return await this.productOptionsDatasource.productOptionGetById(productOptionsId)
+  async getById(productOptionsId: number) {
+    return await this.productOptionsDatasource.getById(productOptionsId)
   }
 
-  async productOptionGetAll() {
-    return await this.productOptionsDatasource.productOptionGetAll()
+  async getAll() {
+    return await this.productOptionsDatasource.getAll()
+  }
+
+  async delete(productOptionsId: number) {
+    return await this.productOptionsDatasource.delete(productOptionsId)
   }
 }

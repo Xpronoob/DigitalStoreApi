@@ -12,12 +12,14 @@ export class ProductsOptionsAdminRoutes {
 
     const controller = new ProductOptionsController(repository)
 
-    router.post('/', controller.createOptions)
-    router.patch('/:productOptionsId', controller.updateOptions)
-    router.patch('/:productOptionsId/toggle-status', controller.toggleStatusProductOptions)
+    router.post('/', controller.create)
+    router.patch('/:productOptionsId', controller.update)
+    router.patch('/:productOptionsId/toggle-status', controller.toggleStatus)
 
-    router.get('/', controller.productOptionGetAll)
-    router.get('/:productOptionsId', controller.productOptionGetById)
+    router.get('/', controller.getAll)
+    router.get('/:productOptionsId', controller.getById)
+
+    router.delete('/:productOptionsId', controller.delete)
 
     return router
   }
