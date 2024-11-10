@@ -36,7 +36,7 @@ export class ZodProductsAdapter {
 
       stock: z.number().int('El stock debe ser un número entero').nonnegative('El stock no puede ser negativo').optional(),
 
-      img: z.string().url('Debe ser una URL válida').optional(),
+      img: z.string().optional(),
     })
 
     try {
@@ -67,7 +67,7 @@ export class ZodProductsAdapter {
 
       stock: z.number().int('El stock debe ser un número entero').nonnegative('El stock no puede ser negativo').optional(),
 
-      img: z.string().url('Debe ser una URL válida').optional(),
+      img: z.string().optional(),
     })
 
     try {
