@@ -34,7 +34,7 @@ This project is a backend API for an eCommerce platform, built with Node.js, Typ
 ## Requirements
 
 - Node.js v16+ and npm
-- Docker (for containerization)
+<!-- - Docker (for containerization) -->
 - Prisma CLI for database migrations
 
 ## Installation
