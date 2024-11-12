@@ -9,6 +9,7 @@
     "dev": "tsx watch --env-file=.env ./src/app.ts",
     "prisma:pull": "npx prisma db pull && npx prisma generate",
     "prisma:push": "npx prisma db push && npx prisma generate",
+    "prisma:generate": "npx prisma generate",
     "test": "jest",
     "test:watch": "jest --watchAll",
     "prettier:all": "prettier . --write"

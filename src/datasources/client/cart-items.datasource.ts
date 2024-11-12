@@ -10,12 +10,12 @@ export class CartItemsDatasource {
       const existingCartItem = await prisma.cart_items.findFirst({
         where: {
           user_id: cartItemData.user_id,
-          product_detail_id: cartItemData.product_detail_id,
+          product_details_id: cartItemData.product_details_id,
         },
       })
 
       const productStock = await prisma.product_details.findUnique({
-        where: { product_detail_id: cartItemData.product_detail_id },
+        where: { product_details_id: cartItemData.product_details_id },
         select: { quantity: true },
       })
 
@@ -38,7 +38,7 @@ export class CartItemsDatasource {
         // const productDetailQuantity = productStock.quantity! - totalQuantity
 
         // await prisma.product_details.update({
-        //   where: { product_detail_id: updatedCartItem.product_detail_id },
+        //   where: { product_details_id: updatedCartItem.product_details_id },
         //   data: {
         //     quantity: productDetailQuantity,
         //   },
@@ -49,7 +49,7 @@ export class CartItemsDatasource {
         const newCartItem = await prisma.cart_items.create({
           data: {
             user_id: cartItemData.user_id,
-            product_detail_id: cartItemData.product_detail_id,
+            product_details_id: cartItemData.product_details_id,
             quantity: cartItemData.quantity,
           },
         })
@@ -57,7 +57,7 @@ export class CartItemsDatasource {
         // const productDetailQuantity = productStock.quantity! - totalQuantity
 
         // await prisma.product_details.update({
-        //   where: { product_detail_id: cartItemData.product_detail_id },
+        //   where: { product_details_id: cartItemData.product_details_id },
         //   data: {
         //     quantity: productDetailQuantity,
         //   },

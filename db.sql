@@ -80,7 +80,7 @@ CREATE TABLE products (
 );
 
 CREATE TABLE product_details (
-    product_detail_id INT AUTO_INCREMENT PRIMARY KEY,
+    product_details_id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT NOT NULL,
     detail_name VARCHAR(255) NOT NULL,
     description VARCHAR(255),
@@ -97,10 +97,10 @@ CREATE TABLE product_details (
 CREATE TABLE cart_items (
     cart_item_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    product_detail_id INT NOT NULL,
+    product_details_id INT NOT NULL,
     quantity INT DEFAULT 1,
     FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (product_detail_id) REFERENCES product_details(product_detail_id)
+    FOREIGN KEY (product_details_id) REFERENCES product_details(product_details_id)
 );
 
 CREATE TABLE orders (
@@ -117,11 +117,11 @@ CREATE TABLE orders (
 CREATE TABLE order_items (
     order_item_id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL,
-    product_detail_id INT NOT NULL,
+    product_details_id INT NOT NULL,
     quantity INT NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (order_id) REFERENCES orders(order_id),
-    FOREIGN KEY (product_detail_id) REFERENCES product_details(product_detail_id)
+    FOREIGN KEY (product_details_id) REFERENCES product_details(product_details_id)
 );
 
 CREATE TABLE payments (

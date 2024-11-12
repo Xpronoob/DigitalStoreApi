@@ -30,7 +30,7 @@ export class ProductDetailsDatasource {
   async update(productDetailId: number, productDetailData: ProductDetailEntityOptional) {
     try {
       const updatedProductDetail = await prisma.product_details.update({
-        where: { product_detail_id: productDetailId },
+        where: { product_details_id: productDetailId },
         data: {
           detail_name: productDetailData.detail_name,
           description: productDetailData.description,
@@ -52,7 +52,7 @@ export class ProductDetailsDatasource {
   async delete(productDetailId: number) {
     try {
       const deletedProductDetail = await prisma.product_details.delete({
-        where: { product_detail_id: productDetailId },
+        where: { product_details_id: productDetailId },
       })
       return deletedProductDetail
     } catch (error) {
@@ -72,7 +72,7 @@ export class ProductDetailsDatasource {
   async getById(productDetailId: number) {
     try {
       const productDetail = await prisma.product_details.findUnique({
-        where: { product_detail_id: productDetailId },
+        where: { product_details_id: productDetailId },
       })
       if (!productDetail) {
         throw CustomError.notFound('Detalle del producto no encontrado')
@@ -86,7 +86,7 @@ export class ProductDetailsDatasource {
   async toggleStatus(productDetailId: number, active: boolean) {
     try {
       const updatedProductDetail = await prisma.product_details.update({
-        where: { product_detail_id: productDetailId },
+        where: { product_details_id: productDetailId },
         data: {
           active: active,
         },

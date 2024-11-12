@@ -26,12 +26,12 @@ model addresses {
 model cart_items {
   cart_item_id      Int             @id @default(autoincrement())
   user_id           Int
-  product_detail_id Int
+  product_details_id Int
   quantity          Int?            @default(1)
   users             users           @relation(fields: [user_id], references: [user_id], onUpdate: Restrict, map: "cart_items_ibfk_1")
-  product_details   product_details @relation(fields: [product_detail_id], references: [product_detail_id], onUpdate: Restrict, map: "cart_items_ibfk_2")
+  product_details   product_details @relation(fields: [product_details_id], references: [product_details_id], onUpdate: Restrict, map: "cart_items_ibfk_2")
 
-  @@index([product_detail_id], map: "product_detail_id")
+  @@index([product_details_id], map: "product_details_id")
   @@index([user_id], map: "user_id")
 }
 
@@ -57,15 +57,15 @@ model licenses {
 model order_items {
   order_item_id     Int             @id @default(autoincrement())
   order_id          Int
-  product_detail_id Int
+  product_details_id Int
   quantity          Int
   price             Decimal         @db.Decimal(10, 2)
   licenses          licenses[]
   orders            orders          @relation(fields: [order_id], references: [order_id], onUpdate: Restrict, map: "order_items_ibfk_1")
-  product_details   product_details @relation(fields: [product_detail_id], references: [product_detail_id], onUpdate: Restrict, map: "order_items_ibfk_2")
+  product_details   product_details @relation(fields: [product_details_id], references: [product_details_id], onUpdate: Restrict, map: "order_items_ibfk_2")
 
   @@index([order_id], map: "order_id")
-  @@index([product_detail_id], map: "product_detail_id")
+  @@index([product_details_id], map: "product_details_id")
 }
 
 model orders {
@@ -107,7 +107,7 @@ model payments {
 }
 
 model product_details {
-  product_detail_id Int           @id @default(autoincrement())
+  product_details_id Int           @id @default(autoincrement())
   product_id        Int
   detail_name       String        @db.VarChar(255)
   description       String?       @db.VarChar(255)

@@ -8,7 +8,7 @@ export class ZodCartItemsAdapter {
       user_id: z.number({
         required_error: 'El ID de usuario es requerido',
       }),
-      product_detail_id: z.number({
+      product_details_id: z.number({
         required_error: 'El ID del detalle de producto es requerido',
       }),
       quantity: z
@@ -33,7 +33,7 @@ export class ZodCartItemsAdapter {
       user_id: z.number({
         required_error: 'El ID de usuario es requerido',
       }),
-      // product_detail_id: z.number().optional(),
+      // product_details_id: z.number().optional(),
       quantity: z.number().optional(),
     })
 
