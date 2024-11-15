@@ -12,6 +12,7 @@ import {
 } from './admin/'
 import { UsersClientRoutes, CartItemsClientRoutes, OrdersClientRoutes, AddressesClientRoutes } from './client'
 import { ProductsOptionsAdminRoutes } from './admin/products-options.routes'
+import { PublicRoutes } from './public.routes'
 
 export class AppRoutes {
   static get routes(): Router {
@@ -49,6 +50,9 @@ export class AppRoutes {
     router.use('/api/client/orders', AuthMiddleware.authorization, OrdersClientRoutes.routes)
 
     // * * GUEST ROUTES
+
+    // Products & product details, prices...etc
+    router.use('/api/shop', PublicRoutes.routes)
 
     return router
   }
