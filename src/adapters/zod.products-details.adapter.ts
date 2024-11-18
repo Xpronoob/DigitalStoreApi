@@ -8,7 +8,7 @@ export class ZodProductDetailsAdapter {
       product_id: z.number({
         required_error: 'El ID del producto es requerido',
       }),
-      detail_name: z
+      details_name: z
         .string({
           required_error: 'El nombre del detalle del producto es requerido',
         })
@@ -40,7 +40,7 @@ export class ZodProductDetailsAdapter {
 
   static validateProductDetailUpdate = (productDetail: ProductDetailEntityOptional) => {
     const ProductDetail = z.object({
-      detail_name: z
+      details_name: z
         .string()
         .min(1, 'El nombre del detalle debe tener al menos 1 carácter')
         .max(255, 'El nombre del detalle no puede tener más de 255 caracteres')

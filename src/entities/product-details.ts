@@ -1,6 +1,6 @@
 export interface ProductDetailEntity {
   product_id: number
-  detail_name: string
+  details_name: string
   description?: string
   price: number
   quantity?: number
@@ -13,7 +13,7 @@ export interface ProductDetailEntity {
 
 export interface ProductDetailEntityOptional {
   product_id?: number
-  detail_name?: string
+  details_name?: string
   description?: string
   price?: number
   quantity?: number

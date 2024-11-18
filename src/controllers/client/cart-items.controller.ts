@@ -37,7 +37,7 @@ export class CartItemsController {
 
       const validatedData = ZodCartItemsAdapter.validateCartItemsUpdate({ ...req.body, user_id: userId })
 
-      const existingCartItem = await this.cartItemsRepository.getById(parseInt(req.params.idCartItem))
+      const existingCartItem = await this.cartItemsRepository.getById(parseInt(req.params.idCartItems))
 
       if (!existingCartItem) {
         throw CustomError.notFound('El ítem no existe en el carrito')
@@ -47,7 +47,7 @@ export class CartItemsController {
         throw CustomError.forbidden('No tienes permiso para modificar este ítem')
       }
 
-      const updatedCartItem = await this.cartItemsRepository.update(parseInt(req.params.idCartItem), validatedData)
+      const updatedCartItem = await this.cartItemsRepository.update(parseInt(req.params.idCartItems), validatedData)
 
       if (!updatedCartItem) throw CustomError.internalServer('Error al actualizar el carrito')
 
@@ -69,7 +69,7 @@ export class CartItemsController {
       const user = req.body.user
       const userId = user.user_id
 
-      const existingCartItem = await this.cartItemsRepository.getById(parseInt(req.params.idCartItem))
+      const existingCartItem = await this.cartItemsRepository.getById(parseInt(req.params.idCartItems))
 
       if (!existingCartItem) {
         throw CustomError.notFound('El ítem no existe en el carrito')
@@ -79,7 +79,7 @@ export class CartItemsController {
         throw CustomError.forbidden('No tienes permiso para eliminar este ítem')
       }
 
-      const deletedCartItem = await this.cartItemsRepository.delete(parseInt(req.params.idCartItem))
+      const deletedCartItem = await this.cartItemsRepository.delete(parseInt(req.params.idCartItems))
 
       if (!deletedCartItem) throw CustomError.internalServer('Error al eliminar del carrito')
 
@@ -100,6 +100,7 @@ export class CartItemsController {
     try {
       const user = req.body.user
       const cartItems = await this.cartItemsRepository.getAll(user.user_id)
+      console.log(cartItems)
       if (!cartItems) throw CustomError.internalServer('No se encontraron artículos en el carrito')
 
       res.status(200).json({

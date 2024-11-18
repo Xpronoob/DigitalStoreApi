@@ -31,7 +31,7 @@ export class CartItemsDatasource {
 
       if (existingCartItem) {
         const updatedCartItem = await prisma.cart_items.update({
-          where: { cart_item_id: existingCartItem.cart_item_id },
+          where: { cart_items_id: existingCartItem.cart_items_id },
           data: { quantity: totalQuantity },
         })
 
@@ -77,7 +77,7 @@ export class CartItemsDatasource {
     try {
       const existingCartItem = await prisma.cart_items.findFirst({
         where: {
-          cart_item_id: cartItemId,
+          cart_items_id: cartItemId,
         },
       })
 
@@ -101,7 +101,7 @@ export class CartItemsDatasource {
       if (total > productStock?.quantity!) throw CustomError.badRequest('El stock de este producto es insuficiente')
 
       const updatedCartItem = await prisma.cart_items.update({
-        where: { cart_item_id: cartItemId },
+        where: { cart_items_id: cartItemId },
         data: {
           quantity: total,
         },
@@ -115,7 +115,7 @@ export class CartItemsDatasource {
   async delete(cartItemId: number) {
     try {
       const deletedCartItem = await prisma.cart_items.delete({
-        where: { cart_item_id: cartItemId },
+        where: { cart_items_id: cartItemId },
       })
       return deletedCartItem
     } catch (error) {
@@ -128,13 +128,13 @@ export class CartItemsDatasource {
       const cartItems = await prisma.cart_items.findMany({
         where: { user_id: userId },
         select: {
-          cart_item_id: true,
+          cart_items_id: true,
           product_details_id: true,
           quantity: true,
           product_details: {
             select: {
               product_details_id: true,
-              detail_name: true,
+              details_name: true,
               price: true,
             },
           },
@@ -149,7 +149,7 @@ export class CartItemsDatasource {
   async getById(cartItemId: number) {
     try {
       const cartItem = await prisma.cart_items.findUnique({
-        where: { cart_item_id: cartItemId },
+        where: { cart_items_id: cartItemId },
       })
       return cartItem
     } catch (error) {

@@ -13,8 +13,8 @@ export class CartItemsClientRoutes {
     const controller = new CartItemsController(repository)
 
     router.post('/', controller.create)
-    router.patch('/:idCartItem', controller.update)
-    router.delete('/:idCartItem', controller.delete)
+    router.patch('/:idCartItems', controller.update)
+    router.delete('/:idCartItems', controller.delete)
     router.get('/', controller.getAll)
 
     return router

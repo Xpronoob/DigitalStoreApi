@@ -14,7 +14,7 @@ export class PublicDatasource {
         select: {
           product_details_id: true,
           product_id: true,
-          detail_name: true,
+          details_name: true,
           description: true,
           price: true,
           quantity: true,
@@ -77,7 +77,7 @@ export class PublicDatasource {
   //         product_details: {
   //           select: {
   //             product_details_id: true,
-  //             detail_name: true,
+  //             details_name: true,
   //             description: true,
   //             price: true,
   //             quantity: true,

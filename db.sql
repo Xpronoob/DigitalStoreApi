@@ -82,7 +82,7 @@ CREATE TABLE products (
 CREATE TABLE product_details (
     product_details_id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT NOT NULL,
-    detail_name VARCHAR(255) NOT NULL,
+    details_name VARCHAR(255) NOT NULL,
     description VARCHAR(255),
     price DECIMAL(10, 2) NOT NULL,
     quantity INT DEFAULT 1,
@@ -95,7 +95,7 @@ CREATE TABLE product_details (
 );
 
 CREATE TABLE cart_items (
-    cart_item_id INT AUTO_INCREMENT PRIMARY KEY,
+    cart_items_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     product_details_id INT NOT NULL,
     quantity INT DEFAULT 1,

@@ -10,7 +10,7 @@ export class ProductDetailsDatasource {
       const productDetail = await prisma.product_details.create({
         data: {
           product_id: productDetailData.product_id,
-          detail_name: productDetailData.detail_name,
+          details_name: productDetailData.details_name,
           description: productDetailData.description,
           price: productDetailData.price,
           quantity: productDetailData.quantity,
@@ -32,7 +32,7 @@ export class ProductDetailsDatasource {
       const updatedProductDetail = await prisma.product_details.update({
         where: { product_details_id: productDetailId },
         data: {
-          detail_name: productDetailData.detail_name,
+          details_name: productDetailData.details_name,
           description: productDetailData.description,
           price: productDetailData.price,
           quantity: productDetailData.quantity,

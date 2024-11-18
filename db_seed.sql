@@ -22,7 +22,7 @@ VALUES
     (1, 1, 'Smartphone', 'Latest model smartphone', 699.99, 100, 'smartphone.jpg', TRUE),
     (2, 2, 'ESET!', 'Antivirus premium', 249.99, 50, 'eset.jpg', TRUE);
 
-INSERT INTO product_details (product_id, detail_name, description, price, quantity, color, size, active, devices)
+INSERT INTO product_details (product_id, details_name, description, price, quantity, color, size, active, devices)
 VALUES 
-    (1, 'Smartphone - Black', 'Black color, 64GB storage', 699.99, 1, 'Black', '64GB', TRUE, null),
-    (2, 'ESET 1 YEAR', '1 year / Multiple devices', 249.99, 1, null, null, TRUE, '5 devices');
+    (1, 'Smartphone - Black', 'Black color, 64GB storage', 699.99, 20, 'Black', '64GB', TRUE, null),
+    (2, 'ESET 1 YEAR', '1 year / Multiple devices', 249.99, 10, null, null, TRUE, '5 devices');
