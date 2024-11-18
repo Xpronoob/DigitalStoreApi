@@ -16,6 +16,7 @@ export class CartItemsClientRoutes {
     router.patch('/:idCartItems', controller.update)
     router.delete('/:idCartItems', controller.delete)
     router.get('/', controller.getAll)
+    router.get('/count', controller.getCount)
 
     return router
   }

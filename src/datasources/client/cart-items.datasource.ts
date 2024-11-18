@@ -156,4 +156,15 @@ export class CartItemsDatasource {
       throw CustomError.internalServer('Error al obtener el carrito')
     }
   }
+
+  async getCount(userId: number) {
+    try {
+      const cartItemsCount = await prisma.cart_items.count({
+        where: { user_id: userId },
+      })
+      return cartItemsCount
+    } catch (error) {
+      throw CustomError.internalServer('Error al obtener el carrito')
+    }
+  }
 }

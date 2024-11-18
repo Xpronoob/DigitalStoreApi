@@ -23,4 +23,8 @@ export class CartItemsRepository {
   async getById(cartItemId: number) {
     return await this.cartItemsDatasource.getById(cartItemId)
   }
+
+  async getCount(userId: number) {
+    return await this.cartItemsDatasource.getCount(userId)
+  }
 }

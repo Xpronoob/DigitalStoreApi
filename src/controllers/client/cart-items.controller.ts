@@ -100,11 +100,29 @@ export class CartItemsController {
     try {
       const user = req.body.user
       const cartItems = await this.cartItemsRepository.getAll(user.user_id)
-      console.log(cartItems)
       if (!cartItems) throw CustomError.internalServer('No se encontraron artículos en el carrito')
 
       res.status(200).json({
         message: 'Carrito obtenido exitosamente',
+        cartItems,
+      })
+    } catch (error) {
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json({ message: error.message })
+      }
+      res.status(500).json(error)
+      console.log(error)
+    }
+  }
+
+  getCount = async (req: Request, res: Response) => {
+    try {
+      const user = req.body.user
+      const cartItems = await this.cartItemsRepository.getCount(user.user_id)
+      if (!cartItems) throw CustomError.internalServer('No se encontraron artículos en el carrito')
+
+      res.status(200).json({
+        message: 'Cantidad en Carrito obtenido exitosamente',
         cartItems,
       })
     } catch (error) {
