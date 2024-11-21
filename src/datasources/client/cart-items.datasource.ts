@@ -92,13 +92,19 @@ export class CartItemsDatasource {
         select: { quantity: true },
       })
 
-      console.log('PRODUCT STOCK:', productStock)
+      console.log('PRODUCT STOCK:', productStock?.quantity)
 
       const total = existingCartItem?.quantity! + cartItemData?.quantity!
 
       console.log('TOTAL:', total)
 
-      if (total > productStock?.quantity!) throw CustomError.badRequest('El stock de este producto es insuficiente')
+      if (total > productStock?.quantity!) {
+        throw CustomError.badRequest('El stock de este producto es insuficiente')
+      }
+
+      if (total <= 0) {
+        throw CustomError.badRequest('El total no puede ser menor a 0')
+      }
 
       const updatedCartItem = await prisma.cart_items.update({
         where: { cart_items_id: cartItemId },
@@ -108,6 +114,9 @@ export class CartItemsDatasource {
       })
       return updatedCartItem
     } catch (error) {
+      if (error instanceof CustomError) {
+        return error
+      }
       throw CustomError.internalServer('Error al actualizar el carrito')
     }
   }
