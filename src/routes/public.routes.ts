@@ -13,6 +13,7 @@ export class PublicRoutes {
     const controller = new PublicController(repository)
     // router.post('/pay', controller.pay)
     router.get('/getAllProducts', controller.getAllProducts)
+    router.get('/getProductDetailsById/:productId', controller.getProductDetailsById)
     return router
   }
 }

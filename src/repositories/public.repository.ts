@@ -7,4 +7,8 @@ export class PublicRepository {
   async getAllProducts(req: Request) {
     return await this.publicDatasource.getAllProducts(req)
   }
+
+  async getProductDetailsById(productId: number) {
+    return await this.publicDatasource.getProductDetailsById(productId)
+  }
 }
