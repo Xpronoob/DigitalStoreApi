@@ -6,7 +6,7 @@ CREATE TABLE users (
     first_name VARCHAR(70),
     last_name VARCHAR(70),
     phone_number VARCHAR(20),
-    img VARCHAR(255),
+    img VARCHAR(400),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -51,7 +51,7 @@ CREATE TABLE addresses (
 CREATE TABLE categories (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
     category_name VARCHAR(100) NOT NULL,
-    img VARCHAR(255),
+    img VARCHAR(400),
     active BOOLEAN NOT NULL DEFAULT FALSE
 );
 
@@ -73,7 +73,7 @@ CREATE TABLE products (
     description TEXT,
     price DECIMAL(10, 2) NOT NULL,
     stock INT DEFAULT 0,
-    img VARCHAR(255),
+    img VARCHAR(400),
     active BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (category_id) REFERENCES categories(category_id),
     FOREIGN KEY (product_options_id) REFERENCES product_options(product_options_id)
@@ -90,6 +90,7 @@ CREATE TABLE product_details (
     size VARCHAR(50),
     storage VARCHAR(50),
     devices VARCHAR(50),
+    img VARCHAR(400),
     active BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
@@ -106,7 +107,16 @@ CREATE TABLE cart_items (
 CREATE TABLE orders (
     order_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    first_name VARCHAR(70),
+    last_name VARCHAR(70),
+    phone_number VARCHAR(20),
     address_id INT,
+    street VARCHAR(255) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    state VARCHAR(100),
+    postal_code VARCHAR(20) NOT NULL,
+    country VARCHAR(100) NOT NULL,
     total_amount DECIMAL(10, 2) NOT NULL,
     status VARCHAR(50) NOT NULL DEFAULT 'pending',
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -118,6 +128,13 @@ CREATE TABLE order_items (
     order_item_id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL,
     product_details_id INT NOT NULL,
+    details_name VARCHAR(255) NOT NULL,
+    description VARCHAR(255),
+    color VARCHAR(100),
+    size VARCHAR(50),
+    storage VARCHAR(50),
+    devices VARCHAR(50),
+    img VARCHAR(400),
     quantity INT NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (order_id) REFERENCES orders(order_id),

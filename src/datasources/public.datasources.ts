@@ -72,7 +72,7 @@ export class PublicDatasource {
           size: true,
           storage: true,
           devices: true,
-          // img: true,
+          img: true,
           products: {
             select: {
               product_id: true,

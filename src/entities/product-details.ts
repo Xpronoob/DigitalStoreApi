@@ -9,6 +9,7 @@ export interface ProductDetailEntity {
   storage?: string
   devices?: string
   active: boolean
+  img?: string
 }
 
 export interface ProductDetailEntityOptional {
@@ -22,4 +23,5 @@ export interface ProductDetailEntityOptional {
   storage?: string
   devices?: string
   active?: boolean
+  img?: string
 }
