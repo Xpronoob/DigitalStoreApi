@@ -3,6 +3,7 @@ import morgan from 'morgan'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import { envs } from '../configs/envs.config'
+import path from 'path'
 
 interface Options {
   port: number
@@ -28,6 +29,9 @@ export class ExpressAdapter {
       allowedHeaders: ['Content-Type', 'Authorization'],
     }
 
+    const uploadsDir = path.join(__dirname, '../../uploads')
+
+    this.app.use('/uploads', express.static(uploadsDir))
     this.app.use(express.json())
     this.app.use(morgan('dev'))
     this.app.use(cookieParser())

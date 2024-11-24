@@ -18,6 +18,7 @@ export class ProductDetailsDatasource {
           size: productDetailData.size,
           storage: productDetailData.storage,
           devices: productDetailData.devices,
+          img: productDetailData.img,
           active: productDetailData.active,
         },
       })
@@ -40,6 +41,7 @@ export class ProductDetailsDatasource {
           size: productDetailData.size,
           storage: productDetailData.storage,
           devices: productDetailData.devices,
+          img: productDetailData.img,
           active: productDetailData.active,
         },
       })

@@ -2,6 +2,8 @@ import { Router } from 'express'
 import { ProductDetailsController } from '../../controllers/admin/product-details.controller'
 import { ProductDetailsDatasource } from '../../datasources/admin/product-details.datasource'
 import { ProductDetailsRepository } from '../../repositories/admin/product-details.repository'
+import { uploadSingle } from '../../adapters/multer.adapter'
+import { processImage } from '../../adapters/sharp.adapter'
 
 export class ProductDetailsAdminRoutes {
   static get routes(): Router {
@@ -12,7 +14,7 @@ export class ProductDetailsAdminRoutes {
 
     const controller = new ProductDetailsController(repository)
 
-    router.post('/', controller.create)
+    router.post('/', uploadSingle('image'), processImage, controller.create)
     router.patch('/:id', controller.update)
     router.delete('/:id', controller.delete)
     router.get('/:id', controller.getById)

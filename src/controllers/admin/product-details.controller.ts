@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { ProductDetailsRepository } from '../../repositories/admin/product-details.repository'
 import { ZodProductDetailsAdapter } from '../../adapters/zod.products-details.adapter'
 import { CustomError } from '../../errors/custom.error'
+import { envs } from '../../configs/envs.config'
 
 //DI
 export class ProductDetailsController {
@@ -9,6 +10,28 @@ export class ProductDetailsController {
 
   create = async (req: Request, res: Response) => {
     try {
+      // todo: create DTO
+      req.body.product_id = parseInt(req.body.product_id)
+      req.body.price = parseInt(req.body.price)
+      req.body.quantity = parseInt(req.body.quantity)
+
+      const fileName = req.file?.filename
+      const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${fileName}`
+
+      // req.body.img = req.file?.filename
+      req.body.img = fileUrl
+
+      if (req.body.active === 'true') {
+        req.body.active = true
+      } else {
+        req.body.active = false
+      }
+
+      if (envs.DEBUG_MODE) {
+        console.log('Req File: ', req.file)
+        console.log('Req Body: ', req.body)
+      }
+
       const validatedData = ZodProductDetailsAdapter.validateProductDetail(req.body)
       const productDetail = await this.productDetailsRepository.create(validatedData)
 

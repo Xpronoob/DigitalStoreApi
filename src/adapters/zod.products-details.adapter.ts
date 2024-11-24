@@ -25,6 +25,7 @@ export class ZodProductDetailsAdapter {
       size: z.string().max(50).optional(),
       storage: z.string().max(50).optional(),
       devices: z.string().max(50).optional(),
+      img: z.string().max(500).optional(),
       active: z.boolean(),
     })
 
@@ -52,6 +53,7 @@ export class ZodProductDetailsAdapter {
       size: z.string().max(50).optional(),
       storage: z.string().max(50).optional(),
       devices: z.string().max(50).optional(),
+      img: z.string().max(500).optional(),
       active: z.boolean().optional(),
     })
 
