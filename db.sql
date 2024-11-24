@@ -6,7 +6,7 @@ CREATE TABLE users (
     first_name VARCHAR(70),
     last_name VARCHAR(70),
     phone_number VARCHAR(20),
-    img VARCHAR(400),
+    img VARCHAR(500),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -51,7 +51,7 @@ CREATE TABLE addresses (
 CREATE TABLE categories (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
     category_name VARCHAR(100) NOT NULL,
-    img VARCHAR(400),
+    img VARCHAR(500),
     active BOOLEAN NOT NULL DEFAULT FALSE
 );
 
@@ -73,7 +73,7 @@ CREATE TABLE products (
     description TEXT,
     price DECIMAL(10, 2) NOT NULL,
     stock INT DEFAULT 0,
-    img VARCHAR(400),
+    img VARCHAR(500),
     active BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (category_id) REFERENCES categories(category_id),
     FOREIGN KEY (product_options_id) REFERENCES product_options(product_options_id)
@@ -90,7 +90,7 @@ CREATE TABLE product_details (
     size VARCHAR(50),
     storage VARCHAR(50),
     devices VARCHAR(50),
-    img VARCHAR(400),
+    img VARCHAR(500),
     active BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
@@ -134,7 +134,7 @@ CREATE TABLE order_items (
     size VARCHAR(50),
     storage VARCHAR(50),
     devices VARCHAR(50),
-    img VARCHAR(400),
+    img VARCHAR(500),
     quantity INT NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (order_id) REFERENCES orders(order_id),
