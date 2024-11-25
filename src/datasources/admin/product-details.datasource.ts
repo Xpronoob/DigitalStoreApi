@@ -1,11 +1,11 @@
 import { PrismaClient } from '@prisma/client'
 import { CustomError } from '../../errors/custom.error'
-import { ProductDetailEntity, ProductDetailEntityOptional } from '../../entities/product-details'
+import { ProductDetailsEntity, ProductDetailsEntityOptional } from '../../entities/product-details'
 
 const prisma = new PrismaClient()
 
 export class ProductDetailsDatasource {
-  async create(productDetailData: ProductDetailEntity) {
+  async create(productDetailData: ProductDetailsEntity) {
     try {
       const productDetail = await prisma.product_details.create({
         data: {
@@ -28,24 +28,22 @@ export class ProductDetailsDatasource {
     }
   }
 
-  async update(productDetailId: number, productDetailData: ProductDetailEntityOptional) {
+  async update(productDetailId: number, productDetailsData: ProductDetailsEntityOptional) {
     try {
-      const updatedProductDetail = await prisma.product_details.update({
+      let oldImage = null
+      if (productDetailsData.img) {
+        oldImage = await prisma.product_details.findFirst({
+          where: { product_details_id: productDetailId },
+          select: { img: true },
+        })
+      }
+
+      const updatedProductDetails = await prisma.product_details.update({
         where: { product_details_id: productDetailId },
-        data: {
-          details_name: productDetailData.details_name,
-          description: productDetailData.description,
-          price: productDetailData.price,
-          quantity: productDetailData.quantity,
-          color: productDetailData.color,
-          size: productDetailData.size,
-          storage: productDetailData.storage,
-          devices: productDetailData.devices,
-          img: productDetailData.img,
-          active: productDetailData.active,
-        },
+        data: productDetailsData,
       })
-      return updatedProductDetail
+
+      return [updatedProductDetails, oldImage]
     } catch (error) {
       throw CustomError.internalServer('Error al actualizar el detalle del producto')
     }
@@ -96,6 +94,22 @@ export class ProductDetailsDatasource {
       return updatedProductDetail
     } catch (error) {
       throw CustomError.internalServer(`Error al ${active ? 'activar' : 'desactivar'} el detalle del producto`)
+    }
+  }
+
+  async deleteImg(imgFileName: string) {
+    try {
+      const fs = require('fs')
+      const path = require('path')
+
+      const filePath = path.join(__dirname, '../../../uploads/productDetails', imgFileName)
+
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath)
+      }
+    } catch (error) {
+      console.error('Error al eliminar la imagen:', error)
+      throw CustomError.internalServer('Error al eliminar la imagen del detalle del producto')
     }
   }
 }

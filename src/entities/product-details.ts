@@ -1,4 +1,4 @@
-export interface ProductDetailEntity {
+export interface ProductDetailsEntity {
   product_id: number
   details_name: string
   description?: string
@@ -12,7 +12,7 @@ export interface ProductDetailEntity {
   img?: string
 }
 
-export interface ProductDetailEntityOptional {
+export interface ProductDetailsEntityOptional {
   product_id?: number
   details_name?: string
   description?: string

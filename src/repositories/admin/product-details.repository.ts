@@ -1,14 +1,14 @@
 import { ProductDetailsDatasource } from '../../datasources/admin/product-details.datasource'
-import { ProductDetailEntity, ProductDetailEntityOptional } from '../../entities/product-details'
+import { ProductDetailsEntity, ProductDetailsEntityOptional } from '../../entities/product-details'
 
 export class ProductDetailsRepository {
   constructor(private readonly productDetailsDatasource: ProductDetailsDatasource) {}
 
-  async create(productDetailData: ProductDetailEntity) {
+  async create(productDetailData: ProductDetailsEntity) {
     return await this.productDetailsDatasource.create(productDetailData)
   }
 
-  async update(productDetailId: number, productDetailData: ProductDetailEntityOptional) {
+  async update(productDetailId: number, productDetailData: ProductDetailsEntityOptional) {
     return await this.productDetailsDatasource.update(productDetailId, productDetailData)
   }
 
@@ -26,5 +26,9 @@ export class ProductDetailsRepository {
 
   async toggleStatus(productDetailId: number, active: boolean) {
     return await this.productDetailsDatasource.toggleStatus(productDetailId, active)
+  }
+
+  async deleteImg(imgFileName: string) {
+    return await this.productDetailsDatasource.deleteImg(imgFileName)
   }
 }

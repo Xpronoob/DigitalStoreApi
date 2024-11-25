@@ -14,8 +14,8 @@ export class ProductDetailsAdminRoutes {
 
     const controller = new ProductDetailsController(repository)
 
-    router.post('/', uploadSingle('image'), processImage, controller.create)
-    router.patch('/:id', controller.update)
+    router.post('/', uploadSingle('image'), processImage('productDetails'), controller.create)
+    router.patch('/:id', uploadSingle('image'), processImage('productDetails'), controller.update)
     router.delete('/:id', controller.delete)
     router.get('/:id', controller.getById)
     router.get('/', controller.getAll)

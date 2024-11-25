@@ -1,9 +1,9 @@
 import { z } from 'zod'
 import { CustomError } from '../errors/custom.error'
-import { ProductDetailEntity, ProductDetailEntityOptional } from '../entities/product-details'
+import { ProductDetailsEntity, ProductDetailsEntityOptional } from '../entities/product-details'
 
 export class ZodProductDetailsAdapter {
-  static validateProductDetail = (productDetail: ProductDetailEntity) => {
+  static validateProductDetail = (productDetail: ProductDetailsEntity) => {
     const ProductDetail = z.object({
       product_id: z.number({
         required_error: 'El ID del producto es requerido',
@@ -39,7 +39,7 @@ export class ZodProductDetailsAdapter {
     }
   }
 
-  static validateProductDetailUpdate = (productDetail: ProductDetailEntityOptional) => {
+  static validateProductDetailUpdate = (productDetail: ProductDetailsEntityOptional) => {
     const ProductDetail = z.object({
       details_name: z
         .string()
