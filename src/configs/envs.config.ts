@@ -18,6 +18,11 @@ export const getDebugMode = () => {
   return false
 }
 
+export const parseToString = (text: string | undefined) => {
+  text ? (text = text.toString()) : (text = '')
+  return text
+}
+
 export const envs = {
   PORT: getPort(),
   FRONTEND_URL: getFrontUrl(),
@@ -28,4 +33,7 @@ export const envs = {
   JWT_EXPIRES_REFRESH_TOKEN: process.env.JWT_EXPIRES_REFRESH_TOKEN || '120d',
   JWT_PASSWORD_RESET_TOKEN: process.env.JWT_PASSWORD_RESET_TOKEN || '',
   RESET_PASSWORD_TOKEN_EXPIRES: process.env.RESET_PASSWORD_TOKEN_EXPIRES || '6h',
+  PAYPAL_CLIENT_ID: parseToString(process.env.PAYPAL_CLIENT_ID),
+  PAYPAL_CLIENT_SECRET: parseToString(process.env.PAYPAL_CLIENT_SECRET),
+  PAYPAL_BASE_URL: process.env.PAYPAL_BASE_URL || 'https://api-m.sandbox.paypal.com',
 }

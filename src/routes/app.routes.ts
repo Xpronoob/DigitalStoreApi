@@ -11,6 +11,8 @@ import {
   LicensesAdminRoutes,
 } from './admin/'
 import { UsersClientRoutes, CartItemsClientRoutes, OrdersClientRoutes, AddressesClientRoutes } from './client'
+import { AuthConditionalMiddleware } from '../middlewares/authConditional.middleware'
+import { PaymentsRoutes } from './payments.routes'
 import { ProductsOptionsAdminRoutes } from './admin/products-options.routes'
 import { PublicRoutes } from './public.routes'
 
@@ -53,6 +55,9 @@ export class AppRoutes {
 
     // Products & product details, prices...etc
     router.use('/api/shop', PublicRoutes.routes)
+
+    // Payments
+    router.use('/api/payments', AuthConditionalMiddleware.authorization, PaymentsRoutes.routes)
 
     return router
   }
