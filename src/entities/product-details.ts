@@ -1,8 +1,9 @@
 export interface ProductDetailsEntity {
-  product_id: number
-  details_name: string
+  product_details_id?: number
+  product_id?: number
+  details_name?: string
   description?: string
-  price: number
+  price?: number
   quantity?: number
   color?: string
   size?: string
@@ -13,6 +14,7 @@ export interface ProductDetailsEntity {
 }
 
 export interface ProductDetailsEntityOptional {
+  product_details_id?: number
   product_id?: number
   details_name?: string
   description?: string

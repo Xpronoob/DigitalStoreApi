@@ -145,6 +145,7 @@ export class CartItemsDatasource {
               product_details_id: true,
               details_name: true,
               price: true,
+              img: true,
             },
           },
         },
