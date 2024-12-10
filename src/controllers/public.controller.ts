@@ -8,7 +8,6 @@ export class PublicController {
   getAllProducts = async (req: Request, res: Response) => {
     try {
       const products = await this.publicRepository.getAllProducts(req)
-      // console.log(products)
       return res.status(200).json(products)
     } catch (error) {
       if (error instanceof CustomError) {

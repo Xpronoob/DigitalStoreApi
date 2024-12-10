@@ -1,9 +1,9 @@
 export interface ProductDetailsEntity {
   product_details_id?: number
   product_id?: number
-  details_name?: string
+  details_name: string
   description?: string
-  price?: number
+  price: number
   quantity?: number
   color?: string
   size?: string

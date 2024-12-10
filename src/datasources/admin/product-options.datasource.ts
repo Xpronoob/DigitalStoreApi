@@ -110,8 +110,6 @@ export class ProductOptionsDatasource {
         where: { product_options_id: productOptionsId },
       })
 
-      console.log(deleteProductOptions)
-
       return deleteProductOptions
     } catch (error) {
       throw CustomError.internalServer('Error al eliminar el tipo del producto')

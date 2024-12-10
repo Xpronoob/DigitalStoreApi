@@ -6,4 +6,8 @@ export class PaymentsRepository {
   async validateItems(cart: any[]) {
     return await this.paymentsDatasource.validateItems(cart)
   }
+
+  async discountStockItems(data: any) {
+    return await this.paymentsDatasource.discountStockItems(data)
+  }
 }

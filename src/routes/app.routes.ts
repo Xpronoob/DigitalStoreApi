@@ -15,6 +15,7 @@ import { AuthConditionalMiddleware } from '../middlewares/authConditional.middle
 import { PaymentsRoutes } from './payments.routes'
 import { ProductsOptionsAdminRoutes } from './admin/products-options.routes'
 import { PublicRoutes } from './public.routes'
+import { OrdersRoutes } from './orders.routes'
 
 export class AppRoutes {
   static get routes(): Router {
@@ -58,6 +59,9 @@ export class AppRoutes {
 
     // Payments
     router.use('/api/payments', AuthConditionalMiddleware.authorization, PaymentsRoutes.routes)
+
+    // Orders, Order Items
+    // router.use('/api/orders', AuthConditionalMiddleware.authorization, OrdersRoutes.routes)
 
     return router
   }

@@ -81,8 +81,6 @@ export class CartItemsDatasource {
         },
       })
 
-      console.log('EXISTING CART ITEM:', existingCartItem)
-
       if (!existingCartItem) {
         throw CustomError.notFound('El ítem no existe en el carrito')
       }
@@ -92,11 +90,7 @@ export class CartItemsDatasource {
         select: { quantity: true },
       })
 
-      console.log('PRODUCT STOCK:', productStock?.quantity)
-
       const total = existingCartItem?.quantity! + cartItemData?.quantity!
-
-      console.log('TOTAL:', total)
 
       if (total > productStock?.quantity!) {
         throw CustomError.badRequest('El stock de este producto es insuficiente')

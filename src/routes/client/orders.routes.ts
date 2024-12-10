@@ -1,21 +1,21 @@
 import { Router } from 'express'
-import { ProductDetailsController } from '../../controllers/admin/product-details.controller'
-import { ProductDetailsDatasource } from '../../datasources/admin/product-details.datasource'
-import { ProductDetailsRepository } from '../../repositories/admin/product-details.repository'
+import { OrdersDatasource } from '../../datasources/client/orders.datasource'
+import { OrdersRepository } from '../../repositories/client/orders.repository'
+import { OrdersController } from '../../controllers/client/orders.controller'
 
 export class OrdersClientRoutes {
   static get routes(): Router {
     const router = Router()
 
-    const datasource = new ProductDetailsDatasource()
-    const repository = new ProductDetailsRepository(datasource)
+    const datasource = new OrdersDatasource()
+    const repository = new OrdersRepository(datasource)
 
-    const controller = new ProductDetailsController(repository)
+    const controller = new OrdersController(repository)
 
     router.post('/', controller.create)
-    router.delete('/:id', controller.delete)
-    router.get('/:id', controller.getById)
-    router.get('/', controller.getAll)
+    // router.delete('/:id', controller.delete)
+    // router.get('/:id', controller.getById)
+    // router.get('/', controller.getAll)
 
     return router
   }

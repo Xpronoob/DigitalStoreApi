@@ -38,34 +38,39 @@ model cart_items {
 model categories {
   category_id   Int        @id @default(autoincrement())
   category_name String     @db.VarChar(100)
-  img           String?    @db.VarChar(400)
+  img           String?    @db.VarChar(500)
   active        Boolean    @default(false)
   products      products[]
 }
 
 model licenses {
-  license_id    Int         @id @default(autoincrement())
-  order_item_id Int
-  license_key   String      @unique(map: "license_key") @db.VarChar(255)
-  issued_at     DateTime    @default(now()) @db.Timestamp(0)
-  active        Boolean     @default(false)
-  order_items   order_items @relation(fields: [order_item_id], references: [order_item_id], onUpdate: Restrict, map: "licenses_ibfk_1")
+  license_id     Int         @id @default(autoincrement())
+  order_items_id Int
+  license_key    String      @unique(map: "license_key") @db.VarChar(255)
+  issued_at      DateTime    @default(now()) @db.Timestamp(0)
+  active         Boolean     @default(false)
+  order_items    order_items @relation(fields: [order_items_id], references: [order_items_id], onUpdate: Restrict, map: "licenses_ibfk_1")
 
-  @@index([order_item_id], map: "order_item_id")
+  @@index([order_items_id], map: "order_items_id")
 }
 
 model order_items {
-  order_item_id      Int             @id @default(autoincrement())
+  order_items_id     Int             @id @default(autoincrement())
   order_id           Int
+  product_id         Int
   product_details_id Int
   details_name       String          @db.VarChar(255)
+  product_name       String?         @db.VarChar(255)
   description        String?         @db.VarChar(255)
   color              String?         @db.VarChar(100)
   size               String?         @db.VarChar(50)
   storage            String?         @db.VarChar(50)
   devices            String?         @db.VarChar(50)
-  img                String?         @db.VarChar(400)
+  img                String?         @db.VarChar(500)
+  discount           Int?            @default(0)
+  tax                Decimal?        @default(0.00) @db.Decimal(10, 2)
   quantity           Int
+  stock              Int
   price              Decimal         @db.Decimal(10, 2)
   licenses           licenses[]
   orders             orders          @relation(fields: [order_id], references: [order_id], onUpdate: Restrict, map: "order_items_ibfk_1")
@@ -76,25 +81,28 @@ model order_items {
 }
 
 model orders {
-  order_id     Int           @id @default(autoincrement())
-  user_id      Int
-  email        String        @unique(map: "email") @db.VarChar(100)
-  first_name   String?       @db.VarChar(70)
-  last_name    String?       @db.VarChar(70)
-  phone_number String?       @db.VarChar(20)
-  address_id   Int?
-  street       String        @db.VarChar(255)
-  city         String        @db.VarChar(100)
-  state        String?       @db.VarChar(100)
-  postal_code  String        @db.VarChar(20)
-  country      String        @db.VarChar(100)
-  total_amount Decimal       @db.Decimal(10, 2)
-  status       String        @default("pending") @db.VarChar(50)
-  order_date   DateTime      @default(now()) @db.Timestamp(0)
-  order_items  order_items[]
-  users        users         @relation(fields: [user_id], references: [user_id], onUpdate: Restrict, map: "orders_ibfk_1")
-  addresses    addresses?    @relation(fields: [address_id], references: [address_id], onDelete: Restrict, onUpdate: Restrict, map: "orders_ibfk_2")
-  payments     payments[]
+  order_id      Int           @id @default(autoincrement())
+  user_id       Int
+  address_id    Int?
+  email         String        @db.VarChar(100)
+  first_name    String?       @db.VarChar(70)
+  last_name     String?       @db.VarChar(70)
+  phone_number  String?       @db.VarChar(20)
+  street        String        @db.VarChar(255)
+  city          String        @db.VarChar(100)
+  state         String?       @db.VarChar(100)
+  postal_code   String        @db.VarChar(20)
+  country       String        @db.VarChar(100)
+  total_amount  Decimal       @db.Decimal(10, 2)
+  payment_fee   Decimal       @db.Decimal(10, 2)
+  net_amount    Decimal       @db.Decimal(10, 2)
+  tracking_code String?       @db.VarChar(100)
+  status        String        @default("pending") @db.VarChar(50)
+  order_date    DateTime      @default(now()) @db.Timestamp(0)
+  order_items   order_items[]
+  users         users         @relation(fields: [user_id], references: [user_id], onUpdate: Restrict, map: "orders_ibfk_1")
+  addresses     addresses?    @relation(fields: [address_id], references: [address_id], onDelete: Restrict, onUpdate: Restrict, map: "orders_ibfk_2")
+  payments      payments[]
 
   @@index([address_id], map: "address_id")
   @@index([user_id], map: "user_id")
@@ -111,13 +119,27 @@ model password_resets {
 }
 
 model payments {
-  payment_id     Int      @id @default(autoincrement())
-  order_id       Int
-  payment_method String   @db.VarChar(50)
-  payment_status String   @default("pending") @db.VarChar(50)
-  payment_date   DateTime @default(now()) @db.Timestamp(0)
-  amount         Decimal  @db.Decimal(10, 2)
-  orders         orders   @relation(fields: [order_id], references: [order_id], onUpdate: Restrict, map: "payments_ibfk_1")
+  payment_id            Int      @id @default(autoincrement())
+  order_id              Int
+  payment_method        String   @db.VarChar(50)
+  payment_paypal_id     String   @db.VarChar(100)
+  payment_capture_id    String   @db.VarChar(100)
+  payment_payer_id      String   @db.VarChar(100)
+  payment_email_address String   @db.VarChar(100)
+  payment_first_name    String   @db.VarChar(100)
+  payment_last_name     String   @db.VarChar(100)
+  address_line_1        String   @db.VarChar(100)
+  address_line_2        String?  @db.VarChar(100)
+  admin_area_1          String?  @db.VarChar(100)
+  admin_area_2          String?  @db.VarChar(100)
+  postal_code           String   @db.VarChar(100)
+  country               String   @db.VarChar(100)
+  total_amount          Decimal  @db.Decimal(10, 2)
+  payment_fee           Decimal  @db.Decimal(10, 2)
+  net_amount            Decimal  @db.Decimal(10, 2)
+  payment_status        String   @default("pending") @db.VarChar(50)
+  payment_date          DateTime @default(now()) @db.Timestamp(0)
+  orders                orders   @relation(fields: [order_id], references: [order_id], onUpdate: Restrict, map: "payments_ibfk_1")
 
   @@index([order_id], map: "order_id")
 }
@@ -133,7 +155,13 @@ model product_details {
   size               String?       @db.VarChar(50)
   storage            String?       @db.VarChar(50)
   devices            String?       @db.VarChar(50)
-  img                String?       @db.VarChar(400)
+  img                String?       @db.VarChar(500)
+  discount           Int?          @default(0)
+  tax                Decimal?      @default(0.00) @db.Decimal(10, 2)
+  new_arrival        Boolean?      @default(false)
+  on_sale            Boolean?      @default(false)
+  hot_sale           Boolean?      @default(false)
+  sold_count         Int?          @default(0)
   active             Boolean       @default(false)
   cart_items         cart_items[]
   order_items        order_items[]
@@ -161,7 +189,7 @@ model products {
   description        String?           @db.Text
   price              Decimal           @db.Decimal(10, 2)
   stock              Int?              @default(0)
-  img                String?           @db.VarChar(400)
+  img                String?           @db.VarChar(500)
   active             Boolean           @default(false)
   product_details    product_details[]
   categories         categories        @relation(fields: [category_id], references: [category_id], onUpdate: Restrict, map: "products_ibfk_1")
@@ -200,7 +228,7 @@ model users {
   first_name      String?           @db.VarChar(70)
   last_name       String?           @db.VarChar(70)
   phone_number    String?           @db.VarChar(20)
-  img             String?           @db.VarChar(400)
+  img             String?           @db.VarChar(500)
   created_at      DateTime          @default(now()) @db.Timestamp(0)
   addresses       addresses[]
   cart_items      cart_items[]

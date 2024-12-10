@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from 'express'
-import { CustomError } from '../errors/custom.error'
 import { JwtAdapter } from './../adapters/jwt.adapter'
 import { PrismaClient } from '@prisma/client'
 
@@ -9,9 +8,8 @@ export class AuthConditionalMiddleware {
   constructor() {}
 
   static authorization = async (req: Request, res: Response, next: NextFunction) => {
-    const accessToken = req.cookies.accessToken
-    const refreshToken = req.cookies.refreshToken
-
+    const accessToken = req.cookies.accessToken ? req.cookies.accessToken : req.headers['authorization']?.split(' ')[1]
+    const refreshToken = req.cookies.refreshToken ? req.cookies.refreshToken : req.headers['x-refresh-token']
     try {
       if (!accessToken || !refreshToken) return next()
 
@@ -44,6 +42,8 @@ export class AuthConditionalMiddleware {
         user_id: session.users.user_id,
         email: session.users.email,
         first_name: session.users.first_name,
+        accessToken: accessToken,
+        refreshToken: refreshToken,
       }
 
       if (payloadAccessToken.expired) {

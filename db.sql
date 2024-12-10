@@ -91,6 +91,12 @@ CREATE TABLE product_details (
     storage VARCHAR(50),
     devices VARCHAR(50),
     img VARCHAR(500),
+    discount INT DEFAULT 0,
+    tax DECIMAL(10, 2) DEFAULT 0,
+    new_arrival BOOLEAN  DEFAULT FALSE,
+    on_sale BOOLEAN  DEFAULT FALSE,
+    hot_sale BOOLEAN  DEFAULT FALSE,
+    sold_count INT DEFAULT 0,
     active BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
@@ -104,20 +110,24 @@ CREATE TABLE cart_items (
     FOREIGN KEY (product_details_id) REFERENCES product_details(product_details_id)
 );
 
+
 CREATE TABLE orders (
     order_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
+    address_id INT,
+    email VARCHAR(100) NOT NULL,
     first_name VARCHAR(70),
     last_name VARCHAR(70),
     phone_number VARCHAR(20),
-    address_id INT,
     street VARCHAR(255) NOT NULL,
     city VARCHAR(100) NOT NULL,
     state VARCHAR(100),
     postal_code VARCHAR(20) NOT NULL,
     country VARCHAR(100) NOT NULL,
     total_amount DECIMAL(10, 2) NOT NULL,
+    payment_fee DECIMAL(10, 2) NOT NULL,
+    net_amount DECIMAL(10, 2) NOT NULL,
+    tracking_code VARCHAR(100),
     status VARCHAR(50) NOT NULL DEFAULT 'pending',
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(user_id),
@@ -125,17 +135,22 @@ CREATE TABLE orders (
 );
 
 CREATE TABLE order_items (
-    order_item_id INT AUTO_INCREMENT PRIMARY KEY,
+    order_items_id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL,
+    product_id INT NOT NULL,
     product_details_id INT NOT NULL,
     details_name VARCHAR(255) NOT NULL,
+    product_name VARCHAR(255),
     description VARCHAR(255),
     color VARCHAR(100),
     size VARCHAR(50),
     storage VARCHAR(50),
     devices VARCHAR(50),
     img VARCHAR(500),
+    discount INT DEFAULT 0,
+    tax DECIMAL(10, 2) DEFAULT 0,
     quantity INT NOT NULL,
+    stock INT NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (order_id) REFERENCES orders(order_id),
     FOREIGN KEY (product_details_id) REFERENCES product_details(product_details_id)
@@ -145,19 +160,33 @@ CREATE TABLE payments (
     payment_id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL,
     payment_method VARCHAR(50) NOT NULL,
+    payment_paypal_id VARCHAR(100) NOT NULL,
+    payment_capture_id VARCHAR(100) NOT NULL,
+    payment_payer_id VARCHAR(100) NOT NULL,
+    payment_email_address VARCHAR(100) NOT NULL,
+    payment_first_name VARCHAR(100) NOT NULL,
+    payment_last_name VARCHAR(100) NOT NULL,
+    address_line_1 VARCHAR(100) NOT NULL,
+    address_line_2 VARCHAR(100),
+    admin_area_1 VARCHAR(100),
+    admin_area_2 VARCHAR(100),
+    postal_code VARCHAR(100) NOT NULL,
+    country VARCHAR(100) NOT NULL,
+    total_amount DECIMAL(10, 2) NOT NULL,
+    payment_fee DECIMAL(10, 2) NOT NULL,
+    net_amount DECIMAL(10, 2) NOT NULL,
     payment_status VARCHAR(50) NOT NULL DEFAULT 'pending',
     payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    amount DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
 
 CREATE TABLE licenses (
     license_id INT AUTO_INCREMENT PRIMARY KEY,
-    order_item_id INT NOT NULL,
+    order_items_id INT NOT NULL,
     license_key VARCHAR(255) NOT NULL UNIQUE,
     issued_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     active BOOLEAN NOT NULL DEFAULT FALSE,
-    FOREIGN KEY (order_item_id) REFERENCES order_items(order_item_id)
+    FOREIGN KEY (order_items_id) REFERENCES order_items(order_items_id)
 );
 
 CREATE TABLE password_resets (

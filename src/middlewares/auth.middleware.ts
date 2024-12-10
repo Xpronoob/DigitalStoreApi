@@ -11,8 +11,8 @@ export class AuthMiddleware {
   constructor() {}
 
   static authorization = async (req: Request, res: Response, next: NextFunction) => {
-    const accessToken = req.cookies.accessToken
-    const refreshToken = req.cookies.refreshToken
+    const accessToken = req.cookies.accessToken ? req.cookies.accessToken : req.headers['authorization']?.split(' ')[1]
+    const refreshToken = req.cookies.refreshToken ? req.cookies.refreshToken : req.headers['x-refresh-token']
 
     try {
       if (!accessToken || !refreshToken) throw CustomError.unauthorized('No has iniciado sesión')
@@ -27,9 +27,9 @@ export class AuthMiddleware {
       }>(refreshToken)
       if (!payloadAccessToken || !payloadRefreshToken || payloadRefreshToken.expired) throw CustomError.unauthorized('No estás autorizado')
 
-      if (envs.DEBUG_MODE) {
-        console.log('Access Token:', payloadAccessToken)
-      }
+      // if (envs.DEBUG_MODE) {
+      //   console.log('Access Token:', payloadAccessToken)
+      // }
 
       const session = await prisma.sessions.findUnique({
         where: {
@@ -58,6 +58,8 @@ export class AuthMiddleware {
         email: session.users.email,
         first_name: session.users.first_name,
         roles: userRoles,
+        accessToken: accessToken,
+        refreshToken: refreshToken,
       }
 
       if (payloadAccessToken.expired) {
@@ -71,9 +73,9 @@ export class AuthMiddleware {
           maxAge: convertToMillisencods(envs.JWT_EXPIRES_REFRESH_TOKEN),
         })
 
-        if (envs.DEBUG_MODE) {
-          refreshedAccessToken && console.log('Access Token Refreshed Successfully')
-        }
+        // if (envs.DEBUG_MODE) {
+        //   refreshedAccessToken && console.log('Access Token Refreshed Successfully')
+        // }
 
         req.body.user = payload
       }
